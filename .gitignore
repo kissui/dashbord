@@ -1,25 +1,26 @@
-# CakePHP 3
+# boss 下没有 sdk
+sdk/
 
-/vendor/*
-/config/app.php
+node_modules/
+.build
+.idea
+.project
+.settings
+*.log
+.DS_Store
+coverage/
+dist/
 
-/tmp/cache/models/*
-!/tmp/cache/models/empty
-/tmp/cache/persistent/*
-!/tmp/cache/persistent/empty
-/tmp/cache/views/*
-!/tmp/cache/views/empty
-/tmp/sessions/*
-!/tmp/sessions/empty
-/tmp/tests/*
-!/tmp/tests/empty
 
-/logs/*
-!/logs/empty
+# public 中的这些 build 文件目前已移至 dist 目录
+# gitignore 中可以删了
+/public/bundle.*.js
+/public/bundle.js
+/public/bundle.js.map
+/public/styles.*.css
+/public/styles.css
+/public/styles.css.map
+/public/shimsbundle.js
+/public/shimsbundle.js.map
 
-# CakePHP 2
-
-/app/tmp/*
-/app/Config/core.php
-/app/Config/database.php
-/vendors/*
+/config
