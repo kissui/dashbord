@@ -7,14 +7,18 @@ module.exports = React.createClass({
 
     render: function render() {
         return (
-            <div>
-
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-md-4">.col-md-4</div>
+                    <div className="col-md-4">.col-md-4</div>
+                    <div className="col-md-4">.col-md-4</div>
+                </div>
             </div>
         );
     }
 });
 class pages extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {smelling: true};
         this.handleClick = () => {
@@ -23,15 +27,19 @@ class pages extends React.Component {
             }
         }
     }
-    componentWillMount () {
+
+    componentWillMount() {
 
     }
-    componentDidMount () {
+
+    componentDidMount() {
 
     }
-    componentWillUnmount () {
+
+    componentWillUnmount() {
 
     }
+
     render() {
 
     }
