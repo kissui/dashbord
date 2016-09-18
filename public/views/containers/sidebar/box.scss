@@ -1,0 +1,147 @@
+.kepler-sidebar {
+    width: 230px;
+    padding: 0;
+    position: absolute;
+    display: -ms-flexbox;
+    display: flex;
+    z-index: 9999;
+    .sidebar-box {
+        background: #2a3f54;
+        width: 100%;
+    }
+    .kepler-logo {
+        height: 60px;
+        padding: 10px 0 0 10px;
+        display: inline-block;
+    }
+    .pt10 {
+        padding-top: 10px;
+    }
+    .kepler-user {
+        display: none;
+        height: 70px;
+        padding: 10px 0 0 10px;
+        img {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            border: 3px solid #fff;
+        }
+        .name {
+            padding-top: 5px;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+    }
+    .sidebar-menu {
+        padding-left: 0;
+        .authority {
+            padding: 5px 0 0 10px;
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 0;
+            margin-top: -5px;
+            margin-left: 13px;
+        }
+        .side-menu,ul {
+            margin-top: 10px;
+            li {
+                cursor: alias;
+                position: relative;
+                width: 100%;
+                a {
+                    display: block;
+                    cursor: pointer;
+                    color: #e7e7e7;
+                    font-weight:500;
+                    margin-bottom: 6px;
+                }
+                a:hover {
+                    background: none;
+                    cursor: pointer;
+                }
+                i {
+                    font-size: 16px;
+                }
+                
+                
+            }
+            &.active a span.fa {
+                text-align: right !important;
+                margin-right: 4px;
+            }
+            span.fa {
+                float: right;
+                text-align: center;
+                margin-top: 5px;
+                font-size: 10px;
+                min-width: inherit;
+                color: #C4CFDA;
+            }
+            .fa {
+                width: 26px;
+                opacity: .99;
+                display: inline-block;
+                font-family: FontAwesome;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 18px;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+            
+            
+        }
+        .nav {
+            li {
+                a {
+                    position: relative;
+                    display: block;
+                    padding: 13px 15px 12px;
+                }
+                &.active {
+                    border-right: 5px solid #1abb9c;
+                    a {
+                        text-shadow: rgba(0,0,0,0.25) 0 -1px 0;
+                        background: linear-gradient(#334556, #2C4257),#2A3F54;
+                        box-shadow: rgba(0,0,0,0.25) 0 1px 0,inset rgba(255,255,255,0.16) 0 1px 0;
+                    }
+                    .child_menu {
+                        display: block;
+                    }
+                }
+                &.hover {
+                    background: none;
+                }
+                .child_menu {
+                    display: none;
+                    li {
+                        padding-left: 24px;
+                        a {
+                            position: relative;
+                            text-shadow: none;
+                            background: none;
+                            box-shadow: none;
+                            color: rgba(255,255,255,0.75);
+                            font-size: 12px;
+                            padding: 9px;
+                            font-weight: 500;
+                        }
+                    }
+                    li:hover {
+                        background-color: rgba(255,255,255,0.06);
+                    }
+                }
+                
+            }
+        }
+        
+    }
+    .sidebar-icon {
+        i {
+            margin: 0 10px;
+            cursor: pointer;
+        }
+    }
+}

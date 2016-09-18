@@ -1,8 +1,7 @@
 'use strict';
 
 var React = require('react');
-import SideMenu from './containers/slide/box';
-import NavigationTab from './containers/tab/tab';
+
 module.exports = React.createClass({
     displayName: 'Layout',
 
@@ -18,12 +17,7 @@ module.exports = React.createClass({
             </head>
             <body>
             <div className="container body">
-                <SideMenu/>
-                <NavigationTab/>
-                <div className="kepler-container">
-                    {/* Router now automatically populates this.props.children of your components based on the active route. https://github.com/rackt/react-router/blob/latest/CHANGES.md#routehandler */}
-                    {this.props.children}
-                </div>
+                {this.props.children}
             </div>
 
             <script src="/bower/jquery/dist/jquery.min.js"></script>

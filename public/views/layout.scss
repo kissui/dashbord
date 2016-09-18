@@ -6,28 +6,10 @@ html, body {
     padding: 0;
 
 }
-.count{
-    font-size: 42px;
-    color: red;
-}
-h1 {
-    text-shadow: 0 0 100px rgba(0,0,0,.5);
-    letter-spacing: 0.02em;
-}
-
 ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-}
-
-img {
-    position: relative;
-
-}
-
-h6 {
-    text-decoration: underline;
 }
 
 .kepler {
@@ -47,149 +29,30 @@ body {
     font-weight: 400;
     line-height: 1.471;
 }
-.kepler-slide {
-    width: 230px;
-    padding: 0;
-    position: absolute;
-    display: -ms-flexbox;
-    display: flex;
-    z-index: 9999;
-    .slide-box {
-        background: #2a3f54;
-        width: 100%;
-    }
-    .kepler-logo {
-        height: 60px;
-        padding: 10px 0 0 10px;
-        display: inline-block;
-    }
-    .pt10 {
-        padding-top: 10px;
-    }
-    .kepler-user {
-        height: 70px;
-        padding: 10px 0 0 10px;
-        img {
-            width: 50px;
-            height: 50px;
-            border-radius: 25px;
-            border: 3px solid #fff;
-        }
-        .name {
-            padding-top: 5px;
-            color: #fff;
-            font-size: 14px;
-        }
-        
-    }
-    .sidebar-menu {
-        padding-left: 0;
-       
-        .authority {
-            padding: 5px 0 0 10px;
-            color: #fff;
-            font-size: 14px;
-            margin-bottom: 0;
-            margin-top: -5px;
-            margin-left: 13px;
-        }
-        .side-menu {
-            margin-top: 10px;
-            li {
-                position: relative;
-                display: block;
-                cursor: pointer;
-                width: 100%;
-                a {
-                    color: #e7e7e7;
-                    font-weight:500;
-                    margin-bottom: 6px;
-                }
-                a:hover {
-                    background: none;
-                }
-                i {
-                    font-size: 16px;
-                }
-                
-                
-            }
-            &.active a span.fa {
-                text-align: right !important;
-                margin-right: 4px;
-            }
-            span.fa {
-                float: right;
-                text-align: center;
-                margin-top: 5px;
-                font-size: 10px;
-                min-width: inherit;
-                color: #C4CFDA;
-            }
-            .fa {
-                width: 26px;
-                opacity: .99;
-                display: inline-block;
-                font-family: FontAwesome;
-                font-style: normal;
-                font-weight: normal;
-                font-size: 18px;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-            }
-    
-    
-        }
-        .nav {
-            li {
-                a {
-                    position: relative;
-                    display: block;
-                    padding: 13px 15px 12px;
-                }
-                &.active {
-                    border-right: 5px solid #1abb9c;
-                    a {
-                        text-shadow: rgba(0,0,0,0.25) 0 -1px 0;
-                        background: linear-gradient(#334556, #2C4257),#2A3F54;
-                        box-shadow: rgba(0,0,0,0.25) 0 1px 0,inset rgba(255,255,255,0.16) 0 1px 0;
-                    }
-                    .child_menu {
-                        display: block;
-                    }
-                }
-                &.hover {
-                    background: none;
-                }
-                .child_menu {
-                    display: none;
-                    li {
-                        padding-left: 36px;
-                        a {
-                            text-shadow: none;
-                            background: none;
-                            box-shadow: none;
-                            color: rgba(255,255,255,0.75);
-                            font-size: 12px;
-                            padding: 9px;
-                            font-weight: 500;
-                        }
-                    }
-                    li:hover {
-                        background-color: rgba(255,255,255,0.06);
-                    }
-                }
-                
-            }
-        }
-        
-    }
-}
+
 .kepler-container {
     padding: 10px 20px 0;
     margin-left: 230px;
     min-height: 1000px;
     background: #f7f7f7;
+}
+.kepler-tabs {
+    li {
+        position: relative;
+        float: left;
+        padding: 0 20px;
+        font-size: 14px;
+        height: 60px;
+        font-weight: 500;    }
+    li.current {
+        background: #fff;
+        border-bottom: 3px solid #2A3F54;
+        color: #2A3F54;
+    }
+    li:hover {
+        background: #fff;
+        color: #2A3F54;
+    }
 }
 .top_nav {
     display: block;
@@ -203,6 +66,7 @@ body {
         height: 60px;
         line-height: 60px;
         position: relative;
+        padding-left: 60px;
         .user {
             img {
                 width: 30px;
@@ -222,3 +86,6 @@ body {
         margin: 0;
     }
 }
+
+
+@import "containers/sidebar/box";
