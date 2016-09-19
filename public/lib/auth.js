@@ -4,9 +4,9 @@ import sessionStorage from './session_storage';
 import http from './http';
 
 export const pathNotNeedLoggedIn = [
-  '/app/error',
-  '/app/login',
-  '/app/mock',
+  '/chart/error',
+  '/chart/login',
+  '/chart/mock',
   '/401'
 ]
 
