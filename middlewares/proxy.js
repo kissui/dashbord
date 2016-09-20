@@ -19,33 +19,27 @@ import _ from 'lodash';
 function setup(app) {
 
     let proxy = httpProxy.createProxyServer({});
-    console.log('1234567890234567890')
+    console.log('proxy is starting?')
     // 代理检查
     var proxyCheck = require('./proxy_check');
     var doProxyCheck = proxyCheck();
 
 
-    //
     // Listen for the `error` event on `proxy`.
     proxy.on('error', function (err, req, res) {
 
-        // debug('@proxy err', moment().format(), req.method, req.url, err);
+        debug('@proxy err', moment().format(), req.method, req.url, err);
         res.status(500).json({
             code: -3,
             message: '服务端故障'
         });
-        // res.redirect('/app/error');
+        res.redirect('/chart/error');
 
     });
 
-    //
     // Listen for the `proxyRes` event on `proxy`.
-    //
     proxy.on('proxyRes', function (proxyRes, req, res) {
-
         // 普通的 http 错误由后端处理
-
-
         // debug('@proxy end', moment().format(), req.method, req.url, proxyRes.statusCode, proxyRes.headers);
         // === proxyRes msg <Buffer 7b 22 62 61 6c 61 6e 63 65 5f 70 6c 75 73 22 3a 22 30 2e 30 30 22 2c 22 63 61 72 64 73 22 3a 5b 5d 7d> {"balance_plus":"0.00","cards":[]}
         // === proxyRes end
@@ -107,12 +101,10 @@ function setup(app) {
         //
         // 此处使用了以下链接给出的方法，重新构造 req，再代理，以兼容 0.10、0.12
         // https://github.com/nodejitsu/node-http-proxy/issues/180#issuecomment-97702206
-
         var checkedReq = doProxyCheck(req, res, next);
         //var checkedReq = req;
 
         if (!checkedReq || checkedReq == 'undefined') {
-            console.log('fuck')
             return;
         }
 
@@ -120,7 +112,6 @@ function setup(app) {
 
         var body, buffer, r, size;
         r = new http.IncomingMessage();
-
         // 将原始 request 的 user 传过来
         r.user = req.user;
         r.clientIP = req.clientIP;

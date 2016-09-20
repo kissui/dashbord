@@ -23,6 +23,10 @@ var proxyCheckObj = {
             url:'/*'
         },
         {
+            method:'GET',
+            url:'/api/*'
+        },
+        {
             method:'POST',
             url:'/api/*'
         },

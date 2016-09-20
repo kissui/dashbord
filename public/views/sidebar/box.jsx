@@ -9,7 +9,7 @@ module.exports = React.createClass({
         }
     },
     componentDidMount: function () {
-        http.get('/?c=table.schema&ac=tree').then(function (data) {
+        http.get('/api/?c=table.schema&ac=tree').then(function (data) {
             console.log(data,'@fuck');
         })
     },
