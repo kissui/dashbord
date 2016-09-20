@@ -1,15 +1,12 @@
 'use strict';
 
 import axios from 'axios';
-
+import config from 'config';
+console.log('http.server.js:', config.get('be.host'),config.get('clientVersion'));
 var instance = axios.create({
-  baseURL: 'http://192.168.1.122:8091',
-  timeout: 1000,
-  headers: {'X-Requested-With': 'XMLHttpRequest'},
-  proxy: {
-    host: '127.0.0.1',
-    port: 3000
-  }
+  baseURL: config.get('be.host'),
+  timeout: 10000,
+  headers: {'version': config.get('clientVersion')},
 });
 
 export default instance;

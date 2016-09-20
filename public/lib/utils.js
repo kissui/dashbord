@@ -10,7 +10,7 @@ import _isEmpty from 'lodash/isEmpty';
 
 
 
-const YUNZH_STR = /云账户/g;
+const YUNZH_STR = /kepler/g;
 let proxyName;
 
 export function isEmpty(obj) {

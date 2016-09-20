@@ -1,95 +1,130 @@
-/*-------------------------------------------------------------------------------------------------------------------*\
-|  Copyright (C) 2016 PayPal                                                                                          |
-|                                                                                                                     |
-|  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance     |
-|  with the License.                                                                                                  |
-|                                                                                                                     |
-|  You may obtain a copy of the License at                                                                            |
-|                                                                                                                     |
-|       http://www.apache.org/licenses/LICENSE-2.0                                                                    |
-|                                                                                                                     |
-|  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed   |
-|  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for  |
-|  the specific language governing permissions and limitations under the License.                                     |
-\*-------------------------------------------------------------------------------------------------------------------*/
-
 'use strict';
 
 const PORT = 3000;
 
-import {join} from 'path';
 import express from 'express';
-import ReactEngine from 'react-engine';
-import favicon from 'serve-favicon';
-import movies from './movies.json';
-import routes from './public/routes.jsx';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import auth from './lib/auth';
 
-// import StaticFile from './middlewares/static';
+
+import enrouten from 'express-enrouten';
+
+import CheckAuth from './middlewares/check_auth';
+import View from './middlewares/view';
+import Proxy from './middlewares/proxy';
+import RealIP from './middlewares/ip';
+import _ from 'lodash';
+
+//允许代理
+import allowsProxy from './middlewares/proxy_allows.js';
+
+import morgan from 'morgan';
+import fs from 'fs';
+
+import {setPreflight} from './lib/cors';
+
+const winston = require('winston');
+const errorLogFile = __dirname + '/logs/error.log';
+const errorLogger = new (winston.Logger)({
+    transports: [
+        new (winston.transports.File)({filename: errorLogFile})
+    ]
+});
+
+
 let app = express();
 
-// create the view engine with `react-engine`
-let engine = ReactEngine.server.create({
-  routes: routes,
-  routesFilePath: join(__dirname, '/public/routes.jsx'),
-  performanceCollector: function(stats) {
-    console.log(stats);
-  }
+// set CORS pre-flight
+setPreflight(app);
+
+let accessLog = __dirname + '/logs/access.log';
+
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream(accessLog, {flags: 'a'})
+
+// 忽略阿里云 SLB 的健康检查
+app.head('/', (req, res) => {
+    return res.status(204).end();
 });
 
-// set the engine
-app.engine('.jsx', engine);
+// 获得真实 IP
+app.use(RealIP());
 
-// set the view directory
-app.set('views', join(__dirname, '/public/views'));
-
-// set jsx as the view engine
-app.set('view engine', 'jsx');
-
-// finally, set the custom view
-app.set('view', ReactEngine.expressView);
-
-// expose public folder as static assets
-// app.use(express.static(join(__dirname, '/public')));
-app.use(express.static(join(__dirname, '/dist'), {
-  etag: false, // 有集群的话，不同机器的 etag 可能会不一样，所以关掉
-  maxAge: 2592000000 // 1 month，cache 更好的方法是用 cache-control，来达到 200 (from cache)
-}));
-
-app.use(favicon(join(__dirname, '/public/favicon.ico')));
-
-// add our app routes
-app.get('*', function(req, res) {
-  res.render(req.url, {
-    movies: movies
-  });
+// setup the logger
+morgan.token('date', function () {
+    var p = new Date().toString().replace(/[A-Z]{3}\+/, '+').split(/ /);
+    return ( p[2] + '/' + p[1] + '/' + p[3] + ':' + p[4] + ' ' + p[5] );
 });
+morgan.token('real-ip', function (req, res) {
+    return req.clientIP;
+});
+app.use(morgan(':real-ip [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" :req[device-id]', {stream: accessLogStream}));
 
+// for parsing application/json
+app.use(bodyParser.json({limit: '10mb'}));
+// for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
+// cookie parser
+app.use(cookieParser())
+
+
+// app.use(CheckAuth.middleware());
+
+// 对一些老接口做重定向
+// app.get('/autoLogin', function(req, res, next) {
+//     req.url = '/user/auto-login';
+//     next();
+// });
+
+// 设置自有路由
+// app.use(enrouten({directory: 'controllers'}));
+
+// 设置 react view
+View.setup(app);
+
+// 其它的走代理
+console.log('severs:','fuck');
+Proxy.setup(app);
+
+
+// 记录错误（即使 401 也记录）
 app.use(function(err, req, res, next) {
-  console.error(err);
+
+  errorLogger.error('error', {
+    api: req.method + ' ' + req.path,
+    err: _.isPlainObject(err) ? err : err.toString(),
+    headersSent: res.headersSent
+  });
 
   // http://expressjs.com/en/guide/error-handling.html
   if (res.headersSent) {
-    return next(err);
+    // 如果错误信息已返回给前段，则不再处理
+    return;
   }
 
-  if (err._type && err._type === ReactEngine.reactRouterServerErrors.MATCH_REDIRECT) {
-    return res.redirect(302, err.redirectLocation);
-  }
-  else if (err._type && err._type === ReactEngine.reactRouterServerErrors.MATCH_NOT_FOUND) {
-    return res.status(404).render(req.url);
-  }
-  else {
-    // for ReactEngine.reactRouterServerErrors.MATCH_INTERNAL_ERROR or
-    // any other error we just send the error message back
-    return res.status(500).render('500.jsx', {
-      err: {
-        message: err.message,
-        stack: err.stack
-      }
-    });
-  }
+  // 否则继续处理
+  return next(err);
 });
 
-const server = app.listen(PORT, function() {
-  console.log('Example app listening at http://localhost:%s', PORT);
+// 处理 auth 错误
+app.use(CheckAuth.errorHandler);
+// 处理 view 出错
+app.use(View.errorHandler);
+// 处理其它出错
+app.use(function (err, req, res, next) {
+    console.log('fuck1222')
+    if (_.isObject(err) && err.code && err.message) {
+        // 如果我们规定的规范的 err，则直接返回
+        return res.status(400).json(err);
+    }
+
+    return res.redirect('/chart/error');
+    // @todo 将错误信息隐藏
+    // return res.status(500).send(err.message);
+});
+
+// 开启服务
+const server = app.listen(PORT, function () {
+    console.log('Example app listening at http://localhost:%s', PORT);
 });
