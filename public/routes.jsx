@@ -76,13 +76,8 @@ function requireAuth(nextState, replaceState, cb) {
 // @todo 现在有缺少 browserHistory 的报错，但在这儿加了没用，好像是后端 render 的
 export default (
     <Router>
-        <Route path='/chart' component={Layout} >
+        <Route path='/schema' component={Layout} >
             <IndexRoute component={HomePage}/>
-
-            {/*<Route path="/chart/mock" component={MockPage}/>*/}
-            {/*<Route path="/chart/login" component={LoginPage}/>*/}
-            {/*<Route path="/chart/logout" component={LogoutPage}/>*/}
-
             <Route path='/chart/401' component={UnauthorizedPage}/>
             <Route path='/chart/error' component={errorPage}/>
             <Redirect from='/gohome' to='/'/>

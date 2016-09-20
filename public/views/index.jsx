@@ -4,8 +4,6 @@ var React = require('react');
 import SideMenu from './sidebar/box';
 import NavigationTab from './tab/tab';
 module.exports = React.createClass({
-    displayName: 'Listasdfsad',
-
     render: function render() {
         return (
             <div>

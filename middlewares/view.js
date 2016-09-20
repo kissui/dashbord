@@ -56,7 +56,7 @@ function setup(app) {
         // 但需 router 挂载多个地址
         // req.url = '/app';
     });
-    app.get(['/chart', '/chart/*'], function(req, res, next) {
+    app.get(['/schema', '/schema/*'], function(req, res, next) {
 
         // if (!pathNeedLoggedIn(req.url)) {
         //     // 不需登录

@@ -113,15 +113,16 @@ app.use(CheckAuth.errorHandler);
 app.use(View.errorHandler);
 // 处理其它出错
 app.use(function (err, req, res, next) {
-    console.log('fuck1222')
+
     if (_.isObject(err) && err.code && err.message) {
         // 如果我们规定的规范的 err，则直接返回
         return res.status(400).json(err);
     }
 
-    return res.redirect('/chart/error');
+    // return res.redirect('/chart/error');
     // @todo 将错误信息隐藏
-    // return res.status(500).send(err.message);
+    return next(err);
+    // return res.send(err.message);
 });
 
 // 开启服务
