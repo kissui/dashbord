@@ -61,7 +61,7 @@ module.exports = React.createClass({
         <head>
           <meta charSet='utf-8' />
           <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" />
-          <title>云账户</title>
+          <title>kepler 数据平台</title>
           <link rel='stylesheet' href='/styles.css'></link>
         </head>
         <body>
