@@ -2,6 +2,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import SchemaModal from './modal/schemaModal';
+import SchemaDeleteModal from './modal/schemaDeleteModal';
 const customStyles = {
     overlay: {
         position: 'fixed',
@@ -24,29 +25,64 @@ const customStyles = {
     }
 };
 
+/**
+ * @TODO  modal的容器
+ * @des 此类接受两个属性
+ * isShow => 初始化modal 是否是open的
+ * type   => modal展示的类型处理,eg: 工作表:schema,仪表盘:chart
+ * @type {any}
+ */
+
 module.exports = React.createClass({
 
     getInitialState: function () {
         return {modalIsOpen: this.props.isShow};
     },
     componentWillReceiveProps: function (nextProps) {
+        console.log('2', nextProps.isShow);
         this.setState({
             modalIsOpen: nextProps.isShow,
             modalType: nextProps.type
         })
+    },
+    menuChange: function () {
+        console.log('1', this.state.modalIsOpen)
+        if (this.state.modalIsOpen) {
+            this.setState({modalIsOpen: false});
+        }
+        this.props.menuChange();
     },
     openModal: function () {
         this.setState({modalIsOpen: true});
     },
 
     closeModal: function () {
+        console.log('ishere');
         this.setState({modalIsOpen: false});
     },
 
     render: function () {
-        let content;
-        if (this.state.modalType === 'schema') {
-            content = <SchemaModal onClick={this.closeModal}/>
+        let content,
+            modalTypeData = this.state.modalType;
+        if (modalTypeData && modalTypeData.tabType === 'schema') {
+            if (modalTypeData.optionType === 'plus') {
+                content = <SchemaModal
+                    onClick={this.closeModal}
+                    menuChange={this.menuChange}/>
+            } else if (modalTypeData.optionType === 'delete') {
+                content = <SchemaDeleteModal
+                    onClick={this.closeModal}
+                    menuChange={this.menuChange}
+                    currentFinderDetail={this.state.modalType}
+                />
+            } else if(modalTypeData.optionType ==='rename') {
+                content=<SchemaModal
+                    onClick={this.closeModal}
+                    menuChange={this.menuChange}
+                    currentFinderDetail={this.state.modalType}
+                />
+            }
+
         }
         return (
             <Modal

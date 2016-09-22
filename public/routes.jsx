@@ -10,7 +10,7 @@ import Layout from './views/layout.jsx';
 import HomePage from './views/index.jsx';
 // import LoginPage from './views/login.jsx';
 import LogoutPage from './views/logout.jsx';
-
+import ChartPage from './views/chart/index';
 import UnauthorizedPage from './views/401.jsx';
 import errorPage from './views/error/error.jsx';
 
@@ -78,8 +78,9 @@ export default (
     <Router>
         <Route path='/schema' component={Layout} >
             <IndexRoute component={HomePage}/>
-            <Route path='/chart/401' component={UnauthorizedPage}/>
-            <Route path='/chart/error' component={errorPage}/>
+            <Route path='/chart' component={ChartPage}/>
+            <Route path='/schema/401' component={UnauthorizedPage}/>
+            <Route path='/schema/error' component={errorPage}/>
             <Redirect from='/gohome' to='/'/>
         </Route>
     </Router>

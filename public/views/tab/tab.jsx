@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-
+import Router, {Link,History} from 'react-router';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
@@ -29,13 +29,18 @@ module.exports = React.createClass({
                     <div className="col-md-4 ">
                         <ul className="kepler-tabs" onClick={this.handleTab}>
                             <li className={this.state.tabIndex === 0 && 'current'} value="0">
-                                <a href="/chart">仪表盘</a>
-                            </li>
+                                <Link to='/chart'>
+                                    仪表盘
+                                </Link>                            </li>
                             <li className={this.state.tabIndex === 1 && 'current'} value="1">
-                                <a href="/">工作表</a>
+                                <Link to='/schema'>
+                                    工作表
+                                </Link>
                             </li>
                             <li className={this.state.tabIndex === 2 && 'current'} value="2">
-                                <a href="/origin">数据源</a>
+                                <Link to='/chart'>
+                                    数据源
+                                </Link>
                             </li>
                         </ul>
                     </div>

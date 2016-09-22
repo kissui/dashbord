@@ -33,7 +33,7 @@ function setup(app) {
             code: -3,
             message: '服务端故障'
         });
-        res.redirect('/chart/error');
+        res.redirect('/schema/error');
 
     });
 
@@ -135,7 +135,7 @@ function setup(app) {
         body = JSON.stringify(checkedReq.body);
         r.body = body;
         size = Buffer.byteLength(body, 'utf8');
-        r.headers['content-type'] = "application/json;charset=UTF-8";
+        r.headers['content-type'] = "application/json";
         r.headers['content-length'] = size;
         buffer = {};
         buffer.pipe = function (dest) {

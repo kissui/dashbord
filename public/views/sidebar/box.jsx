@@ -11,12 +11,25 @@ module.exports = React.createClass({
             'isShow': false
         }
     },
-    handleFinderOpen: function (type) {
+    handleFinderOpen: function (tabType, optionType, index, id, title) {
+        let option = {
+            'tabType': tabType,
+            'optionType': optionType ? optionType : null,
+            'index': index,
+            'id': id,
+            'title': title ? title : null
+        };
         this.setState({
-            'isShow'    : true,
-            'modalType' : type
+            'isShow': true,
+            'modalType': option
         });
-        console.log('@modalType',type)
+
+    },
+    menuChange: function () {
+        this.setState({
+            menuChangeState: 'true',
+            'isShow': false
+        })
     },
     render: function () {
         return (
@@ -37,10 +50,12 @@ module.exports = React.createClass({
                     <EditFinderModal
                         isShow={this.state.isShow}
                         type={this.state.modalType}
+                        menuChange={this.menuChange}
                     />
                     <SidebarMenu
                         currentIndex={this.props.selectIndex}
                         onClick={this.handleFinderOpen}
+                        menuChangeState={this.state.menuChangeState}
                     />
                 </div>
             </div>)

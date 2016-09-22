@@ -149,13 +149,13 @@ function errorHandler(err, req, res, next) {
     return res.redirect(302, err.redirectLocation);
   }
   else if (err._type && err._type === ReactEngine.reactRouterServerErrors.MATCH_NOT_FOUND) {
-    return res.redirect('/chart/error');
-    // return res.status(404).send('Route Not Found!');
+    // return res.redirect('/chart/error');
+    return res.status(404).send('Route Not Found!');
   }
   else if (err._type && err._type === ReactEngine.reactRouterServerErrors.MATCH_INTERNAL_ERROR) {
     return res.redirect('/chart/error');
     // for ReactEngine.reactRouterServerErrors.MATCH_INTERNAL_ERROR just send the error message back
-    // return res.status(500).send(err.message);
+    return res.status(500).send(err.message);
   }
   else {
     return next(err);

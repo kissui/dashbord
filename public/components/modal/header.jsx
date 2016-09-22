@@ -1,6 +1,10 @@
 'use strict';
 import React from 'react';
-
+/**
+ * @TODO modal-header
+ * @props onClick 此属性为传递事件 执行close modal 通讯到finderModal的closeModal函数
+ * @type {any}
+ */
 module.exports = React.createClass({
     closeModal: function () {
         this.props.onClick();

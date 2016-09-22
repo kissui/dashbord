@@ -3,6 +3,7 @@
 var React = require('react');
 import SideMenu from './sidebar/box';
 import NavigationTab from './tab/tab';
+import SchemaPage from './schema/content';
 module.exports = React.createClass({
     render: function render() {
         return (
@@ -11,11 +12,7 @@ module.exports = React.createClass({
                 <NavigationTab selectIndex={0}/>
                 <div className="kepler-container">
                     <div className="container-fluid">
-                        <div className="row">
-                            <div className="col-md-4">.col-md-4</div>
-                            <div className="col-md-4">.col-md-4</div>
-                            <div className="col-md-4">.col-md-4</div>
-                        </div>
+                       <SchemaPage/>
                     </div>
                 </div>
             </div>

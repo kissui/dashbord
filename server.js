@@ -118,8 +118,10 @@ app.use(function (err, req, res, next) {
         // 如果我们规定的规范的 err，则直接返回
         return res.status(400).json(err);
     }
+    // if(res.statusCode(500)) {
+    //     return res.redirect('/schema');
+    // }
 
-    // return res.redirect('/chart/error');
     // @todo 将错误信息隐藏
     return next(err);
     // return res.send(err.message);

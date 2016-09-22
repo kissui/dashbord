@@ -12,20 +12,30 @@ class SidebarMenu extends React.Component {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.menuChangeState) {
+            this.initAndRefreshMenu()
+        }
+    }
+
     componentWillMount() {
+        this.initAndRefreshMenu()
+    }
+
+    initAndRefreshMenu() {
         let _me = this;
-        http.get('/api/?c=table.schema&ac=tree')
+        http.get('/api/?c=table.folder&ac=tree')
             .then(data => (data.data))
-            .then(function (data) {
+            .then((data) => {
                 if (data.errcode === 10000) {
                     _me.setState({
                         sideListDate: data.data
                     })
                 }
-            }).catch(function () {
-
-        })
-
+            })
+            .catch(data => {
+                console.log(data);
+            })
     }
 
     handleOpenFile() {
@@ -48,9 +58,17 @@ class SidebarMenu extends React.Component {
     }
 
     handleEditFinder() {
-        this.props.onClick('schema');
+        this.props.onClick('schema', 'plus');
         this.setState({
             plusFinderType: 'close'
+        })
+    }
+
+    handleSettingFinder(index, tabType, optionType, id, title) {
+        console.log(index, tabType, optionType);
+        this.props.onClick(tabType, optionType, index, id, title);
+        this.setState({
+            settingFinderDropDownState: null
         })
     }
 
@@ -73,14 +91,18 @@ class SidebarMenu extends React.Component {
                         </span>
                     </div>
                     <div className="col-md-6 text-right sidebar-icon">
-                        <i className="fa fa-plus" onClick={this.handlePlusFolder.bind(this)}></i>
-                        <i className="fa fa-list" onClick={this.handleOpenFile.bind(this)}></i>
+                        <i className="fa fa-plus" onClick={this.handlePlusFolder.bind(this)}>
+                        </i>
+                        <i className="fa fa-list" onClick={this.handleOpenFile.bind(this)}>
+                        </i>
                     </div>
                     {finderTpl}
                 </h3>
                 <SidebarMenuItem
                     fileType={this.state.fileType}
                     list={this.state.sideListDate}
+                    onSetting={this.handleSettingFinder.bind(this)}
+                    onDropDownState={this.state.settingFinderDropDownState}
                 />
             </div>
         )
@@ -95,7 +117,8 @@ var SidebarMenuItem = React.createClass({
     },
     componentWillReceiveProps: function (nextProps) {
         this.setState({
-            defaultProps: nextProps.list
+            defaultProps: nextProps.list,
+            settingIndex: nextProps.settingFinderDropDownState
         })
 
     },
@@ -114,8 +137,26 @@ var SidebarMenuItem = React.createClass({
             listDate[i].id = true;
         }
         this.setState({
-            'sidebarListData': listDate
+            'sidebarListData': listDate,
+            'settingIndex': null
         });
+    },
+    handleSettingFinder: function (i) {
+        this.setState({
+            'settingIndex': i
+        })
+    },
+    handleDeleteFinder: function (i) {
+
+        let title = this.state.defaultProps[i].title;
+        let id = this.state.defaultProps[i].id;
+        this.props.onSetting(i, 'schema', 'delete', id, title);
+    },
+    handleRenameFinder: function (i) {
+        console.log(i, this.state.defaultProps[i].id)
+        let title = this.state.defaultProps[i].title;
+        let id = this.state.defaultProps[i].id;
+        this.props.onSetting(i, 'schema', 'rename', id, title);
     },
     render: function () {
         let me = this;
@@ -125,16 +166,30 @@ var SidebarMenuItem = React.createClass({
                 return (
                     <li className={item.id && 'active'} key={i}>
                         <a onClick={me.handleChangeList.bind(null, i)}>
-                            <i className={"fa fa-folder-open"}></i>
+                            <i className={"fa fa-folder-open"}>
+                            </i>
                             {item.title}
-                            <span className="fa fa-chevron-down"></span>
                         </a>
-                        <SidebarMenuSuperItem menu={item.tables}/>
+                        <span className="fa fa-cogs finder-edit"
+                              onClick={me.handleSettingFinder.bind(null, i)}>
+                        </span>
+                        {me.state.settingIndex === i ? <ul className="dropdown-wrap">
+                            <li className="dropdown-item"
+                                onClick={me.handleDeleteFinder.bind(null, i)}>
+                                删除
+                            </li>
+                            <li className="dropdown-item"
+                                onClick={me.handleRenameFinder.bind(null, i)}>
+                                重命名
+                            </li>
+                        </ul> : null}
+
+                        {item.tables ? <SidebarMenuSuperItem menu={item.tables}/> : null}
                     </li>
                 )
             });
         } else {
-            menuList = 'loading'
+            menuList = null
         }
         return (
             <ul className="nav side-menu">
