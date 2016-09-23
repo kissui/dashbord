@@ -36,7 +36,7 @@ module.exports = function() {
                 // body
             };
         // 遍历允许的 api
-        console.log(proxyAllows.length,'1234567890');
+        // console.log(proxyAllows.length,'1234567890');
         for (let i = 0, l = proxyAllows.length; i < l; i++) {
 
             var allow = proxyAllows[i];

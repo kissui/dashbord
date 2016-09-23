@@ -19,7 +19,6 @@ import _ from 'lodash';
 function setup(app) {
 
     let proxy = httpProxy.createProxyServer({});
-    console.log('proxy is starting?')
     // 代理检查
     var proxyCheck = require('./proxy_check');
     var doProxyCheck = proxyCheck();
@@ -33,7 +32,7 @@ function setup(app) {
             code: -3,
             message: '服务端故障'
         });
-        res.redirect('/schema/error');
+        res.redirect('/index/error');
 
     });
 
@@ -104,7 +103,7 @@ function setup(app) {
         var checkedReq = doProxyCheck(req, res, next);
         //var checkedReq = req;
 
-        if (!checkedReq || checkedReq == 'undefined') {
+        if (!checkedReq) {
             return;
         }
 

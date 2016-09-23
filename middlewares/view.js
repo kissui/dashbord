@@ -31,7 +31,7 @@ function setup(app) {
         routes: routes,
         routesFilePath: join(__dirname, '/../public/routes.jsx'),
         performanceCollector: function(stats) {
-            // console.log(stats);
+            console.log(stats);
         }
     });
 
@@ -51,12 +51,12 @@ function setup(app) {
 
     // add our app routes
     app.get('/', function(req, res) {
-        res.redirect('/chart');
+        res.redirect('/index');
         // @todo 改为下面的写法，减少一次来回请求，
         // 但需 router 挂载多个地址
         // req.url = '/app';
     });
-    app.get(['/schema', '/schema/*'], function(req, res, next) {
+    app.get(['/index', '/index/*'], function(req, res, next) {
 
         // if (!pathNeedLoggedIn(req.url)) {
         //     // 不需登录
@@ -145,15 +145,16 @@ function setup(app) {
 }
 
 function errorHandler(err, req, res, next) {
+    console.log('@err',err,err._type,ReactEngine.reactRouterServerErrors);
   if (err._type && err._type === ReactEngine.reactRouterServerErrors.MATCH_REDIRECT) {
     return res.redirect(302, err.redirectLocation);
   }
   else if (err._type && err._type === ReactEngine.reactRouterServerErrors.MATCH_NOT_FOUND) {
-    // return res.redirect('/chart/error');
-    return res.status(404).send('Route Not Found!');
+    return res.redirect('/index/error');
+    // return res.status(404).send('Route Not Found!');
   }
   else if (err._type && err._type === ReactEngine.reactRouterServerErrors.MATCH_INTERNAL_ERROR) {
-    return res.redirect('/chart/error');
+    return res.redirect('/index/error');
     // for ReactEngine.reactRouterServerErrors.MATCH_INTERNAL_ERROR just send the error message back
     return res.status(500).send(err.message);
   }

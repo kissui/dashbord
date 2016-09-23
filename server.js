@@ -84,25 +84,21 @@ app.use(cookieParser())
 View.setup(app);
 
 // 其它的走代理
-console.log('severs:','fuck');
 Proxy.setup(app);
 
 
 // 记录错误（即使 401 也记录）
 app.use(function(err, req, res, next) {
-
   errorLogger.error('error', {
     api: req.method + ' ' + req.path,
     err: _.isPlainObject(err) ? err : err.toString(),
     headersSent: res.headersSent
   });
-
   // http://expressjs.com/en/guide/error-handling.html
   if (res.headersSent) {
     // 如果错误信息已返回给前段，则不再处理
     return;
   }
-
   // 否则继续处理
   return next(err);
 });
@@ -114,13 +110,11 @@ app.use(View.errorHandler);
 // 处理其它出错
 app.use(function (err, req, res, next) {
 
-    if (_.isObject(err) && err.code && err.message) {
+    if (_.isObject(err) && err.code && err.msg) {
+        console.log(err,'sever',res.statusCode)
         // 如果我们规定的规范的 err，则直接返回
-        return res.status(400).json(err);
+        return res.redirect('/index');
     }
-    // if(res.statusCode(500)) {
-    //     return res.redirect('/schema');
-    // }
 
     // @todo 将错误信息隐藏
     return next(err);
