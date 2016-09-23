@@ -8,6 +8,7 @@ module.exports = React.createClass({
         return {
             'defaultProps': null,
             'selectIndex': this.props.selectIndex,
+            'dropDownWrapState': this.props.state,
             'isShow': false
         }
     },
@@ -30,6 +31,9 @@ module.exports = React.createClass({
             menuChangeState: 'true',
             'isShow': false
         })
+    },
+    onChangeFile: function (index, tabName, optionType, finderId, fileId){
+        this.props.onChangeFile(index, tabName, optionType, finderId, fileId);
     },
     render: function () {
         return (
@@ -56,6 +60,8 @@ module.exports = React.createClass({
                         currentIndex={this.props.selectIndex}
                         onClick={this.handleFinderOpen}
                         menuChangeState={this.state.menuChangeState}
+                        dropDownWrapState={this.state.dropDownWrapState}
+                        onChangeFile={this.onChangeFile}
                     />
                 </div>
             </div>)

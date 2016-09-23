@@ -1,0 +1,54 @@
+.view-header {
+    height: 64px;
+    background-image: linear-gradient(-180deg, #e8ebed 50%, rgba(232, 235, 237, .82) 60%, rgba(232, 235, 237, .54) 70%, rgba(232, 235, 237, .36) 80%, rgba(232, 235, 237, .15) 90%, rgba(232, 235, 237, 0) 100%);
+    
+    h2 {
+        padding: 0 20px;
+        font-size: 22px;
+        font-weight: 400;
+        color: rgba(0, 0, 0, .6);
+        line-height: 64px;
+    }
+    
+}
+
+.header-tab {
+    line-height: 64px;
+    li {
+        cursor: pointer;
+        i {
+            padding: 0 5px;
+        }
+        display: inline-block;
+        padding: 0 20px;
+    }
+    li:hover {
+        color: #35b7f3;
+        i {
+            color: #35b7f3;
+        }
+    }
+}
+.view-body{
+    width: 100%;
+    padding: 0 20px;
+    .body-tab-nav {
+        height: 40px;
+        line-height:40px;
+        border-bottom: 1px solid rgba(128, 133, 144, .15);
+        li {
+            display: inline-block;
+            padding: 0 20px;
+            color: #00b3ee;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        li.active{
+            cursor: pointer;
+            border-bottom: 2px solid #2A3F54;
+        }
+        li:hover{
+            border-bottom: 2px solid #2A3F54;
+        }
+    }
+}

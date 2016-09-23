@@ -1,8 +1,10 @@
 'use strict';
 import React from 'react';
 import Modal from 'react-modal';
-import SchemaModal from './modal/schemaModal';
-import SchemaDeleteModal from './modal/schemaDeleteModal';
+import SchemaModal from './modal/schema/schemaModal';
+import SchemaAddFile from './modal/schema/schemaAddFile';
+import SchemaDeleteFile from './modal/schema/schemaDeleteFile';
+import SchemaDeleteModal from './modal/schema/schemaDeleteModal';
 const customStyles = {
     overlay: {
         position: 'fixed',
@@ -62,6 +64,7 @@ module.exports = React.createClass({
     },
 
     render: function () {
+        console.log(this.state.modalType,'@modalType');
         let content,
             modalTypeData = this.state.modalType;
         if (modalTypeData && modalTypeData.tabType === 'schema') {
@@ -75,13 +78,25 @@ module.exports = React.createClass({
                     menuChange={this.menuChange}
                     currentFinderDetail={this.state.modalType}
                 />
-            } else if(modalTypeData.optionType ==='rename') {
-                content=<SchemaModal
+            } else if (modalTypeData.optionType === 'rename') {
+                content = <SchemaModal
                     onClick={this.closeModal}
                     menuChange={this.menuChange}
                     currentFinderDetail={this.state.modalType}
                 />
+            } else if (modalTypeData.optionType === 'plusFile') {
+                content = <SchemaAddFile
+                    onClick={this.closeModal}
+                    menuChange = {this.menuChange}
+                />
+            } else if (modalTypeData.optionType === 'deleteFile') {
+                content = <SchemaDeleteFile
+                    onClick={this.closeModal}
+                    menuChange = {this.menuChange}
+                    currentFileDetail = {this.state.modalType}
+                />
             }
+
 
         }
         return (

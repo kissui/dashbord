@@ -133,6 +133,12 @@
                     display: none;
                     li {
                         padding-left: 24px;
+                        position: relative;
+                        .icon {
+                            position: absolute;
+                            right: 10px;
+                            top: 8px;
+                        }
                         a {
                             position: relative;
                             text-shadow: none;

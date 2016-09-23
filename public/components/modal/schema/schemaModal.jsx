@@ -1,7 +1,7 @@
 'use strict';
 import React from 'react';
-import Header from './header';
-import http from '../../lib/http';
+import Header from '../header';
+import http from '../../../lib/http';
 /**
  * @TODO 工作表的创建文件夹的box
  *

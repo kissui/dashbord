@@ -2,17 +2,27 @@
 
 import React from 'react';
 import http from '../../lib/http';
-
+/**
+ * @todo 左侧菜单,default width 200px
+ * @description 为了方便处理dropdown_wrap
+ * 全局的dropdown,公用一个state
+ */
 class SidebarMenu extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
             fileType: 'folder',
-            plusFinderType: 'close'
+            'dropDownWrapState': null
         };
     }
 
     componentWillReceiveProps(nextProps) {
+        if (this.state.dropDownWrapState) {
+            this.setState({
+                'dropDownWrapState': nextProps.dropDownWrapState
+            });
+        }
         if (nextProps.menuChangeState) {
             this.initAndRefreshMenu()
         }
@@ -45,40 +55,61 @@ class SidebarMenu extends React.Component {
     }
 
     handlePlusFolder() {
-        if (this.state.plusFinderType === 'close') {
+
+        if (!this.state.dropDownWrapState) {
             this.setState({
-                plusFinderType: 'open'
+                'dropDownWrapState': 'schema'
             })
         } else {
             this.setState({
-                plusFinderType: 'close'
+                'dropDownWrapState': null,
             })
         }
-
     }
 
     handleEditFinder() {
         this.props.onClick('schema', 'plus');
         this.setState({
-            plusFinderType: 'close'
+            'dropDownWrapState': null
         })
     }
 
+    handleGlobalAddFile() {
+        this.props.onClick('schema', 'plusFile')
+    }
+
+    /**
+     * @description finder setting 'add read update delete"
+     * @param index 当前列表索引,根据索引获取详细信息
+     * @param tabType 当前hash的类型 'schema chart orig'
+     * @param optionType 操作类型 'ARUD'
+     * @param id 当前文件夹的ID
+     * @param title 当前文件夹的title
+     */
     handleSettingFinder(index, tabType, optionType, id, title) {
-        console.log(index, tabType, optionType);
         this.props.onClick(tabType, optionType, index, id, title);
         this.setState({
-            settingFinderDropDownState: null
+            dropDownWrapState: null
+        })
+    }
+
+    onChangeFile(index, tabName, optionType, finderId, fileId) {
+        this.props.onChangeFile(index, tabName, optionType, finderId, fileId);
+    }
+
+    handleHideDropDownWrap() {
+        this.setState({
+            dropDownWrapState: null
         })
     }
 
     render() {
-        console.log(this.state.plusFinderType, 'dropdown');
         let finderTpl = null;
-        if (this.state.plusFinderType === 'open') {
+        if (this.state.dropDownWrapState) {
             finderTpl = (
-                <ul className="dropdown-wrap">
+                <ul className="dropdown-wrap" onMouseLeave={this.handleHideDropDownWrap.bind(this)}>
                     <li className="dropdown-item" onClick={this.handleEditFinder.bind(this)}>添加文件夹</li>
+                    <li className="dropdown-item" onClick={this.handleGlobalAddFile.bind(this)}>添加工作表</li>
                 </ul>
             );
         }
@@ -102,13 +133,25 @@ class SidebarMenu extends React.Component {
                     fileType={this.state.fileType}
                     list={this.state.sideListDate}
                     onSetting={this.handleSettingFinder.bind(this)}
-                    onDropDownState={this.state.settingFinderDropDownState}
+                    onDropDownState={this.state.dropDownWrapState}
+                    onChangeFile={this.onChangeFile.bind(this)}
                 />
             </div>
         )
     }
 }
-
+/**
+ * @TODO 全局的dropDown_wrap 的状态处理
+ * @state dropDownWrapState;
+ * @rule:
+ *      <tabName> default add finder dropdown_wrap 'schema'
+ *      <tabName> + <finderIndex> finder option dropdown_wrap 'schema_1'
+ *      <tabName> + <finderIndex> + <currentFinderFileIndex> current file dropdown_wrap 'schema_1_1'
+ * @type {{dropdownState: (any)}}
+ */
+// SidebarMenu.propTypes = {
+//     dropDownWrapState: React.propTypes.string
+// };
 var SidebarMenuItem = React.createClass({
     getInitialState: function () {
         return {
@@ -116,9 +159,13 @@ var SidebarMenuItem = React.createClass({
         }
     },
     componentWillReceiveProps: function (nextProps) {
+        if (this.state.dropDownWrapState) {
+            this.setState({
+                dropDownWrapState: nextProps.onDropDownState
+            })
+        }
         this.setState({
-            defaultProps: nextProps.list,
-            settingIndex: nextProps.settingFinderDropDownState
+            defaultProps: nextProps.list
         })
 
     },
@@ -138,25 +185,44 @@ var SidebarMenuItem = React.createClass({
         }
         this.setState({
             'sidebarListData': listDate,
-            'settingIndex': null
+            'dropDownWrapState': null
         });
     },
     handleSettingFinder: function (i) {
-        this.setState({
-            'settingIndex': i
-        })
+        if (!this.state.dropDownWrapState) {
+            this.setState({
+                'dropDownWrapState': 'schema_' + i
+            })
+        } else {
+            this.setState({
+                'dropDownWrapState': null
+            })
+        }
+
+    },
+    onChangeFile: function (index, tabName, optionType, finderId, fileId) {
+        this.props.onChangeFile(index, tabName, optionType, finderId, fileId);
+    },
+    onSettingFile: function (index,tabName,optionType,fileId,title) {
+        this.props.onSetting(index,tabName,optionType,fileId,title);
+    },
+    handleAddFile: function (i) {
+        console.log(i)
     },
     handleDeleteFinder: function (i) {
-
         let title = this.state.defaultProps[i].title;
         let id = this.state.defaultProps[i].id;
         this.props.onSetting(i, 'schema', 'delete', id, title);
     },
     handleRenameFinder: function (i) {
-        console.log(i, this.state.defaultProps[i].id)
         let title = this.state.defaultProps[i].title;
         let id = this.state.defaultProps[i].id;
         this.props.onSetting(i, 'schema', 'rename', id, title);
+    },
+    handleHideDropDownWrap: function () {
+        this.setState({
+            dropDownWrapState: null
+        })
     },
     render: function () {
         let me = this;
@@ -173,18 +239,30 @@ var SidebarMenuItem = React.createClass({
                         <span className="fa fa-cogs finder-edit"
                               onClick={me.handleSettingFinder.bind(null, i)}>
                         </span>
-                        {me.state.settingIndex === i ? <ul className="dropdown-wrap">
-                            <li className="dropdown-item"
-                                onClick={me.handleDeleteFinder.bind(null, i)}>
-                                删除
-                            </li>
-                            <li className="dropdown-item"
-                                onClick={me.handleRenameFinder.bind(null, i)}>
-                                重命名
-                            </li>
-                        </ul> : null}
+                        {me.state.dropDownWrapState === ('schema_' + i) ?
+                            <ul className="dropdown-wrap" onMouseLeave={me.handleHideDropDownWrap}>
+                                <li className="dropdown-item"
+                                    onClick={me.handleAddFile.bind(null, i)}>
+                                    添加文件
+                                </li>
+                                <li className="dropdown-item"
+                                    onClick={me.handleDeleteFinder.bind(null, i)}>
+                                    删除
+                                </li>
+                                <li className="dropdown-item"
+                                    onClick={me.handleRenameFinder.bind(null, i)}>
+                                    重命名
+                                </li>
+                            </ul> : null}
 
-                        {item.tables ? <SidebarMenuSuperItem menu={item.tables}/> : null}
+                        {item.tables ?
+                            <SidebarMenuSuperItem menu={item.tables}
+                                                  id={item.id}
+                                                  dropDownWrapState={me.state.dropDownWrapState}
+                                                  onChangeFile={me.onChangeFile}
+                                                  onSetting={me.onSettingFile}
+                            /> :
+                            null}
                     </li>
                 )
             });
@@ -202,31 +280,67 @@ var SidebarMenuItem = React.createClass({
 class SidebarMenuSuperItem extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            dropDownWrapState: null
+        }
     }
 
-    handleChangeSuperList(i) {
-        console.log(i)
+    handleChangeSuperList(i, finderId) {
+        let fileId = this.props.menu[i].id;
+        this.props.onChangeFile(i, 'schema', 'read', finderId, fileId);
+    }
+
+    handleSettingFile(i, id) {
+        if (!this.state.dropDownWrapState) {
+            this.setState({
+                'dropDownWrapState': 'schema_' + id + "_" + i
+            })
+        } else {
+            this.setState({
+                'dropDownWrapState': null
+            })
+        }
+    }
+
+    handleDeleteFile(i) {
+        let fileId = this.props.menu[i].id,
+            title = this.props.menu[i].title;
+        this.props.onSetting(i, 'schema', 'deleteFile', fileId, title)
+    }
+
+    handleHideDropDownWrap() {
+        this.setState({
+            dropDownWrapState: null
+        })
     }
 
     render() {
         let me = this;
         return (
-            <ul className="nav child_menu">
+            <ul className="nav child_menu" ref="item" id={this.props.id}>
                 {
                     this.props.menu.map(function (item, i) {
                         return (
                             <li key={i}>
-                                <a onClick={me.handleChangeSuperList.bind(null, i)}>
-                                    <i className={item.icon}></i>
+                                <a onClick={me.handleChangeSuperList.bind(me, i, me.props.id)}>
+                                    <i className={item.icon}>
+                                    </i>
                                     {item.title}
-                                    <i className="fa fa-pencil"></i>
                                 </a>
-
+                                <i className="fa fa-pencil icon"
+                                   onClick={me.handleSettingFile.bind(me, i, me.props.id)}>
+                                </i>
+                                {me.state.dropDownWrapState === ('schema_' + me.props.id + '_' + i) ?
+                                    <ul className="dropdown-wrap" onMouseLeave={me.handleHideDropDownWrap.bind(me)}>
+                                        <li className="dropdown-item"
+                                            onClick={me.handleDeleteFile.bind(me, i)}>
+                                            删除
+                                        </li>
+                                    </ul> : null}
                             </li>
                         )
                     })
                 }
-
             </ul>
         )
     }

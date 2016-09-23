@@ -417,19 +417,6 @@ h1, h2, h3 {
   line-height: 2;
   font-weight: normal;
 }
-
-h1 {
-  font-size: 18px;
-}
-
-h2 {
-  font-size: 16px;
-}
-
-h3 {
-  font-size: 14px;
-}
-
 // icon
 i {
   font-style: normal;
@@ -662,7 +649,6 @@ body {
 }
 
 .kepler-container {
-  padding: 10px 20px 0;
   margin-left: 230px;
   min-height: 1000px;
   background: #f7f7f7;
@@ -689,7 +675,6 @@ body {
   display: block;
   margin-left: 230px;
   .nav_menu {
-    float: left;
     background: #EDEDED;
     border-bottom: 1px solid #D9DEE4;
     margin-bottom: 10px;
