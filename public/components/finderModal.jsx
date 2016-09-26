@@ -12,7 +12,7 @@ const customStyles = {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(255, 255, 255, 0.75)',
+        backgroundColor: 'rgba(107, 105, 105, 0.75)',
         zIndex: 10000
     },
     content: {
@@ -41,7 +41,6 @@ module.exports = React.createClass({
         return {modalIsOpen: this.props.isShow};
     },
     componentWillReceiveProps: function (nextProps) {
-        console.log('2', nextProps.isShow);
         this.setState({
             modalIsOpen: nextProps.isShow,
             modalType: nextProps.type

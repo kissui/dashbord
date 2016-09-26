@@ -13,6 +13,7 @@ import LogoutPage from './views/logout.jsx';
 import ChartPage from './views/chart/index';
 import UnauthorizedPage from './views/401.jsx';
 import errorPage from './views/error/error.jsx';
+import SourcePage from './views/source/source';
 
 // onEnter(nextState, replaceState, callback?)
 //index
@@ -78,7 +79,9 @@ export default (
     <Router>
         <Route path='/index' component={Layout} >
             <IndexRoute component={HomePage}/>
+            <Route path='/index/schema' component={HomePage}/>
             <Route path='/index/chart' component={ChartPage}/>
+            <Route path='/index/source' component={SourcePage}/>
             <Route path='/index/401' component={UnauthorizedPage}/>
             <Route path='/index/error' component={errorPage}/>
             <Redirect from='/gohome' to='/'/>

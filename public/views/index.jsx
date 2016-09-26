@@ -40,16 +40,31 @@ module.exports = React.createClass({
         });
 
     },
+    onGlobalClick: function (page, type) {
+        this.setState({
+            onFileOption: {
+                page: page,
+                name: type
+            }
+        })
+    },
     render: function render() {
+        console.log(this.props.location, '@location');
         return (
             <div>
-                <SideMenu selectIndex={0}
-                          state={this.state.dropDownWrapState}
-                          onChangeFile={this.onChangeFile}
+                <SideMenu
+                    selectIndex={1}
+                    state={this.state.dropDownWrapState}
+                    onChangeFile={this.onChangeFile}
+                    onGlobalClick={this.onGlobalClick}
                 />
-                <NavigationTab selectIndex={0}/>
+                <NavigationTab selectIndex={1}/>
                 <div className="kepler-container">
-                    <SchemaPage currentPage={this.state.fileData} fileId={this.state.fileId}/>
+                    <SchemaPage
+                        currentPage={this.state.fileData}
+                        fileId={this.state.fileId}
+                        onFileOption={this.state.onFileOption}
+                    />
                 </div>
             </div>
         );

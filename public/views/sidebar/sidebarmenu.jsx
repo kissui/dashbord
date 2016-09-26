@@ -75,7 +75,7 @@ class SidebarMenu extends React.Component {
     }
 
     handleGlobalAddFile() {
-        this.props.onClick('schema', 'plusFile')
+        this.props.onGlobalClick('schema', 'plusFile')
     }
 
     /**

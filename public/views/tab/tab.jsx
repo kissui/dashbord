@@ -1,50 +1,52 @@
 'use strict';
 
 import React from 'react';
-import Router, {Link,History} from 'react-router';
+import Router, {Link, History} from 'react-router';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
-            'tabsDefault': null,
+            'onSidebar': this.props.onSidebar,
             'tabIndex': this.props.selectIndex
         }
     },
-    // componentWillReceiveProps: function (nextProps) {
-    //     this.setState({
-    //         tabIndex: nextProps.selectIndex
-    //     })
-    // },
+    componentWillReceiveProps: function (nextProps) {
+        console.log('@tabs:', nextProps)
+        this.setState({
+            tabIndex: nextProps.selectIndex,
+            onSidebar: nextProps.onSidebar
+        })
+    },
     componentWillMount: function () {
         console.log(this.props)
     },
-    handleTab: function (e) {
-        this.setState({
-            'tabIndex': e.target.value
-        })
-    },
     render () {
+        console.log('@onSidebar:', this.state.onSidebar);
         return (
-            <div className="top_nav">
-                <div className="nav_menu row">
-                    <div className="col-md-4 ">
-                        <ul className="kepler-tabs" onClick={this.handleTab}>
+            <div className={this.state.onSidebar ? "top_nav ml-0" : "top_nav"}>
+                <div className={this.state.onSidebar ? "nav_menu row pl-0" : "nav_menu row"}>
+                    {this.state.onSidebar ? <div className="col-md-1">
+                        kepler
+                    </div> : null}
+
+                    <div className="col-md-4">
+                        <ul className="kepler-tabs">
                             <li className={this.state.tabIndex === 0 && 'current'} value="0">
-                                <Link to='/chart'>
+                                <Link to='/index/chart'>
                                     仪表盘
-                                </Link>                            </li>
+                                </Link></li>
                             <li className={this.state.tabIndex === 1 && 'current'} value="1">
-                                <Link to='/schema'>
+                                <Link to='/index/schema'>
                                     工作表
                                 </Link>
                             </li>
                             <li className={this.state.tabIndex === 2 && 'current'} value="2">
-                                <Link to='/chart'>
+                                <Link to='/index/source'>
                                     数据源
                                 </Link>
                             </li>
                         </ul>
                     </div>
-                    <div className="col-md-8 text-right user">
+                    <div className="col-md-7 text-right user">
                         <i className="fa fa-envelope"></i>
                         <img src="../img/user.png" alt=""/>
                         <span>shane</span>

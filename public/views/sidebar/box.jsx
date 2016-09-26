@@ -35,6 +35,9 @@ module.exports = React.createClass({
     onChangeFile: function (index, tabName, optionType, finderId, fileId){
         this.props.onChangeFile(index, tabName, optionType, finderId, fileId);
     },
+    onGlobalClick: function(page,type){
+        this.props.onGlobalClick(page,type);
+    },
     render: function () {
         return (
             <div className="kepler-sidebar">
@@ -62,6 +65,7 @@ module.exports = React.createClass({
                         menuChangeState={this.state.menuChangeState}
                         dropDownWrapState={this.state.dropDownWrapState}
                         onChangeFile={this.onChangeFile}
+                        onGlobalClick={this.onGlobalClick}
                     />
                 </div>
             </div>)
