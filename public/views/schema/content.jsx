@@ -5,6 +5,7 @@ import ViewHeader from './widget/viewHeader';
 import ViewBody from './widget/viewBody';
 import Loading from '../../components/loading/loading';
 import OptionFile from './onFileOption';
+import CreateFilePage from './createFile';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
@@ -24,30 +25,36 @@ module.exports = React.createClass({
     },
     initialFileData: function (fileId) {
         let id = fileId ? fileId : 1;
-        setTimeout(()=> {
-            http.get('/api/?c=table.tables&ac=index&id=' + id)
-                .then(data => data.data)
-                .then((data) => {
-                    console.log(data, '@table');
-                    if (data.errcode === 10000) {
+        http.get('/api/?c=table.tables&ac=index&id=' + id)
+            .then(data => data.data)
+            .then((data) => {
+                console.log(data, '@table');
+                if (data.errcode === 10000) {
+                    if (data.data && data.msg === 'success') {
                         this.setState({
                             fileData: data.data
                         })
                     } else {
                         this.setState({
-                            errMsg: true
+                            fileData: null
                         })
                     }
 
+                } else {
+                    this.setState({
+                        errMsg: true
+                    })
+                }
 
-                })
-        }, 3000)
 
+            })
+    },
+    onState: function (id) {
+        this.props.onState(id)
     },
     render: function () {
         let fileData = this.state.fileData,
             content;
-        console.log('@fileData: ', fileData)
         if (fileData) {
             let viewHeader = {'title': fileData.title};
             content = (
@@ -57,19 +64,28 @@ module.exports = React.createClass({
                 </div>
 
             )
+
+        } else if (fileData === null) {
+            content = (
+                <div className="content-warning">
+                    <h2>当前工作表暂无数据</h2>
+                </div>
+            );
         } else if (this.state.errMsg) {
-            content = <div>{this.state.errMsg}</div>
+            content = (
+                <div className="content-warning">
+                    <h2>{this.state.errMsg}</h2>
+                </div>
+            );
         } else {
             content = <Loading/>
         }
         return (
             <div className="content">
-                <OptionFile onFileOpen={this.state.onFileOption}>
-                    <div className="file-option">
-                        fuck
-                    </div>
-                </OptionFile>
-                {content}
+                <OptionFile onFileOpen={this.state.onFileOption} onState={this.onState}>
+                    <CreateFilePage onState={this.onState}/>
+                </OptionFile >
+                {this.state.onFileOption ? null : content}
             </div>
         )
     }

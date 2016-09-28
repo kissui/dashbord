@@ -17,6 +17,9 @@ module.exports = React.createClass({
     componentDidMount: function () {
 
     },
+    onState: function (id) {
+        this.props.onState(id);
+    },
     render: function () {
         let box = this.state.optionIsOpen ? <div>{this.props.children}</div> : null;
 

@@ -597,6 +597,10 @@ body {
     line-height: 1.471;
 }
 
+a {
+    text-decoration: none;
+}
+
 .kepler-container {
     margin-left: 230px;
     min-height: 1000px;
@@ -611,6 +615,10 @@ body {
         font-size: 14px;
         height: 60px;
         font-weight: 500;
+        a {
+            display: inline-block;
+            text-decoration: none;
+        }
     }
     li.current {
         background: #fff;
@@ -662,6 +670,7 @@ body {
 .pl-0 {
     padding-left: 0;
 }
+
 .loading {
     padding: 100px;
     .spinner {
@@ -703,18 +712,47 @@ body {
     }
     
     @-webkit-keyframes sk-stretchdelay {
-        0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
-        20% { -webkit-transform: scaleY(1.0) }
+        0%, 40%, 100% {
+            -webkit-transform: scaleY(0.4)
+        }
+        20% {
+            -webkit-transform: scaleY(1.0)
+        }
     }
     
     @keyframes sk-stretchdelay {
         0%, 40%, 100% {
             transform: scaleY(0.4);
             -webkit-transform: scaleY(0.4);
-        }  20% {
-               transform: scaleY(1.0);
-               -webkit-transform: scaleY(1.0);
-           }
+        }
+        20% {
+            transform: scaleY(1.0);
+            -webkit-transform: scaleY(1.0);
+        }
     }
 }
-//@import "sidebar/box";
+
+//内容不存在的样式
+.content-warning {
+    padding-top: 100px;
+    h2 {
+        text-align: center;
+    }
+}
+
+.fa-ok:before {
+    content: "\f002";
+}
+@mixin block($bg:rgb(240, 242, 243),$border:#ddd,$padding:10px,$margin:10px) {
+    margin: $margin 0;
+    background-color: $bg;
+    border: 1px solid $border;
+    border-radius: 4px 4px 0 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding: $padding;
+}
+.shim {
+    @include block()
+}
+

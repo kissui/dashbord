@@ -48,6 +48,9 @@ module.exports = React.createClass({
             }
         })
     },
+    onState: function (id) {
+        console.log('@fileId',id)
+    },
     render: function render() {
         console.log(this.props.location, '@location');
         return (
@@ -64,6 +67,7 @@ module.exports = React.createClass({
                         currentPage={this.state.fileData}
                         fileId={this.state.fileId}
                         onFileOption={this.state.onFileOption}
+                        onState={this.onState}
                     />
                 </div>
             </div>

@@ -66,6 +66,7 @@ module.exports = React.createClass({
                         dropDownWrapState={this.state.dropDownWrapState}
                         onChangeFile={this.onChangeFile}
                         onGlobalClick={this.onGlobalClick}
+                        selectIndex ={this.props.selectIndex}
                     />
                 </div>
             </div>)

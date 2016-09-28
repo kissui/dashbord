@@ -104,6 +104,22 @@ class SidebarMenu extends React.Component {
     }
 
     render() {
+        console.log('@selectIndex: ', this.props.selectIndex)
+        let title = '工作表';
+        switch (this.props.selectIndex) {
+            case 0 :
+                title = '仪表盘';
+                break;
+            case 1:
+                title = '工作表';
+                break;
+            case 2:
+                title = '数据源';
+                break;
+            default:
+                title = '工作表';
+                break
+        }
         let finderTpl = null;
         if (this.state.dropDownWrapState) {
             finderTpl = (
@@ -118,7 +134,7 @@ class SidebarMenu extends React.Component {
                 <h3 className="authority row">
                     <div className="col-md-6">
                         <span>
-                            {'title'}
+                            {title}
                         </span>
                     </div>
                     <div className="col-md-6 text-right sidebar-icon">
@@ -203,8 +219,8 @@ var SidebarMenuItem = React.createClass({
     onChangeFile: function (index, tabName, optionType, finderId, fileId) {
         this.props.onChangeFile(index, tabName, optionType, finderId, fileId);
     },
-    onSettingFile: function (index,tabName,optionType,fileId,title) {
-        this.props.onSetting(index,tabName,optionType,fileId,title);
+    onSettingFile: function (index, tabName, optionType, fileId, title) {
+        this.props.onSetting(index, tabName, optionType, fileId, title);
     },
     handleAddFile: function (i) {
         console.log(i)
