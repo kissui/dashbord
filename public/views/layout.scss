@@ -23,7 +23,7 @@ html {
 }
 
 $fontSize: 14px;
-$fontFamily: "Helvetica Neue", "Roboto", "Segoe UI", "Arial", sans-serif;
+$fontFamily: Microsoft Yahei,Avenir,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans-serif;
 $fontLineHeight: normal;
 $colorText: #3e3e3e;
 $colorBg: #efefef;
@@ -591,7 +591,6 @@ input:-ms-input-placeholder, textarea:-moz-placeholder {
 body {
     color: #73879C;
     background: #2A3F54;
-    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
     font-size: 13px;
     font-weight: 400;
     line-height: 1.471;
@@ -743,7 +742,9 @@ a {
 .fa-ok:before {
     content: "\f002";
 }
-@mixin block($bg:rgb(240, 242, 243),$border:#ddd,$padding:10px,$margin:10px) {
+@mixin block($bg:#fff,$border:#ddd,$padding:10px,$margin:10px) {
+    margin-right: 0;
+    margin-left: 0;
     margin: $margin 0;
     background-color: $bg;
     border: 1px solid $border;

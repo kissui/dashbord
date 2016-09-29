@@ -6,11 +6,16 @@ import SidebarMenu from './sidebarmenu';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
-            'defaultProps': null,
+            'defaultProps': this.props.defaultFile,
             'selectIndex': this.props.selectIndex,
             'dropDownWrapState': this.props.state,
-            'isShow': false
+            'isShow': this.props.onModal
         }
+    },
+    componentWillReceiveProps: function (nextProps) {
+        this.setState({
+            'isShow': false
+        })
     },
     handleFinderOpen: function (tabType, optionType, index, id, title) {
         let option = {
@@ -67,8 +72,10 @@ module.exports = React.createClass({
                         onChangeFile={this.onChangeFile}
                         onGlobalClick={this.onGlobalClick}
                         selectIndex ={this.props.selectIndex}
+                        defaultFile = {this.props.defaultFile}
                     />
                 </div>
-            </div>)
+            </div>
+        )
     }
 });

@@ -36,20 +36,35 @@ module.exports = React.createClass({
         };
         this.setState({
             "fileData": fileData,
-            'fileId': fileId
+            'fileId': fileId,
+            'sidebarState': {
+                fileID: fileId,
+                folderID: finderId
+            },
+            'createFileState': false
         });
-
+        console.log(this.state,'newpage');
     },
     onGlobalClick: function (page, type) {
         this.setState({
             onFileOption: {
                 page: page,
                 name: type
-            }
+            },
+            createFileState: true,
+            'fileId': null
         })
     },
-    onState: function (id) {
-        console.log('@fileId',id)
+    onState: function (id,folderId) {
+        this.setState({
+            'fileId': id,
+            'folderId': folderId,
+            'createFileState': false,
+            'sidebarState':{
+                fileID: id,
+                folderID: folderId
+            }
+        });
     },
     render: function render() {
         console.log(this.props.location, '@location');
@@ -57,9 +72,11 @@ module.exports = React.createClass({
             <div>
                 <SideMenu
                     selectIndex={1}
+                    defaultFile={this.state.sidebarState}
                     state={this.state.dropDownWrapState}
                     onChangeFile={this.onChangeFile}
                     onGlobalClick={this.onGlobalClick}
+                    onModal={false}
                 />
                 <NavigationTab selectIndex={1}/>
                 <div className="kepler-container">
@@ -67,6 +84,7 @@ module.exports = React.createClass({
                         currentPage={this.state.fileData}
                         fileId={this.state.fileId}
                         onFileOption={this.state.onFileOption}
+                        createFileState = {this.state.createFileState}
                         onState={this.onState}
                     />
                 </div>

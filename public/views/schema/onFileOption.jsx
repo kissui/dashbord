@@ -21,7 +21,7 @@ module.exports = React.createClass({
         this.props.onState(id);
     },
     render: function () {
-        let box = this.state.optionIsOpen ? <div>{this.props.children}</div> : null;
+        let box = this.props.onFileOpen ? <div>{this.props.children}</div> : null;
 
         return (
             <div>

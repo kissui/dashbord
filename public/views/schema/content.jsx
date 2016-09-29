@@ -4,7 +4,6 @@ import http from '../../lib/http';
 import ViewHeader from './widget/viewHeader';
 import ViewBody from './widget/viewBody';
 import Loading from '../../components/loading/loading';
-import OptionFile from './onFileOption';
 import CreateFilePage from './createFile';
 module.exports = React.createClass({
     getInitialState: function () {
@@ -19,9 +18,13 @@ module.exports = React.createClass({
         this.setState({
             contentDefault: nextProps.currentPage,
             fileId: nextProps.fileId,
-            onFileOption: nextProps.onFileOption
+            onFileOption: nextProps.onFileOption,
+            createFileState: nextProps.createFileState
         });
-        nextProps.fileId ? this.initialFileData(nextProps.fileId) : null
+        if(nextProps.fileId) {
+             this.initialFileData(nextProps.fileId)
+        }
+        console.log('@nextProps.createFileState', nextProps.createFileState)
     },
     initialFileData: function (fileId) {
         let id = fileId ? fileId : 1;
@@ -32,8 +35,9 @@ module.exports = React.createClass({
                 if (data.errcode === 10000) {
                     if (data.data && data.msg === 'success') {
                         this.setState({
-                            fileData: data.data
-                        })
+                            fileData: data.data,
+                            createFileState: false
+                        });
                     } else {
                         this.setState({
                             fileData: null
@@ -49,10 +53,11 @@ module.exports = React.createClass({
 
             })
     },
-    onState: function (id) {
-        this.props.onState(id)
+    onState: function (id,folderId) {
+        this.props.onState(id,folderId)
     },
     render: function () {
+        console.log(this.state.createFileState,'@fileoption}')
         let fileData = this.state.fileData,
             content;
         if (fileData) {
@@ -82,10 +87,7 @@ module.exports = React.createClass({
         }
         return (
             <div className="content">
-                <OptionFile onFileOpen={this.state.onFileOption} onState={this.onState}>
-                    <CreateFilePage onState={this.onState}/>
-                </OptionFile >
-                {this.state.onFileOption ? null : content}
+                {this.state.createFileState ? <CreateFilePage onState={this.onState}/> : content}
             </div>
         )
     }

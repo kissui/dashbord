@@ -73,7 +73,7 @@ module.exports = React.createClass({
             .then(data=>data.data)
             .then((data)=> {
                 if(data.errcode === 10000) {
-                    this.props.onState(data.data.id)
+                    this.props.onState(data.data.id,state.folderId)
                 }
             })
     },
