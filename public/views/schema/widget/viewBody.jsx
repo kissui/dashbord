@@ -9,7 +9,6 @@ module.exports = React.createClass({
         }
     },
     render: function () {
-        console.log('@body: ', this.props.viewBody)
         return (
             <div className="view-body">
                 <div className="body-tab-nav">

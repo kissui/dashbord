@@ -1,6 +1,7 @@
 'use strict';
 import React from 'react';
 import http from '../../lib/http';
+import {Link,History,Router} from 'react-router';
 import ViewHeader from './widget/viewHeader';
 import ViewBody from './widget/viewBody';
 import Loading from '../../components/loading/loading';
@@ -24,28 +25,31 @@ module.exports = React.createClass({
         if(nextProps.fileId) {
              this.initialFileData(nextProps.fileId)
         }
-        console.log('@nextProps.createFileState', nextProps.createFileState)
     },
     initialFileData: function (fileId) {
         let id = fileId ? fileId : 1;
+        var _this = this;
         http.get('/api/?c=table.tables&ac=index&id=' + id)
             .then(data => data.data)
             .then((data) => {
-                console.log(data, '@table');
                 if (data.errcode === 10000) {
                     if (data.data && data.msg === 'success') {
-                        this.setState({
+                        _this.setState({
                             fileData: data.data,
                             createFileState: false
                         });
+                        sessionStorage.setItem('SCHEMA_FILE_DETAIL',JSON.stringify({
+                            fileID: data.data.id,
+                            folderID: data.data.folder_id
+                        }));
                     } else {
-                        this.setState({
+                        _this.setState({
                             fileData: null
                         })
                     }
 
                 } else {
-                    this.setState({
+                    _this.setState({
                         errMsg: true
                     })
                 }
@@ -57,7 +61,6 @@ module.exports = React.createClass({
         this.props.onState(id,folderId)
     },
     render: function () {
-        console.log(this.state.createFileState,'@fileoption}')
         let fileData = this.state.fileData,
             content;
         if (fileData) {

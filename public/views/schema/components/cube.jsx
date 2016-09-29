@@ -16,7 +16,6 @@ module.exports = React.createClass({
         http.get('/api/?c=cube.cubes&ac=index')
             .then(data=>data.data)
             .then((data)=> {
-                console.log('@cubeData: ', data);
                 if (data.errcode === 10000) {
                     this.setState({
                         cubeData: data.data
@@ -44,7 +43,6 @@ module.exports = React.createClass({
             dimensionIndex: secondIndex
         });
         this.props.onSaveDimesionId(cube[firstIndex].dimensions[secondIndex].id,cube[firstIndex].dimensions[secondIndex]);
-        console.log(cube[firstIndex].dimensions[secondIndex].id, 'cube[firstIndex]')
     },
     render: function () {
         let list = null,
@@ -55,7 +53,6 @@ module.exports = React.createClass({
             dataField,
             dimensionField;
         if (this.state.cubeData) {
-            console.log('@firstIndex: ', this.state.firstIndex);
             cubeFirstSelect = this.state.cubeData.map((item, i)=> {
                 return (
                     <option value={i} key={i}>{item.name}</option>
@@ -72,7 +69,6 @@ module.exports = React.createClass({
 
             let changeDimension = this.state.cubeSelectSecond[0];
             if (changeDimension != 1) {
-                console.log('@secondIndex: ', this.state.dimensionIndex, this.state.firstIndex);
                 cubeSecondSelect = this.state.cubeSelectSecond.map((item, i)=> {
                     if (item === 1) return <option value="0" key={i}>暂无可选CUBE</option>;
                     return (
@@ -94,7 +90,6 @@ module.exports = React.createClass({
                     )
                 })
             } else {
-                console.log('@second2Index: ', this.state.dimensionIndex, this.state.firstIndex);
                 dataField = <td>暂无指标</td>;
                 dimensionField = <td>暂无指标</td>
             }

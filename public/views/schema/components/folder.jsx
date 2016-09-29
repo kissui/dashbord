@@ -29,7 +29,6 @@ module.exports = React.createClass({
             })
     },
     handleSelect: function (i, id) {
-        console.log('@createFileFolderList: ', i);
         this.setState({
             selectFolderEq: i
         });

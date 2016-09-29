@@ -47,7 +47,6 @@ module.exports = React.createClass({
         })
     },
     menuChange: function () {
-        console.log('1', this.state.modalIsOpen)
         if (this.state.modalIsOpen) {
             this.setState({modalIsOpen: false});
         }
@@ -58,12 +57,10 @@ module.exports = React.createClass({
     },
 
     closeModal: function () {
-        console.log('ishere');
         this.setState({modalIsOpen: false});
     },
 
     render: function () {
-        console.log(this.state.modalType,'@modalType');
         let content,
             modalTypeData = this.state.modalType;
         if (modalTypeData && modalTypeData.tabType === 'schema') {

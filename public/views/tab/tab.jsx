@@ -10,17 +10,14 @@ module.exports = React.createClass({
         }
     },
     componentWillReceiveProps: function (nextProps) {
-        console.log('@tabs:', nextProps)
         this.setState({
             tabIndex: nextProps.selectIndex,
             onSidebar: nextProps.onSidebar
         })
     },
     componentWillMount: function () {
-        console.log(this.props)
     },
     render () {
-        console.log('@onSidebar:', this.state.onSidebar);
         return (
             <div className={this.state.onSidebar ? "top_nav ml-0" : "top_nav"}>
                 <div className={this.state.onSidebar ? "nav_menu row pl-0" : "nav_menu row"}>

@@ -85,7 +85,6 @@ module.exports = React.createClass({
         }
     },
     render: function () {
-        console.log('@createFileState;;;;;;;;', this.state);
         return (
             <div className="create-file">
                 <div className="file-body">

@@ -113,7 +113,7 @@ template {
 a {
     background: transparent; // 1
     text-decoration: none;
-    color: nth($colorLink, 1);
+    color: #73879C;
     
     &:active {
         outline: 0; // 2
@@ -603,7 +603,7 @@ a {
 .kepler-container {
     margin-left: 230px;
     min-height: 1000px;
-    background: #f7f7f7;
+    background: #FFFFFF;
 }
 
 .kepler-tabs {
@@ -613,7 +613,7 @@ a {
         padding: 0 20px;
         font-size: 14px;
         height: 60px;
-        font-weight: 500;
+        font-weight: 800;
         a {
             display: inline-block;
             text-decoration: none;
@@ -621,12 +621,12 @@ a {
     }
     li.current {
         background: #fff;
-        border-bottom: 3px solid #2A3F54;
-        color: #2A3F54;
+        border-bottom: 3px solid #73879C;
+        color: #73879C;
     }
     li:hover {
         background: #fff;
-        color: #2A3F54;
+        color: #73879C;
     }
 }
 
@@ -743,8 +743,6 @@ a {
     content: "\f002";
 }
 @mixin block($bg:#fff,$border:#ddd,$padding:10px,$margin:10px) {
-    margin-right: 0;
-    margin-left: 0;
     margin: $margin 0;
     background-color: $bg;
     border: 1px solid $border;

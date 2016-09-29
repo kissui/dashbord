@@ -37,10 +37,18 @@ class SidebarMenu extends React.Component {
         http.get('/api/?c=table.folder&ac=tree')
             .then(data => (data.data))
             .then((data) => {
-                if (data.errcode === 10000) {
+                if (data.errcode === 10000 && data.data) {
                     _me.setState({
                         sideListDate: data.data
-                    })
+                    });
+                    if(!sessionStorage.getItem('SCHEMA_FILE_DETAIL')) {
+                        sessionStorage.setItem('SCHEMA_FILE_DETAIL', JSON.stringify({
+                            folderID: data.data[0].id,
+                            fileID: data.data[0].tables[0].id
+                        }))
+                    }
+                } else {
+                    // 当前用户默认或者文件全部删除处理
                 }
             })
             .catch(data => {
@@ -104,7 +112,6 @@ class SidebarMenu extends React.Component {
     }
 
     render() {
-        console.log('@selectIndex: ', this.props.selectIndex, this.props.defaultFile);
         let title = '工作表';
         switch (this.props.selectIndex) {
             case 0 :
@@ -239,7 +246,6 @@ var SidebarMenuItem = React.createClass({
                 fileID: this.state.defaultProps[0].tables[0].id,
                 folderID: this.state.defaultProps[0].id,
             };
-            console.log('this.state.defaultFile', defaultFile);
             menuList = this.state.defaultProps.map(function (item, i) {
                 return (
                     <li className={(item.id === defaultFile.folderID) ? 'active' : null} ref={'list_' + item.id}

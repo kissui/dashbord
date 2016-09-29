@@ -11,11 +11,22 @@ module.exports = React.createClass({
         }
     },
     handleGlobalState: function (e) {
-
-        console.log('globalState', e.stopPropagation(), e.preventDefault());
         this.setState({
             'dropDownWrapState': null
         })
+    },
+    componentDidMount: function () {
+        let sessionStorages = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
+        if(sessionStorages) {
+            this.setState({
+                'fileId': sessionStorages.fileID,
+                'sidebarState':{
+                    fileID: sessionStorages.fileID,
+                    folderID: sessionStorages.folderID
+                }
+            });
+        }
+
     },
     /**
      * @TODO change file content
@@ -43,7 +54,6 @@ module.exports = React.createClass({
             },
             'createFileState': false
         });
-        console.log(this.state,'newpage');
     },
     onGlobalClick: function (page, type) {
         this.setState({
@@ -67,7 +77,6 @@ module.exports = React.createClass({
         });
     },
     render: function render() {
-        console.log(this.props.location, '@location');
         return (
             <div>
                 <SideMenu

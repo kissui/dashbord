@@ -1,7 +1,5 @@
 .view-header {
     height: 64px;
-    background-image: linear-gradient(-180deg, #e8ebed 50%, rgba(232, 235, 237, .82) 60%, rgba(232, 235, 237, .54) 70%, rgba(232, 235, 237, .36) 80%, rgba(232, 235, 237, .15) 90%, rgba(232, 235, 237, 0) 100%);
-    
     h2 {
         padding: 0 20px;
         font-size: 22px;
@@ -23,9 +21,9 @@
         padding: 0 20px;
     }
     li:hover {
-        color: #35b7f3;
+        color: #73879C;
         i {
-            color: #35b7f3;
+            color: #73879C;
         }
     }
 }
@@ -39,11 +37,11 @@
         li {
             display: inline-block;
             padding: 0 20px;
-            color: #00b3ee;
+            color: #73879C;
             font-size: 14px;
             font-weight: 500;
             position: relative;
-            
+            cursor: pointer;
         }
         li.active{
             cursor: pointer;
