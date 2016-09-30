@@ -7,11 +7,9 @@ module.exports = React.createClass({
         }
     },
     componentDidMount: function () {
-        console.log('where are you?',this.props.onHeadConf.folderId);
         this.props.onFolderId(this.props.onHeadConf.folderId)
     },
     handleSetName: function () {
-        console.log('this.refs.fileName.value', this.refs.fileName.value);
         this.props.onSetName(this.refs.fileName.value)
     },
     handleChangeFolder: function () {
@@ -22,7 +20,6 @@ module.exports = React.createClass({
         let folder = JSON.parse(sessionStorage.getItem('SIDEBAR_LIST'));
         let conf = this.props.onHeadConf;
         let options, selects;
-        let name = this.props.onHeadConf.conf ? this.props.onHeadConf.conf.title : '';
         if (conf && conf.name != 'globalFile') {
             options = folder.map((item, i)=> {
                 return (
@@ -54,7 +51,7 @@ module.exports = React.createClass({
                            className="form-control"
                            placeholder="请输入你要创建的工作表名称"
                            ref="fileName"
-                           defaultValue={name}
+                           defaultValue={this.props.onHeadConf.conf ? this.props.onHeadConf.conf.title : null}
                            onChange={this.handleSetName}
                     />
                 </div>

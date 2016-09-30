@@ -1,9 +1,9 @@
 'use strict';
-import React from 'react';
-import http from '../../lib/http';
-import Folder from './components/folder';
-import Cube from './components/cube';
-import HeadPage from './components/file';
+import React from "react";
+import http from "../../lib/http";
+import Folder from "./components/folder";
+import Cube from "./components/cube";
+import HeadPage from "./components/file";
 module.exports = React.createClass({
     getInitialState: function () {
         return {
@@ -33,13 +33,13 @@ module.exports = React.createClass({
         let state = this.state;
         let cubes = state.cubeId + "." + state.dimensionId;
         let fields = [];
-        let tempArr = state.dimension.dimension_fields.concat(state.dimension.data_fields)
+        let tempArr = state.dimension.dimension_fields.concat(state.dimension.data_fields);
         for (let i = 0; i < tempArr.length; i++) {
             let tempObject = {};
             fields.push((function (i) {
                 tempObject["val_conf"] = cubes + '.' + tempArr[i].field_id;
                 tempObject["seq_no"] = i;
-                tempObject['selected'] = true;
+                tempObject['selected'] = state.totalFieldChecked ? state.totalFieldChecked[i] : true;
                 return tempObject
             })(i))
         }
@@ -63,7 +63,45 @@ module.exports = React.createClass({
             fileName: value
         })
     },
+    handleCheckBox: function (value, i) {
+        let state = this.state;
+        let dataFieldsLen = state.dimension.data_fields.length;
+        let dimensionLen = state.dimension.dimension_fields.length;
+        let defaultChecked = [];
+        for (let df = 0; df < dimensionLen; df++) {
+            defaultChecked.push(true);
+        }
+        let checkedField = [];
+        if (!this.state.dataFieldsChecked) {
+            for (let d = 0; d < dataFieldsLen; d++) {
+                if (d === i) {
+                    checkedField.push(false);
+                } else {
+                    checkedField.push(true)
+                }
+
+            }
+            console.log(checkedField);
+            this.setState({
+                dataFieldsChecked: checkedField,
+                totalFieldChecked: defaultChecked.concat(checkedField)
+            })
+        } else {
+            let temp = this.state.dataFieldsChecked;
+            for (let f = 0; f < dataFieldsLen; f++) {
+                if (i === f) {
+                    temp[i] = value;
+                    this.setState({
+                        dataFieldsChecked: temp,
+                        totalFieldChecked: defaultChecked.concat(temp)
+                    })
+                }
+            }
+        }
+        console.log(value, i, checkedField, this.state.dataFieldsChecked)
+    },
     render: function () {
+        console.log('@this.props.onConf', this.props.onConf)
         return (
             <div className="create-file">
                 <div className="file-body">
@@ -75,6 +113,7 @@ module.exports = React.createClass({
                     <Cube
                         onSaveCubeId={this.handleGetCubeId}
                         onSaveDimesionId={this.handleGetDimensionId}
+                        onChecked={this.handleCheckBox}
                     />
                 </div>
                 <button className="btn btn-primary"
@@ -84,4 +123,5 @@ module.exports = React.createClass({
             </div>
         )
     }
-});
+})
+;

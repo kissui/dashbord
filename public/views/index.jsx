@@ -4,6 +4,7 @@ var React = require('react');
 import SideMenu from './sidebar/box';
 import NavigationTab from './tab/tab';
 import SchemaPage from './schema/content';
+
 module.exports = React.createClass({
     getInitialState: function () {
         return {
@@ -79,6 +80,7 @@ module.exports = React.createClass({
         });
     },
     render: function render() {
+        console.log('@;ocation',this.props.location, this.props.history)
         return (
             <div>
                 <SideMenu

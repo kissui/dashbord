@@ -1,7 +1,7 @@
 'use strict';
 import React from 'react';
 import http from '../../../lib/http';
-
+import Checked from '../../../components/form/checkbox';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
@@ -42,9 +42,15 @@ module.exports = React.createClass({
             dimension: cube[firstIndex].dimensions[secondIndex],
             dimensionIndex: secondIndex
         });
-        this.props.onSaveDimesionId(cube[firstIndex].dimensions[secondIndex].id,cube[firstIndex].dimensions[secondIndex]);
+        this.props.onSaveDimesionId(cube[firstIndex].dimensions[secondIndex].id, cube[firstIndex].dimensions[secondIndex]);
+    },
+    handleCheckBox: function (value, i) {
+
+        this.props.onChecked(value, i)
     },
     render: function () {
+        console.log('@cubeState: ', this.state.cubeData);
+        var _this = this;
         let list = null,
             cubeFirstSelect,
             cubeSecondSelect;
@@ -66,7 +72,6 @@ module.exports = React.createClass({
 
         }
         if (this.state.cubeSelectSecond) {
-
             let changeDimension = this.state.cubeSelectSecond[0];
             if (changeDimension != 1) {
                 cubeSecondSelect = this.state.cubeSelectSecond.map((item, i)=> {
@@ -78,7 +83,11 @@ module.exports = React.createClass({
                 dataField = changeDimension.data_fields.map((item, i)=> {
                     return (
                         <td key={i}>
-                            {item.title}
+                            <label htmlFor="">
+                                <Checked onSingleChecked={this.handleCheckBox} index={i}/>
+                                <span>{item.title}</span>
+                            </label>
+
                         </td>
                     )
                 });
@@ -98,13 +107,18 @@ module.exports = React.createClass({
             dataField = dimension.data_fields.map((item, i)=> {
                 return (
                     <td key={i}>
-                        {item.title}
+                        <label>
+                            <Checked onSingleChecked={this.handleCheckBox} index={i}/>
+                            <span>{item.title}</span>
+                        </label>
+
                     </td>
                 )
             });
             dimensionField = dimension.dimension_fields.map((item, i)=> {
                 return (
                     <td key={i}>
+
                         {item.title}
                     </td>
                 )
@@ -116,27 +130,34 @@ module.exports = React.createClass({
                     <h2>选择数据源:</h2>
                 </div>
                 <div className="form-inline">
-                    <label>选择数据源:</label>
-                    <select ref="first" className="form-control" onChange={this.onChangeFirst}>
-                        {cubeFirstSelect}
-                    </select>
-                    <label>选择CUBE:</label>
-                    <select ref="second" className="form-control" onChange={this.onChangeSecond}>
-                        {cubeSecondSelect}
-                    </select>
-                </div>
-                <div className="row padding">
-                    <div className="col-md-6">
-                        <div className="table-responsive">
-                            <table className="table">
-                                <tbody>
-                                <tr>
-                                    {dataField}
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div className="form-group">
+                        <label>选择数据源:</label>
+                        <select ref="first" className="form-control" onChange={this.onChangeFirst}>
+                            {cubeFirstSelect}
+                        </select>
                     </div>
+                    <div className="form-group pl-25">
+                        <label>选择CUBE:</label>
+                        <select ref="second" className="form-control" onChange={this.onChangeSecond}>
+                            {cubeSecondSelect}
+                        </select>
+                    </div>
+
+                </div>
+                <div className="row view-cube">
+                    <form ref="form">
+                        <div className="col-md-6">
+                            <div className="table-responsive">
+                                <table className="table">
+                                    <tbody>
+                                    <tr>
+                                        {dataField}
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
                     <div className="col-md-6">
                         <div className="table-responsive">
                             <table className="table">

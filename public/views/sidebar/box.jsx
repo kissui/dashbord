@@ -13,8 +13,11 @@ module.exports = React.createClass({
         }
     },
     componentWillReceiveProps: function (nextProps) {
+        console.log(nextProps)
         this.setState({
-            'isShow': false
+            'isShow': false,
+            'defaultProps': nextProps.defaultFile,
+            'menuChangeState': 'true',
         })
     },
     handleFinderOpen: function (tabType, optionType, index, id, title) {
