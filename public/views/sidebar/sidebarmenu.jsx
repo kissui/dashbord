@@ -41,11 +41,14 @@ class SidebarMenu extends React.Component {
                     _me.setState({
                         sideListDate: data.data
                     });
-                    if(!sessionStorage.getItem('SCHEMA_FILE_DETAIL')) {
+                    if (!sessionStorage.getItem('SCHEMA_FILE_DETAIL')) {
                         sessionStorage.setItem('SCHEMA_FILE_DETAIL', JSON.stringify({
                             folderID: data.data[0].id,
                             fileID: data.data[0].tables[0].id
                         }))
+                    }
+                    if (!sessionStorage.getItem('SIDEBAR_LIST')) {
+                        sessionStorage.setItem('SIDEBAR_LIST',JSON.stringify(data.data))
                     }
                 } else {
                     // 当前用户默认或者文件全部删除处理
@@ -82,8 +85,9 @@ class SidebarMenu extends React.Component {
         })
     }
 
-    handleGlobalAddFile() {
-        this.props.onGlobalClick('schema', 'plusFile')
+    handleGlobalAddFile(id, folder) {
+        let type = (id && id.length > 0) ? 'folderFile' : 'globalFile';
+        this.props.onGlobalClick('schema', type, id, folder)
     }
 
     /**
@@ -159,6 +163,7 @@ class SidebarMenu extends React.Component {
                     onDropDownState={this.state.dropDownWrapState}
                     onChangeFile={this.onChangeFile.bind(this)}
                     defaultFile={this.props.defaultFile}
+                    onAddFile={this.handleGlobalAddFile.bind(this)}
                 />
             </div>
         )
@@ -173,9 +178,7 @@ class SidebarMenu extends React.Component {
  *      <tabName> + <finderIndex> + <currentFinderFileIndex> current file dropdown_wrap 'schema_1_1'
  * @type {{dropdownState: (any)}}
  */
-// SidebarMenu.propTypes = {
-//     dropDownWrapState: React.propTypes.string
-// };
+
 var SidebarMenuItem = React.createClass({
     getInitialState: function () {
         return {
@@ -196,10 +199,10 @@ var SidebarMenuItem = React.createClass({
     handleChangeList: function (i, id) {
         if (!this.refs['list_' + id].className) {
             this.refs['list_' + id].className = 'active';
-            this.refs['list_i_'+id].className = 'fa fa-folder-open'
+            this.refs['list_i_' + id].className = 'fa fa-folder-open'
         } else {
             this.refs['list_' + id].className = '';
-            this.refs['list_i_'+id].className = 'fa fa-folder'
+            this.refs['list_i_' + id].className = 'fa fa-folder'
         }
     },
     handleSettingFinder: function (i) {
@@ -221,7 +224,9 @@ var SidebarMenuItem = React.createClass({
         this.props.onSetting(index, tabName, optionType, fileId, title);
     },
     handleAddFile: function (i) {
-        console.log(i)
+        let folderId = this.state.defaultProps[i].id;
+        let folderData = this.state.defaultProps;
+        this.props.onAddFile(folderId, folderData);
     },
     handleDeleteFinder: function (i) {
         let title = this.state.defaultProps[i].title;
@@ -252,7 +257,7 @@ var SidebarMenuItem = React.createClass({
                         key={i}>
                         <a onClick={me.handleChangeList.bind(null, i, item.id)}>
                             <i className={(item.id === defaultFile.folderID) ? "fa fa-folder-open" : 'fa fa-folder'}
-                               ref={'list_i_'+item.id}>
+                               ref={'list_i_' + item.id}>
                             </i>
                             {item.title}
                         </a>
@@ -274,16 +279,16 @@ var SidebarMenuItem = React.createClass({
                                     重命名
                                 </li>
                             </ul> : null}
-                            {item.tables ?
-                                <SidebarMenuSuperItem
-                                    menu={item.tables}
-                                    id={item.id}
-                                    dropDownWrapState={me.state.dropDownWrapState}
-                                    onChangeFile={me.onChangeFile}
-                                    onSetting={me.onSettingFile}
-                                    defaultFile={defaultFile}
-                                /> :
-                                null}
+                        {item.tables ?
+                            <SidebarMenuSuperItem
+                                menu={item.tables}
+                                id={item.id}
+                                dropDownWrapState={me.state.dropDownWrapState}
+                                onChangeFile={me.onChangeFile}
+                                onSetting={me.onSettingFile}
+                                defaultFile={defaultFile}
+                            /> :
+                            null}
                     </li>
                 )
             });
@@ -347,7 +352,7 @@ class SidebarMenuSuperItem extends React.Component {
                         return (
                             <li className={(item.id == me.props.defaultFile.fileID) && 'current_page'} key={i}>
                                 <a onClick={me.handleChangeSuperList.bind(me, i, me.props.id)}>
-                                    <i className={(item.id == me.props.defaultFile.fileID) ?'fa fa-circle' : 'fa fa-circle-o'}>
+                                    <i className={(item.id == me.props.defaultFile.fileID) ? 'fa fa-circle' : 'fa fa-circle-o'}>
                                     </i>
                                     {item.title}
                                 </a>

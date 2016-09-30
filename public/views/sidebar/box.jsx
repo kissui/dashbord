@@ -37,11 +37,11 @@ module.exports = React.createClass({
             'isShow': false
         })
     },
-    onChangeFile: function (index, tabName, optionType, finderId, fileId){
+    onChangeFile: function (index, tabName, optionType, finderId, fileId) {
         this.props.onChangeFile(index, tabName, optionType, finderId, fileId);
     },
-    onGlobalClick: function(page,type){
-        this.props.onGlobalClick(page,type);
+    onGlobalClick: function (page, type, id, folder) {
+        this.props.onGlobalClick(page, type, id, folder);
     },
     render: function () {
         return (
@@ -71,8 +71,8 @@ module.exports = React.createClass({
                         dropDownWrapState={this.state.dropDownWrapState}
                         onChangeFile={this.onChangeFile}
                         onGlobalClick={this.onGlobalClick}
-                        selectIndex ={this.props.selectIndex}
-                        defaultFile = {this.props.defaultFile}
+                        selectIndex={this.props.selectIndex}
+                        defaultFile={this.props.defaultFile}
                     />
                 </div>
             </div>

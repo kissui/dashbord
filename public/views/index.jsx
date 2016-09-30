@@ -17,10 +17,10 @@ module.exports = React.createClass({
     },
     componentDidMount: function () {
         let sessionStorages = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
-        if(sessionStorages) {
+        if (sessionStorages) {
             this.setState({
                 'fileId': sessionStorages.fileID,
-                'sidebarState':{
+                'sidebarState': {
                     fileID: sessionStorages.fileID,
                     folderID: sessionStorages.folderID
                 }
@@ -55,22 +55,24 @@ module.exports = React.createClass({
             'createFileState': false
         });
     },
-    onGlobalClick: function (page, type) {
+    onGlobalClick: function (page, type, id, conf) {
         this.setState({
-            onFileOption: {
+            'onFileOption': {
                 page: page,
-                name: type
+                name: type,
+                folderId: id,
+                conf: conf
             },
-            createFileState: true,
+            'createFileState': true,
             'fileId': null
         })
     },
-    onState: function (id,folderId) {
+    onState: function (id, folderId) {
         this.setState({
             'fileId': id,
             'folderId': folderId,
             'createFileState': false,
-            'sidebarState':{
+            'sidebarState': {
                 fileID: id,
                 folderID: folderId
             }
@@ -93,8 +95,10 @@ module.exports = React.createClass({
                         currentPage={this.state.fileData}
                         fileId={this.state.fileId}
                         onFileOption={this.state.onFileOption}
-                        createFileState = {this.state.createFileState}
+                        createFileState={this.state.createFileState}
                         onState={this.onState}
+                        onAddFile={this.onGlobalClick}
+                        onEditFile={this.onGlobalClick}
                     />
                 </div>
             </div>

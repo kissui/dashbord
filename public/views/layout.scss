@@ -617,12 +617,16 @@ a {
         a {
             display: inline-block;
             text-decoration: none;
+            
         }
     }
     li.current {
         background: #fff;
         border-bottom: 3px solid #73879C;
-        color: #73879C;
+        a {
+            color: #23527c;
+        }
+        
     }
     li:hover {
         background: #fff;

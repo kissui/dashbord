@@ -1,7 +1,7 @@
 'use strict';
 import React from 'react';
 import http from '../../lib/http';
-import {Link,History,Router} from 'react-router';
+import {Link, History, Router} from 'react-router';
 import ViewHeader from './widget/viewHeader';
 import ViewBody from './widget/viewBody';
 import Loading from '../../components/loading/loading';
@@ -12,9 +12,6 @@ module.exports = React.createClass({
             contentDefault: null,
         }
     },
-    componentDidMount: function () {
-        this.initialFileData();
-    },
     componentWillReceiveProps: function (nextProps) {
         this.setState({
             contentDefault: nextProps.currentPage,
@@ -22,8 +19,8 @@ module.exports = React.createClass({
             onFileOption: nextProps.onFileOption,
             createFileState: nextProps.createFileState
         });
-        if(nextProps.fileId) {
-             this.initialFileData(nextProps.fileId)
+        if (nextProps.fileId) {
+            this.initialFileData(nextProps.fileId)
         }
     },
     initialFileData: function (fileId) {
@@ -38,7 +35,7 @@ module.exports = React.createClass({
                             fileData: data.data,
                             createFileState: false
                         });
-                        sessionStorage.setItem('SCHEMA_FILE_DETAIL',JSON.stringify({
+                        sessionStorage.setItem('SCHEMA_FILE_DETAIL', JSON.stringify({
                             fileID: data.data.id,
                             folderID: data.data.folder_id
                         }));
@@ -57,17 +54,29 @@ module.exports = React.createClass({
 
             })
     },
-    onState: function (id,folderId) {
-        this.props.onState(id,folderId)
+    onState: function (id, folderId) {
+        this.props.onState(id, folderId)
+    },
+    handleAddFile: function () {
+        this.props.onAddFile('schema', 'globalFile')
+    },
+    handleEditFile: function (conf) {
+        console.log('@fileDetail:' ,conf)
+        this.props.onEditFile('schema', 'editFile', conf.folder_id, conf)
     },
     render: function () {
         let fileData = this.state.fileData,
             content;
         if (fileData) {
-            let viewHeader = {'title': fileData.title};
+            // let viewHeader = {'title': fileData.title};
             content = (
                 <div>
-                    <ViewHeader viewHeader={viewHeader}/>
+                    <ViewHeader
+                        viewHeader={fileData}
+                        onAddFile={this.handleAddFile}
+                        onEditFile={this.handleEditFile}
+                        onChangeChart={this.handleChangeChart}
+                    />
                     <ViewBody viewBody={this.state.fileData}/>
                 </div>
 
@@ -90,7 +99,8 @@ module.exports = React.createClass({
         }
         return (
             <div className="content">
-                {this.state.createFileState ? <CreateFilePage onState={this.onState}/> : content}
+                {this.state.createFileState ?
+                    <CreateFilePage onState={this.onState} onConf={this.state.onFileOption}/> : content}
             </div>
         )
     }
