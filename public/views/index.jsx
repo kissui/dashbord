@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react');
-import SideMenu from './sidebar/box';
+import SideMenu from './sidebar/sidebar';
 import NavigationTab from './tab/tab';
 import SchemaPage from './schema/content';
 
@@ -17,13 +17,32 @@ module.exports = React.createClass({
         })
     },
     componentDidMount: function () {
+
+
+        console.log('@;ocation', this.props.location, this.props.history)
         let sessionStorages = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
         if (sessionStorages) {
+            this.props.history.push({
+                pathname: '/index/schema',
+                query: {
+                    'folder': sessionStorages.folderID,
+                    'file': sessionStorages.fileID
+                }
+            });
             this.setState({
                 'fileId': sessionStorages.fileID,
                 'sidebarState': {
                     fileID: sessionStorages.fileID,
                     folderID: sessionStorages.folderID
+                }
+            });
+        } else if (!sessionStorages && this.props.history.query){
+            let query = this.props.history.query;
+            this.setState({
+                'fileId': query.file,
+                'sidebarState': {
+                    fileID: query.file,
+                    folderID: query.folder
                 }
             });
         }
@@ -80,7 +99,7 @@ module.exports = React.createClass({
         });
     },
     render: function render() {
-        console.log('@;ocation',this.props.location, this.props.history)
+
         return (
             <div>
                 <SideMenu

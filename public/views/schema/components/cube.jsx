@@ -49,7 +49,6 @@ module.exports = React.createClass({
         this.props.onChecked(value, i)
     },
     render: function () {
-        console.log('@cubeState: ', this.state.cubeData);
         var _this = this;
         let list = null,
             cubeFirstSelect,

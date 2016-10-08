@@ -29,9 +29,7 @@ module.exports = React.createClass({
                         <thead>
                         <tr>
                             {this.props.viewBody.fields.map((item,i)=> {
-                                return (
-                                    <th key={i}>{item.title}</th>
-                                )
+                                return item.selected ? <th key={i}>{item.title}</th> : null
                             })}
                         </tr>
                         </thead>

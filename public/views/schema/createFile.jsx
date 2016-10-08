@@ -43,7 +43,6 @@ module.exports = React.createClass({
                 return tempObject
             })(i))
         }
-        console.log('@postData: ', this.state);
         let data = {
             'folder_id': state.folderId,
             'title': value,
@@ -81,7 +80,6 @@ module.exports = React.createClass({
                 }
 
             }
-            console.log(checkedField);
             this.setState({
                 dataFieldsChecked: checkedField,
                 totalFieldChecked: defaultChecked.concat(checkedField)
@@ -98,10 +96,11 @@ module.exports = React.createClass({
                 }
             }
         }
-        console.log(value, i, checkedField, this.state.dataFieldsChecked)
+    },
+    handleCancel: function () {
+        this.props.onCancel();
     },
     render: function () {
-        console.log('@this.props.onConf', this.props.onConf)
         return (
             <div className="create-file">
                 <div className="file-body">
@@ -116,10 +115,16 @@ module.exports = React.createClass({
                         onChecked={this.handleCheckBox}
                     />
                 </div>
-                <button className="btn btn-primary"
-                        onClick={this.handleCommit}>
-                    保存
-                </button>
+                <div className="file-footer text-center">
+                    <button className="btn btn-primary"
+                            onClick={this.handleCommit}>
+                        保存
+                    </button>
+                    <button className="btn btn-default"
+                            onClick={this.handleCancel}>
+                        取消
+                    </button>
+                </div>
             </div>
         )
     }

@@ -13,7 +13,7 @@ module.exports = React.createClass({
         }
     },
     componentWillReceiveProps: function (nextProps) {
-        console.log(nextProps)
+        console.log(nextProps);
         this.setState({
             'isShow': false,
             'defaultProps': nextProps.defaultFile,

@@ -35,7 +35,7 @@ var InputCheckboxAll = React.createClass({
                 onChange={this.handleChange}/>
         )
     }
-})
+});
 
 var InputCheckbox = React.createClass({
     getInitialState: function () {
@@ -44,7 +44,7 @@ var InputCheckbox = React.createClass({
         }
     },
     render: function () {
-        var checkedValue = this.props.allChecked ? true : this.state.checked
+        var checkedValue = this.props.allChecked ? true : this.state.checked;
         return (
             <input
                 checked={checkedValue}
@@ -52,27 +52,4 @@ var InputCheckbox = React.createClass({
                 {...this.props}/>
         )
     }
-})
-
-var text = React.createClass({
-    getInitialState: function () {
-        return {allChecked: false};
-    },
-    handleChange: function (event) {
-        // var $elm = event.target;
-        // var checked = $elm.props('checked');
-        this.setState({
-            allChecked: "checked"
-        })
-    },
-    render: function () {
-        return (
-            <div>
-                Select All: <InputCheckboxAll handleChange={this.handleChange}/><br/>
-                <InputCheckbox allChecked={this.state.allChecked}/><br/>
-                <InputCheckbox allChecked={this.state.allChecked}/><br/>
-                <InputCheckbox allChecked={this.state.allChecked}/><br/>
-            </div>
-        )
-    }
-})
+});

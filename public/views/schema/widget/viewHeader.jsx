@@ -18,7 +18,6 @@ module.exports = React.createClass({
         this.props.onEditFile(this.props.viewHeader)
     },
     render: function () {
-        console.log('@this.props.viewHeader',this.props.viewHeader)
         return (
             <div className="view-header">
                 <div className="row">

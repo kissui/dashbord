@@ -61,14 +61,16 @@ module.exports = React.createClass({
         this.props.onAddFile('schema', 'globalFile')
     },
     handleEditFile: function (conf) {
-        console.log('@fileDetail:' ,conf)
         this.props.onEditFile('schema', 'editFile', conf.folder_id, conf)
+    },
+    handleHideCreateFilePage: function () {
+        let fileId = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).fileID;
+        this.initialFileData(fileId);
     },
     render: function () {
         let fileData = this.state.fileData,
             content;
         if (fileData) {
-            // let viewHeader = {'title': fileData.title};
             content = (
                 <div>
                     <ViewHeader
@@ -100,7 +102,11 @@ module.exports = React.createClass({
         return (
             <div className="content">
                 {this.state.createFileState ?
-                    <CreateFilePage onState={this.onState} onConf={this.state.onFileOption}/> : content}
+                    <CreateFilePage
+                        onState={this.onState}
+                        onConf={this.state.onFileOption}
+                        onCancel={this.handleHideCreateFilePage}
+                    /> : content}
             </div>
         )
     }
