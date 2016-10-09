@@ -2,6 +2,7 @@
 import React from 'react';
 import NavigationTab from '../tab/tab';
 import Loading from '../../components/loading/loading';
+// let doc = document.getElementsByClassName('baby');
 module.exports = React.createClass({
     getInitialState: function () {
         return {

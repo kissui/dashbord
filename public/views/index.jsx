@@ -6,6 +6,9 @@ import NavigationTab from './tab/tab';
 import SchemaPage from './schema/content';
 
 module.exports = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
     getInitialState: function () {
         return {
             'dropDownWrapState': null
@@ -17,12 +20,10 @@ module.exports = React.createClass({
         })
     },
     componentDidMount: function () {
-
-
-        console.log('@;ocation', this.props.location, this.props.history)
+        console.log('@;ocation', this.props.location, this.props.history,this.context.router.push)
         let sessionStorages = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
         if (sessionStorages) {
-            this.props.history.push({
+            this.context.router.push({
                 pathname: '/index/schema',
                 query: {
                     'folder': sessionStorages.folderID,

@@ -1,8 +1,6 @@
 'use strict';
-
 import React from 'react';
 import { Router, Route, IndexRoute, Redirect } from 'react-router';
-
 import Auth, {pathNeedLoggedIn} from './lib/auth';
 
 
