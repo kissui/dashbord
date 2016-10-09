@@ -1,6 +1,7 @@
 'use strict';
 
-module.exports = function (fields,datas) {
+module.exports = function (fields, datas, fn) {
+    console.log(fields,datas,'@async')
     let newDataAssign = [];
     fields.map((item, key) => {
         let objectAssign = {};
@@ -12,5 +13,5 @@ module.exports = function (fields,datas) {
         });
         newDataAssign.push(objectAssign);
     });
-    return newDataAssign;
+    fn(newDataAssign);
 };

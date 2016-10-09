@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import dealData from '../../../components/chart/dealData';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
@@ -8,39 +9,45 @@ module.exports = React.createClass({
         }
     },
     componentDidMount: function () {
-        console.log('21456',this.props.viewBody.chart_conf);
-        if(this.props.viewBody.chart_conf) {
+        if (this.props.viewBody.chart_conf) {
+            console.log('21456', this.props.viewBody);
             this.viewChart();
         }
     },
+    componentWillReceiveProps: function (nextProps) {
+        if (nextProps.onChart || nextProps.viewBody.chart_conf) {
+            this.viewChart();
+        } else {
+            document.getElementById('c1').innerHTML = null;
+        }
+    },
     viewChart: function () {
+
         let datas = this.props.viewBody.data,
             fields = this.props.viewBody.fields;
-        let newDataAssign = require('../../../components/chart/dealData')(fields,datas);
         var Frame = G2.Frame;
         var Stat = G2.Stat;
-        var frame = new Frame(newDataAssign);
-        // frame = Frame.sort(frame, 'conf_5');
         var chart = new G2.Chart({
             id: 'c1',
             forceFit: true,
             height: 400
         }); // create the chart object
-        console.log(JSON.stringify(frame),frame);
-        // chart.source(frame); // load the data source
-        // chart.interval().position('conf_0*conf_2*conf_5').color('conf_5'); // create the detail chart
-        // chart.render();
-        chart.source(frame, {
-            'conf_0': {
-                alias: 'top2000 唱片总量'
-            },
-            'conf_5': {
-                tickInterval: 5,
-                alias: '唱片发行年份'
-            }
+        dealData(fields, datas, function (data) {
+            var frame = new Frame(data);
+            chart.source(frame, {
+                'conf_0': {
+                    alias: 'top2000 唱片总量'
+                },
+                'conf_5': {
+                    tickInterval: 5,
+                    alias: '唱片发行年份'
+                }
+            });
+            chart.interval().position(Stat.summary.count('conf_0*conf_5')).color('#e50000');
+            chart.render();
+            console.log(JSON.stringify(frame),data, datas, frame);
         });
-        chart.interval().position(Stat.summary.count('conf_0*conf_5')).color('#e50000');
-        chart.render();
+
     },
     render: function () {
         return (
@@ -53,6 +60,7 @@ module.exports = React.createClass({
                         <div className="col-md-4"></div>
                     </div>
                 </div>
+
                 <div className="body-tab-nav">
                     <ul className="nav">
                         <li className="active">数据预览</li>

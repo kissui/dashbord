@@ -17,7 +17,8 @@ module.exports = React.createClass({
             contentDefault: nextProps.currentPage,
             fileId: nextProps.fileId,
             onFileOption: nextProps.onFileOption,
-            createFileState: nextProps.createFileState
+            createFileState: nextProps.createFileState,
+            'onShowChart': false
         });
         if (nextProps.fileId) {
             this.initialFileData(nextProps.fileId)
@@ -67,6 +68,11 @@ module.exports = React.createClass({
         let fileId = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).fileID;
         this.initialFileData(fileId);
     },
+    handleChangeChart: function () {
+      this.setState({
+          'onShowChart': true
+      })
+    },
     render: function () {
         let fileData = this.state.fileData,
             content;
@@ -79,7 +85,9 @@ module.exports = React.createClass({
                         onEditFile={this.handleEditFile}
                         onChangeChart={this.handleChangeChart}
                     />
-                    <ViewBody viewBody={this.state.fileData}/>
+                    <ViewBody viewBody={this.state.fileData}
+                              onChart={this.state.onShowChart}
+                    />
                 </div>
 
             )
