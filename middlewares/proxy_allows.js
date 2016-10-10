@@ -7,7 +7,7 @@ var proxyCheckObj = {
                 path: '^/token'
             }, {
                 method: 'get',
-                path: '^/app'
+                path: '^/chart'
             }],
 
     // 可以这样对线上的 access.log 筛选接口
@@ -18,10 +18,6 @@ var proxyCheckObj = {
 
         // api 类请求在后端会根据 header 做验证，
         // 所以直接通过
-        {
-            method:'GET',
-            url:'/*'
-        },
         {
             method:'GET',
             url:'/api/*'

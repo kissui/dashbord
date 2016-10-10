@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import config from 'config';
-console.log('http.server.js:', config.get('be.host'),config.get('clientVersion'));
+
 var instance = axios.create({
   baseURL: config.get('be.host'),
   timeout: 10000,

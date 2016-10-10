@@ -2,8 +2,7 @@
 
 import axios from 'axios';
 
-export default axios;
-console.log('http.client.js');
+// export default axios;
 var instance = axios.create({
   timeout: 10000,
 

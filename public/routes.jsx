@@ -1,8 +1,6 @@
 'use strict';
-
 import React from 'react';
 import { Router, Route, IndexRoute, Redirect } from 'react-router';
-
 import Auth, {pathNeedLoggedIn} from './lib/auth';
 
 
@@ -10,9 +8,10 @@ import Layout from './views/layout.jsx';
 import HomePage from './views/index.jsx';
 // import LoginPage from './views/login.jsx';
 import LogoutPage from './views/logout.jsx';
-
+import ChartPage from './views/chart/index';
 import UnauthorizedPage from './views/401.jsx';
 import errorPage from './views/error/error.jsx';
+import SourcePage from './views/source/source';
 
 // onEnter(nextState, replaceState, callback?)
 //index
@@ -76,15 +75,13 @@ function requireAuth(nextState, replaceState, cb) {
 // @todo 现在有缺少 browserHistory 的报错，但在这儿加了没用，好像是后端 render 的
 export default (
     <Router>
-        <Route path='/chart' component={Layout} >
+        <Route path='/index' component={Layout} >
             <IndexRoute component={HomePage}/>
-
-            {/*<Route path="/chart/mock" component={MockPage}/>*/}
-            {/*<Route path="/chart/login" component={LoginPage}/>*/}
-            {/*<Route path="/chart/logout" component={LogoutPage}/>*/}
-
-            <Route path='/chart/401' component={UnauthorizedPage}/>
-            <Route path='/chart/error' component={errorPage}/>
+            <Route path='/index/schema' component={HomePage}/>
+            <Route path='/index/chart' component={ChartPage}/>
+            <Route path='/index/source' component={SourcePage}/>
+            <Route path='/index/401' component={UnauthorizedPage}/>
+            <Route path='/index/error' component={errorPage}/>
             <Redirect from='/gohome' to='/'/>
         </Route>
     </Router>

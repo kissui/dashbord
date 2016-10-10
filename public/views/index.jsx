@@ -1,24 +1,127 @@
 'use strict';
 
 var React = require('react');
-import SideMenu from './sidebar/box';
+import SideMenu from './sidebar/sidebar';
 import NavigationTab from './tab/tab';
-module.exports = React.createClass({
-    displayName: 'Listasdfsad',
+import SchemaPage from './schema/content';
 
+module.exports = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
+    getInitialState: function () {
+        return {
+            'dropDownWrapState': null
+        }
+    },
+    handleGlobalState: function (e) {
+        this.setState({
+            'dropDownWrapState': null
+        })
+    },
+    componentDidMount: function () {
+        console.log('@;ocation', this.props.location, this.props.history,this.context.router.push)
+        let sessionStorages = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
+        if (sessionStorages) {
+            this.context.router.push({
+                pathname: '/index/schema',
+                query: {
+                    'folder': sessionStorages.folderID,
+                    'file': sessionStorages.fileID
+                }
+            });
+            this.setState({
+                'fileId': sessionStorages.fileID,
+                'sidebarState': {
+                    fileID: sessionStorages.fileID,
+                    folderID: sessionStorages.folderID
+                }
+            });
+        } else if (!sessionStorages && this.props.history.query){
+            let query = this.props.history.query;
+            this.setState({
+                'fileId': query.file,
+                'sidebarState': {
+                    fileID: query.file,
+                    folderID: query.folder
+                }
+            });
+        }
+
+    },
+    /**
+     * @TODO change file content
+     * @param index
+     * @param tabName
+     * @param optionType
+     * @param finderId
+     * @param fileId
+     */
+    onChangeFile: function (index, tabName, optionType, finderId, fileId) {
+
+        let fileData = {
+            'index': index,
+            'tabName': tabName,
+            'optionType': optionType,
+            'finderId': finderId,
+            'fileId': fileId
+        };
+        this.setState({
+            "fileData": fileData,
+            'fileId': fileId,
+            'sidebarState': {
+                fileID: fileId,
+                folderID: finderId
+            },
+            'createFileState': false
+        });
+    },
+    onGlobalClick: function (page, type, id, conf) {
+        this.setState({
+            'onFileOption': {
+                page: page,
+                name: type,
+                folderId: id,
+                conf: conf
+            },
+            'createFileState': true,
+            'fileId': null
+        })
+    },
+    onState: function (id, folderId) {
+        this.setState({
+            'fileId': id,
+            'folderId': folderId,
+            'createFileState': false,
+            'sidebarState': {
+                fileID: id,
+                folderID: folderId
+            }
+        });
+    },
     render: function render() {
+
         return (
             <div>
-                <SideMenu selectIndex={0}/>
-                <NavigationTab selectIndex={0}/>
+                <SideMenu
+                    selectIndex={1}
+                    defaultFile={this.state.sidebarState}
+                    state={this.state.dropDownWrapState}
+                    onChangeFile={this.onChangeFile}
+                    onGlobalClick={this.onGlobalClick}
+                    onModal={false}
+                />
+                <NavigationTab selectIndex={1}/>
                 <div className="kepler-container">
-                    <div className="container-fluid">
-                        <div className="row">
-                            <div className="col-md-4">.col-md-4</div>
-                            <div className="col-md-4">.col-md-4</div>
-                            <div className="col-md-4">.col-md-4</div>
-                        </div>
-                    </div>
+                    <SchemaPage
+                        currentPage={this.state.fileData}
+                        fileId={this.state.fileId}
+                        onFileOption={this.state.onFileOption}
+                        createFileState={this.state.createFileState}
+                        onState={this.onState}
+                        onAddFile={this.onGlobalClick}
+                        onEditFile={this.onGlobalClick}
+                    />
                 </div>
             </div>
         );
