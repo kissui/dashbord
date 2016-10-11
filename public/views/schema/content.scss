@@ -30,6 +30,83 @@
 .view-body{
     width: 100%;
     padding: 0 20px;
+    .view-chart{
+        background: #FFF;
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,.1),0 16px 24px 0 rgba(81,129,228,.1);
+        .chart-set{
+            background: #FFF;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,.1),0 16px 24px 0 rgba(81,129,228,.1);
+        }
+        .chart-title{
+            height: 40px;
+            line-height: 40px;
+            margin: 0 20px 10px;
+            border-bottom: 1px solid;
+            position: relative;
+            .chart-option {
+                position: absolute;
+                top: 0;
+                right: 0;
+                label {
+                    cursor: pointer;
+                    i,span{
+                        font-size: 12px;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+        .chart-type{
+            overflow: hidden;
+            ul {
+                li{
+                    float: left;
+                    cursor: pointer;
+                    width: 30px;
+                    height: 30px;
+                    background-image: url("../../img/bg.png");
+                }
+                .line {
+                    background-position: -5px -590px;
+                }
+                .interval {
+                    
+                    background-position: -368px -530px;
+                }
+                .pie {
+                    background-position: -125px -590px;
+                }
+                .map {
+                    background-position: -664px -5px;
+                }
+            }
+        }
+    }
+    .chart-dimension, .chart-kpi {
+        .dimension{
+            position: relative;
+            width: 90%;
+            margin: 10px;
+            padding: 5px;
+            border-radius: 4px;
+            text-indent: 10px;
+            border: 1px solid #dddddd;
+            i{
+                visibility: hidden;
+                position: absolute;
+                right: 10px;
+            }
+        }
+        .active {
+            background: #ddd;
+            color: #5182E4;
+            i{
+                visibility: visible;
+                position: absolute;
+                right: 10px;
+            }
+        }
+    }
     .body-tab-nav {
         height: 40px;
         line-height:40px;
