@@ -12,6 +12,10 @@ module.exports = React.createClass({
             contentDefault: null,
         }
     },
+    componentDidMount: function () {
+        let fileId = location.pathname.match(/\d./g)[0];
+        this.initialFileData(fileId)
+    },
     componentWillReceiveProps: function (nextProps) {
         this.setState({
             contentDefault: nextProps.currentPage,
@@ -23,8 +27,12 @@ module.exports = React.createClass({
         if (nextProps.fileId) {
             this.initialFileData(nextProps.fileId)
         }
+
     },
     initialFileData: function (fileId) {
+        this.setState({
+            flag: false
+        });
         let id = fileId ? fileId : 1;
         var _this = this;
         http.get('/api/?c=table.tables&ac=index&id=' + id)
@@ -34,7 +42,8 @@ module.exports = React.createClass({
                     if (data.data && data.msg === 'success') {
                         _this.setState({
                             fileData: data.data,
-                            createFileState: false
+                            createFileState: false,
+                            flag: true
                         });
                         sessionStorage.setItem('SCHEMA_FILE_DETAIL', JSON.stringify({
                             fileID: data.data.id,
@@ -69,14 +78,15 @@ module.exports = React.createClass({
         this.initialFileData(fileId);
     },
     handleChangeChart: function () {
-      this.setState({
-          'onShowChart': true
-      })
+        this.setState({
+            'onShowChart': true
+        })
     },
     render: function () {
+
         let fileData = this.state.fileData,
             content;
-        if (fileData) {
+        if (fileData && this.state.flag) {
             content = (
                 <div>
                     <ViewHeader

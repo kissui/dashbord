@@ -7,7 +7,7 @@ module.exports = React.createClass({
             defaultData: nextProps.defaultData
         })
     },
-    handleClick: function (type, name, conf, key) {
+    handleClick: function (optionType, name, conf, key) {
         // if (this.props.type === 'dimension') return;
         let C_data = this.state.defaultData;
         C_data.map((item, i)=> {
@@ -23,7 +23,7 @@ module.exports = React.createClass({
         this.setState({
             defaultData: C_data
         });
-        this.props.onChangeChart(type, name, conf);
+        this.props.onChangeChart(optionType, name, conf, C_data);
     },
     render: function () {
         let content = this.props.defaultData.map((item, i) => {
