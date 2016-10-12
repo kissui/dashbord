@@ -9,7 +9,8 @@ module.exports = React.createClass({
         return {
             'body': this.props.viewBody,
             'dimension_new': false,
-            'kpi_new': false
+            'kpi_new': false,
+            'changeChartType': 'interval'
         }
     },
     componentDidMount: function () {
@@ -43,13 +44,10 @@ module.exports = React.createClass({
             conf: conf.key,
             dimension: Fields.dimension_fields,
             KPI: Fields.data_fields,
-            chartType: conf.chart? conf.chart:this.state.changeChartType
+            chartType: conf.chart ? conf.chart : this.state.changeChartType
         };
         let _this = this;
-        setTimeout(function () {
-            dealData(chartConf, _this);
-        }, 1000)
-
+        dealData(chartConf, _this);
     },
     handleChangeChart: function (optionType, name, key, data) {
         this.setState({
@@ -77,7 +75,7 @@ module.exports = React.createClass({
 
         let dimension;
         let KPI;
-        if (this.state.dimension_new ) {
+        if (this.state.dimension_new) {
             dimension = this.state.dimension_new;
         } else {
             dimension = Fields.dimension_fields;
@@ -85,7 +83,7 @@ module.exports = React.createClass({
                 Object.assign(item, {d_selected: (key == 0) ? true : false})
             });
         }
-        if(this.state.kpi_new) {
+        if (this.state.kpi_new) {
             KPI = this.state.kpi_new;
         } else {
             KPI = Fields.data_fields;
@@ -133,13 +131,13 @@ module.exports = React.createClass({
                                 <div className="chart-type shim">
                                     <h5>图表选择: </h5>
                                     <ul>
-                                        <li className="line"
+                                        <li className={this.state.changeChartType === "line" ? 'line active' : 'line'}
                                             onClick={this.handleChangChartType.bind(this, 'line')}>
                                         </li>
-                                        <li className="interval"
+                                        <li className={this.state.changeChartType === "interval" ? 'interval active' : 'line'}
                                             onClick={this.handleChangChartType.bind(this, 'interval')}>
                                         </li>
-                                        <li className="pie"
+                                        <li className={this.state.changeChartType === "pie" ? 'pie active' : 'pie'}
                                             onClick={this.handleChangChartType.bind(this, 'pie')}>
                                         </li>
                                         <li className="map"
