@@ -3,72 +3,13 @@
 import React from 'react';
 import dealData from '../../../components/chart/dealData';
 import KpiDimensionItem from '../chart/dimensitonkpi';
-const dimension = [
-    {
-        "seq_no": 0,
-        "selected": true,
-        "val_conf": "12.d1.f1",
-        "name": "省份",
-        "title": "省份",
-        "type": 2
-    },
-    {
-        "seq_no": 1,
-        "selected": true,
-        "val_conf": "12.d1.f2",
-        "name": "年份",
-        "title": "年份",
-        "type": 2
-    }
-];
-dimension.map((item, key)=> {
-    console.log(dimension)
-    Object.assign(item,{d_selected: (key ==0) ? true : false})
-    // item['d_selected'] = (key ==0) ? true : false;
-});
 
-const KPI = [
-    {
-        "seq_no": 2,
-        "selected": false,
-        "val_conf": "12.d1.f3",
-        "name": "GDP（亿元）",
-        "title": "GDP（亿元）",
-        "type": 1
-    },
-    {
-        "seq_no": 3,
-        "selected": true,
-        "val_conf": "12.d1.f4",
-        "name": "人均GDP（元）",
-        "title": "人均GDP（元）",
-        "type": 1
-    },
-    {
-        "seq_no": 4,
-        "selected": true,
-        "val_conf": "12.d1.f5",
-        "name": "GDP第一产业（亿元）",
-        "title": "GDP第一产业（亿元）",
-        "type": 1
-    },
-    {
-        "seq_no": 5,
-        "selected": true,
-        "val_conf": "12.d1.f6",
-        "name": "GDP第二产业（亿元）",
-        "title": "GDP第二产业（亿元）",
-        "type": 1
-    }
-];
- KPI.map((item,key)=>{
-    Object.assign(item,{k_selected:(key==0) ? true: false})
-    // item['d_selected'] = (key==0) ? true: false;
-});
 module.exports = React.createClass({
     getInitialState: function () {
         return {
-            'body': this.props.viewBody
+            'body': this.props.viewBody,
+            'dimension_new': false,
+            'kpi_new': false
         }
     },
     componentDidMount: function () {
@@ -76,37 +17,48 @@ module.exports = React.createClass({
             console.log('21456', this.props.viewBody);
 
         }
-        console.log(0)
         this.viewChart();
 
     },
     componentWillReceiveProps: function (nextProps) {
+
         if (nextProps.onChart || nextProps.viewBody.chart_conf) {
             this.viewChart();
         } else {
             document.getElementById('c1').innerHTML = null;
         }
+        // this.viewChart();
     },
     viewChart: function (conf) {
         conf = Object.assign({}, conf);
+
         document.getElementById('c1').innerHTML = null;
+        let Fields = this.props.viewBody.fields;
+        let fields = Fields.dimension_fields.concat(Fields.data_fields);
         let chartConf = {
             datas: this.props.viewBody.data,
-            fields: this.props.viewBody.fields,
+            fields: fields,
             type: conf.type,
             name: conf.name,
             conf: conf.key,
-            chartType: conf.chart
+            dimension: Fields.dimension_fields,
+            KPI: Fields.data_fields,
+            chartType: conf.chart? conf.chart:this.state.changeChartType
         };
         let _this = this;
-        dealData(chartConf, _this);
+        setTimeout(function () {
+            dealData(chartConf, _this);
+        }, 1000)
 
     },
-    handleChangeChart: function (type, name, key) {
+    handleChangeChart: function (optionType, name, key, data) {
+        this.setState({
+            [optionType + '_new']: data
+        });
         let conf = {
-            type: type,
+            type: optionType,
             name: name,
-            key: key,
+            key: key
         };
         this.viewChart(conf)
     },
@@ -114,9 +66,33 @@ module.exports = React.createClass({
         let conf = {
             chart: type
         };
+        this.setState({
+            changeChartType: type
+        });
         this.viewChart(conf)
     },
     render: function () {
+        let Fields = this.props.viewBody.fields;
+        let fields = Fields.dimension_fields.concat(Fields.data_fields);
+
+        let dimension;
+        let KPI;
+        if (this.state.dimension_new ) {
+            dimension = this.state.dimension_new;
+        } else {
+            dimension = Fields.dimension_fields;
+            dimension.map((item, key)=> {
+                Object.assign(item, {d_selected: (key == 0) ? true : false})
+            });
+        }
+        if(this.state.kpi_new) {
+            KPI = this.state.kpi_new;
+        } else {
+            KPI = Fields.data_fields;
+            KPI.map((item, key)=> {
+                Object.assign(item, {k_selected: (key == 0) ? true : false})
+            });
+        }
         return (
             <div className="view-body">
                 <div className={!this.props.onChart && 'view-chart shim'}>
@@ -194,9 +170,10 @@ module.exports = React.createClass({
                     <table className="table table-bordered">
                         <thead>
                         <tr>
-                            {this.props.viewBody.fields.map((item, i)=> {
-                                return item.selected ? <th key={i}>{item.title}</th> : null
-                            })}
+                            {
+                                fields.map((item, i)=> {
+                                    return item.selected ? <th key={i}>{item.title}</th> : null
+                                })}
                         </tr>
                         </thead>
                         <tbody>

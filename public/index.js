@@ -15,7 +15,6 @@ const options = {
         return require('./views/' + viewName);
     }
 };
-console.log('122222222222222222: ',options );
 document.addEventListener('DOMContentLoaded', function onLoad() {
     // boot the app when the DOM is ready
     ReactEngineClient.boot(options);
