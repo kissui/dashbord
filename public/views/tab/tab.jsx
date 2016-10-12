@@ -45,7 +45,7 @@ module.exports = React.createClass({
                     </div>
                     <div className="col-md-7 text-right user">
                         <i className="fa fa-envelope"></i>
-                        <img src="../img/user.png" alt=""/>
+                        <img src="/img/user.png" alt=""/>
                         <span>shane</span>
                         <i className="fa fa-angle-down"></i>
                     </div>

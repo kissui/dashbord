@@ -76,16 +76,17 @@ module.exports = React.createClass({
             console.log('21456', this.props.viewBody);
 
         }
-        console.log(0)
         this.viewChart();
 
     },
     componentWillReceiveProps: function (nextProps) {
-        if (nextProps.onChart || nextProps.viewBody.chart_conf) {
-            this.viewChart();
-        } else {
-            document.getElementById('c1').innerHTML = null;
-        }
+
+        // if (nextProps.onChart || nextProps.viewBody.chart_conf) {
+        //     this.viewChart();
+        // } else {
+        //     document.getElementById('c1').innerHTML = null;
+        // }
+        this.viewChart();
     },
     viewChart: function (conf) {
         conf = Object.assign({}, conf);

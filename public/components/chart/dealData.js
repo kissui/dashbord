@@ -59,7 +59,7 @@ module.exports = function (option, _this) {
         name = option.name,
         conf = option.conf;
     let newDataAssign = [];
-    fields.map((item, key) => {
+    datas.map((item, key) => {
         let objectAssign = {};
         datas[key].map((d, i) => {
             (function (i) {
@@ -74,7 +74,6 @@ module.exports = function (option, _this) {
         dimensionName,
         kpiName;
     if (type && type === 'dimension') {
-        console.log('@dimension:', conf,name);
         dimensionConf = conf;
         dimensionName = name;
         _this.setState({

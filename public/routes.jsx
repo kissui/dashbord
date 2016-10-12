@@ -77,7 +77,9 @@ export default (
     <Router>
         <Route path='/index' component={Layout} >
             <IndexRoute component={HomePage}/>
-            <Route path='/index/schema' component={HomePage}/>
+            <Route path='/index/schema' component={HomePage}>
+                <Route path='/index/schema/:fileId' component={HomePage}/>
+            </Route>
             <Route path='/index/chart' component={ChartPage}/>
             <Route path='/index/source' component={SourcePage}/>
             <Route path='/index/401' component={UnauthorizedPage}/>

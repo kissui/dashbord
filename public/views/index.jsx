@@ -20,11 +20,10 @@ module.exports = React.createClass({
         })
     },
     componentDidMount: function () {
-        console.log('@;ocation', this.props.location, this.props.history,this.context.router.push)
         let sessionStorages = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
         if (sessionStorages) {
             this.context.router.push({
-                pathname: '/index/schema',
+                pathname: '/index/schema/'+sessionStorages.fileID,
                 query: {
                     'folder': sessionStorages.folderID,
                     'file': sessionStorages.fileID
@@ -47,7 +46,6 @@ module.exports = React.createClass({
                 }
             });
         }
-
     },
     /**
      * @TODO change file content
@@ -74,6 +72,13 @@ module.exports = React.createClass({
                 folderID: finderId
             },
             'createFileState': false
+        });
+        this.context.router.push({
+            pathname: '/index/schema/'+fileId,
+            query: {
+                'folder': finderId,
+                'file': fileId
+            }
         });
     },
     onGlobalClick: function (page, type, id, conf) {

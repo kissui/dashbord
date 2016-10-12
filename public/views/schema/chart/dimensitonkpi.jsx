@@ -8,7 +8,7 @@ module.exports = React.createClass({
         })
     },
     handleClick: function (type, name, conf, key) {
-        if (this.props.type === 'dimension') return;
+        // if (this.props.type === 'dimension') return;
         let C_data = this.state.defaultData;
         C_data.map((item, i)=> {
             if (i === key) {
