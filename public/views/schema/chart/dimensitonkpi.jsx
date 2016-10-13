@@ -7,8 +7,7 @@ module.exports = React.createClass({
             defaultData: nextProps.defaultData
         })
     },
-    handleClick: function (optionType, name, conf, key) {
-        // if (this.props.type === 'dimension') return;
+    handleClick: function (optionType, name, key) {
         let C_data = this.state.defaultData;
         C_data.map((item, i)=> {
             if (i === key) {
@@ -23,7 +22,7 @@ module.exports = React.createClass({
         this.setState({
             defaultData: C_data
         });
-        this.props.onChangeChart(optionType, name, conf, C_data);
+        this.props.onChangeChart(optionType, name, C_data, key);
     },
     render: function () {
         let content = this.props.defaultData.map((item, i) => {
@@ -31,7 +30,7 @@ module.exports = React.createClass({
                 return (
                     <li className={item.d_selected ? "dimension active" : 'dimension'} disabled="disabled"
                         key={i}
-                        onClick={this.handleClick.bind(this, this.props.type, item.title, item.val_conf, i)}
+                        onClick={this.handleClick.bind(this, this.props.type, item.title, i)}
                     >
                         {item.title}
                         <i className="fa fa-check"></i>
@@ -41,7 +40,7 @@ module.exports = React.createClass({
                 return (
                     <li className={item.k_selected ? "dimension active" : 'dimension'}
                         key={i}
-                        onClick={this.handleClick.bind(this, this.props.type, item.title, item.val_conf, i)}
+                        onClick={this.handleClick.bind(this, this.props.type, item.title, i)}
                     >
                         {item.title}
                         <i className="fa fa-check"></i>

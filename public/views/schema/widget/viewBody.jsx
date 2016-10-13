@@ -9,7 +9,8 @@ module.exports = React.createClass({
         return {
             'body': this.props.viewBody,
             'dimension_new': false,
-            'kpi_new': false
+            'kpi_new': false,
+            'changeChartType': 'interval'
         }
     },
     componentDidMount: function () {
@@ -32,33 +33,64 @@ module.exports = React.createClass({
     viewChart: function (conf) {
         conf = Object.assign({}, conf);
 
-        document.getElementById('c1').innerHTML = null;
+        if (document.getElementById('c1').innerHTML) document.getElementById('c1').innerHTML = null;
         let Fields = this.props.viewBody.fields;
         let fields = Fields.dimension_fields.concat(Fields.data_fields);
         let chartConf = {
             datas: this.props.viewBody.data,
             fields: fields,
             type: conf.type,
-            name: conf.name,
-            conf: conf.key,
+            conf: conf.optionConf,
             dimension: Fields.dimension_fields,
             KPI: Fields.data_fields,
-            chartType: conf.chart? conf.chart:this.state.changeChartType
+            chartType: conf.chart ? conf.chart : this.state.changeChartType
         };
         let _this = this;
+        let deal = new dealData(chartConf, _this);
         setTimeout(function () {
-            dealData(chartConf, _this);
-        }, 1000)
-
+            deal.handleChartRender(chartConf.chartType);
+        }, 10)
     },
-    handleChangeChart: function (optionType, name, key, data) {
+    handleChangeChart: function (optionType, name, data, key) {
+        let selectedData = [];
+        data.map((item, i)=> {
+            if (item.d_selected === true || item.k_selected === true) {
+                selectedData.push(item.title);
+            }
+        });
+        if (optionType ==='kpi') {
+            if (this.state.changeChartType === 'pie') {
+                data.map((item, i)=> {
+                    if (key === i) {
+                        item.k_selected = true
+                    } else {
+                        item.k_selected = false
+                    }
+                });
+            } else {
+                if (selectedData.length == 0) {
+                    data.map((item, i)=> {
+                        if (key === i) {
+                            item.k_selected = true
+                        }
+                    });
+                }
+            }
+        } else {
+            data.map((item,i)=> {
+                if(key===i){
+                    item.d_selected = true;
+                } else {
+                    item.d_selected = false;
+                }
+            });
+        }
         this.setState({
             [optionType + '_new']: data
         });
         let conf = {
             type: optionType,
-            name: name,
-            key: key
+            optionConf: name
         };
         this.viewChart(conf)
     },
@@ -77,7 +109,7 @@ module.exports = React.createClass({
 
         let dimension;
         let KPI;
-        if (this.state.dimension_new ) {
+        if (this.state.dimension_new) {
             dimension = this.state.dimension_new;
         } else {
             dimension = Fields.dimension_fields;
@@ -85,7 +117,7 @@ module.exports = React.createClass({
                 Object.assign(item, {d_selected: (key == 0) ? true : false})
             });
         }
-        if(this.state.kpi_new) {
+        if (this.state.kpi_new) {
             KPI = this.state.kpi_new;
         } else {
             KPI = Fields.data_fields;
@@ -133,17 +165,17 @@ module.exports = React.createClass({
                                 <div className="chart-type shim">
                                     <h5>图表选择: </h5>
                                     <ul>
-                                        <li className="line"
+                                        <li className={this.state.changeChartType === "line" ? 'line active' : 'line'}
                                             onClick={this.handleChangChartType.bind(this, 'line')}>
                                         </li>
-                                        <li className="interval"
+                                        <li className={this.state.changeChartType === "interval" ? 'interval active' : 'interval'}
                                             onClick={this.handleChangChartType.bind(this, 'interval')}>
                                         </li>
-                                        <li className="pie"
+                                        <li className={this.state.changeChartType === "pie" ? 'pie active' : 'pie'}
                                             onClick={this.handleChangChartType.bind(this, 'pie')}>
                                         </li>
-                                        <li className="map"
-                                            onClick={this.handleChangChartType.bind(this, 'map')}>
+                                        <li className={this.state.changeChartType === "area" ? 'area active' : 'area'}
+                                            onClick={this.handleChangChartType.bind(this, 'area')}>
                                         </li>
                                     </ul>
                                 </div>

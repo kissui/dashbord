@@ -13,7 +13,7 @@ module.exports = React.createClass({
         }
     },
     componentDidMount: function () {
-        let fileId = location.pathname.match(/\d./g)[0];
+        let fileId = location.pathname.match(/\d./g) ? location.pathname.match(/\d./g)[0] : null;
         this.initialFileData(fileId)
     },
     componentWillReceiveProps: function (nextProps) {

@@ -59,6 +59,7 @@
         .chart-type{
             overflow: hidden;
             ul {
+                margin-top: 5px;
                 li{
                     float: left;
                     cursor: pointer;
@@ -76,8 +77,12 @@
                 .pie {
                     background-position: -125px -590px;
                 }
-                .map {
-                    background-position: -664px -5px;
+                .area {
+                    background-position: -66px -530px;
+                }
+                .active {
+                    border: 1px solid #5182E4;
+                    border-radius: 2px;
                 }
             }
         }

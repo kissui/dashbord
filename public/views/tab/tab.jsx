@@ -43,11 +43,13 @@ module.exports = React.createClass({
                             </li>
                         </ul>
                     </div>
-                    <div className="col-md-7 text-right user">
-                        <i className="fa fa-envelope"></i>
+                    <div className={this.state.onSidebar ? "col-md-7 text-right user" : "col-md-8 text-right user"}>
+                        <i className="fa fa-envelope">
+                        </i>
                         <img src="/img/user.png" alt=""/>
                         <span>shane</span>
-                        <i className="fa fa-angle-down"></i>
+                        <i className="fa fa-angle-down">
+                        </i>
                     </div>
                 </div>
             </div>
