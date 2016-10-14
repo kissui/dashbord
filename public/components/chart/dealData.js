@@ -97,6 +97,7 @@ module.exports = function (option, _this) {
         let optionConf = me._handleChangeOption();
         let dimensionConf = optionConf.dimensionConf,
             kpiConf = optionConf.kpiConf;
+        let Stat = G2.Stat;
         let Frame = G2.Frame;
         let chart = new G2.Chart({
             id: 'c1',
@@ -130,11 +131,18 @@ module.exports = function (option, _this) {
             });
             chart.line().position(dimensionConf+'*Revenue').color('City');
         } else if (type === 'pie') {
-            chart.coord('polar', {
-                transposed: true,
-                inner: 0
+            chart.coord('theta', {
+                radius: 0.8 // 设置饼图的大小
             });
-            chart.intervalStack().position(dimensionConf + '*' + kpiConf).color(kpiConf);
+            chart.legend(dimensionConf, {
+                position: 'bottom'
+            });
+            chart.intervalStack().position(Stat.summary.percent(kpiConf))
+                .color(dimensionConf)
+                .label(dimensionConf+'*..percent',function(name, percent){
+                percent = (percent * 100).toFixed(2) + '%';
+                return name + ' ' + percent;
+            });
 
         } else if (type === 'area') {
             console.log('@KPIChartSelect:',KPIChartSelect);

@@ -604,6 +604,10 @@ a {
     margin-left: 230px;
     min-height: 1000px;
     background: #FFFFFF;
+    .content{
+        width: 100%;
+        overflow: hidden;
+    }
 }
 
 .kepler-tabs {

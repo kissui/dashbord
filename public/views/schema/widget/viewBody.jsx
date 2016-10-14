@@ -16,24 +16,14 @@ module.exports = React.createClass({
     componentDidMount: function () {
         if (this.props.viewBody.chart_conf) {
             console.log('21456', this.props.viewBody);
-
-        }
-        this.viewChart();
-
-    },
-    componentWillReceiveProps: function (nextProps) {
-
-        if (nextProps.onChart || nextProps.viewBody.chart_conf) {
             this.viewChart();
-        } else {
-            document.getElementById('c1').innerHTML = null;
         }
-        // this.viewChart();
+
+
     },
     viewChart: function (conf) {
         conf = Object.assign({}, conf);
-
-        if (document.getElementById('c1').innerHTML) document.getElementById('c1').innerHTML = null;
+        document.getElementById('c1').innerHTML = null;
         let Fields = this.props.viewBody.fields;
         let fields = Fields.dimension_fields.concat(Fields.data_fields);
         let chartConf = {
@@ -58,7 +48,7 @@ module.exports = React.createClass({
                 selectedData.push(item.title);
             }
         });
-        if (optionType ==='kpi') {
+        if (optionType === 'kpi') {
             if (this.state.changeChartType === 'pie') {
                 data.map((item, i)=> {
                     if (key === i) {
@@ -77,8 +67,8 @@ module.exports = React.createClass({
                 }
             }
         } else {
-            data.map((item,i)=> {
-                if(key===i){
+            data.map((item, i)=> {
+                if (key === i) {
                     item.d_selected = true;
                 } else {
                     item.d_selected = false;
@@ -98,8 +88,20 @@ module.exports = React.createClass({
         let conf = {
             chart: type
         };
+        let data = this.state.kpi_new;
+        if (data && type === 'pie') {
+            console.log(data)
+            data.map((item, i)=> {
+                if (i === 0) {
+                    item.k_selected = true
+                } else {
+                    item.k_selected = false
+                }
+            });
+        }
         this.setState({
-            changeChartType: type
+            changeChartType: type,
+            kpi_new: data
         });
         this.viewChart(conf)
     },
