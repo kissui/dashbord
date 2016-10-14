@@ -1,49 +1,59 @@
 'use strict';
 
 import React from 'react';
+import _ from 'lodash';
 import dealData from '../../../components/chart/dealData';
 import KpiDimensionItem from '../chart/dimensitonkpi';
 
 module.exports = React.createClass({
     getInitialState: function () {
+        let viewBody = this.props.viewBody;
+        let graphicState = _.has(viewBody.chart_conf, 'type') ? true : false;
         return {
-            'body': this.props.viewBody,
+            'body': viewBody,
             'dimension_new': false,
             'kpi_new': false,
-            'changeChartType': 'interval'
+            'changeChartType': 'interval',
+            'initialGraphicState': graphicState
         }
     },
     componentDidMount: function () {
-        if (this.props.viewBody.chart_conf) {
-            console.log('21456', this.props.viewBody);
-
+        if (this.state.initialGraphicState) {
+            this.viewChart();
         }
-        this.viewChart();
-
     },
     componentWillReceiveProps: function (nextProps) {
-
-        if (nextProps.onChart || nextProps.viewBody.chart_conf) {
-            this.viewChart();
-        } else {
-            document.getElementById('c1').innerHTML = null;
+        if (nextProps.onChart) {
+            this.setState({
+                'initialCreateGraphicState': true
+            });
+            let _this = this;
+            setTimeout(function () {
+                _this.viewChart();
+            }, 10)
         }
-        // this.viewChart();
     },
     viewChart: function (conf) {
         conf = Object.assign({}, conf);
-
-        if (document.getElementById('c1').innerHTML) document.getElementById('c1').innerHTML = null;
+        document.getElementById('c1').innerHTML = null;
         let Fields = this.props.viewBody.fields;
+        let viewBody = this.props.viewBody;
+        let initialChartConf = _.has(viewBody.chart_conf, 'type') ? viewBody.chart_conf : false;
         let fields = Fields.dimension_fields.concat(Fields.data_fields);
+        let showGraphicTyp;
+        if (!this.state.initialGraphicState || conf.isChangeGraphic) {
+            showGraphicTyp = conf.chart ? conf.chart : this.state.changeChartType;
+        } else {
+            showGraphicTyp = initialChartConf.type;
+        }
         let chartConf = {
             datas: this.props.viewBody.data,
             fields: fields,
             type: conf.type,
             conf: conf.optionConf,
-            dimension: Fields.dimension_fields,
-            KPI: Fields.data_fields,
-            chartType: conf.chart ? conf.chart : this.state.changeChartType
+            dimension: initialChartConf ? initialChartConf.dimensions : Fields.dimension_fields,
+            KPI: initialChartConf ? initialChartConf.kpis : Fields.data_fields,
+            chartType: showGraphicTyp
         };
         let _this = this;
         let deal = new dealData(chartConf, _this);
@@ -58,7 +68,7 @@ module.exports = React.createClass({
                 selectedData.push(item.title);
             }
         });
-        if (optionType ==='kpi') {
+        if (optionType === 'kpi') {
             if (this.state.changeChartType === 'pie') {
                 data.map((item, i)=> {
                     if (key === i) {
@@ -77,8 +87,8 @@ module.exports = React.createClass({
                 }
             }
         } else {
-            data.map((item,i)=> {
-                if(key===i){
+            data.map((item, i)=> {
+                if (key === i) {
                     item.d_selected = true;
                 } else {
                     item.d_selected = false;
@@ -86,7 +96,8 @@ module.exports = React.createClass({
             });
         }
         this.setState({
-            [optionType + '_new']: data
+            [optionType + '_new']: data,
+            initialGraphicState: false
         });
         let conf = {
             type: optionType,
@@ -96,53 +107,82 @@ module.exports = React.createClass({
     },
     handleChangChartType: function (type) {
         let conf = {
-            chart: type
+            chart: type,
+            isChangeGraphic: true
         };
+        let data = this.state.kpi_new;
+        if (data && type === 'pie') {
+            data.map((item, i)=> {
+                if (i === 0) {
+                    item.k_selected = true
+                } else {
+                    item.k_selected = false
+                }
+            });
+        }
         this.setState({
-            changeChartType: type
+            changeChartType: type,
+            kpi_new: data
         });
         this.viewChart(conf)
     },
+    handleOperationBlank:function () {
+        this.setState({
+            initialCreateGraphicState: !this.state.initialCreateGraphicState
+        });
+        this.viewChart()
+    },
     render: function () {
         let Fields = this.props.viewBody.fields;
+        let chartConf = _.has(this.props.viewBody.chart_conf, 'type') ? this.props.viewBody.chart_conf : false;
         let fields = Fields.dimension_fields.concat(Fields.data_fields);
 
         let dimension;
         let KPI;
-        if (this.state.dimension_new) {
-            dimension = this.state.dimension_new;
+        if (chartConf && this.state.initialGraphicState) {
+            dimension = chartConf.dimensions;
+            KPI = chartConf.kpis;
         } else {
-            dimension = Fields.dimension_fields;
-            dimension.map((item, key)=> {
-                Object.assign(item, {d_selected: (key == 0) ? true : false})
-            });
-        }
-        if (this.state.kpi_new) {
-            KPI = this.state.kpi_new;
-        } else {
-            KPI = Fields.data_fields;
-            KPI.map((item, key)=> {
-                Object.assign(item, {k_selected: (key == 0) ? true : false})
-            });
+            if (this.state.dimension_new) {
+                dimension = this.state.dimension_new;
+            } else {
+                dimension = Fields.dimension_fields;
+                dimension.map((item, key)=> {
+                    Object.assign(item, {d_selected: (key == 0) ? true : false})
+                });
+            }
+            if (this.state.kpi_new) {
+                KPI = this.state.kpi_new;
+            } else {
+                KPI = Fields.data_fields;
+                KPI.map((item, key)=> {
+                    Object.assign(item, {k_selected: (key == 0) ? true : false})
+                });
+            }
         }
         return (
             <div className="view-body">
-                <div className={!this.props.onChart && 'view-chart shim'}>
-                    <h4 className="chart-title">
+                <div className={(this.state.initialCreateGraphicState || chartConf) && 'view-chart shim'}>
+                    {(this.state.initialCreateGraphicState || chartConf) && <h4 className="chart-title">
                         {this.props.viewBody.title}图表
                         <div className="chart-option">
+                            <label onClick={this.handleOperationBlank}>
+                                <i className="fa fa-edit"></i>
+                                <span>编辑</span>
+                            </label>
                             <label>
                                 <i className="fa fa-star">
                                 </i>
                                 <span>收藏</span>
                             </label>
                         </div>
-                    </h4>
+                    </h4>}
                     <div className="row">
-                        <div className="col-md-9 chart-box">
-                            <div id="c1"></div>
-                        </div>
-                        {!this.props.onChart && (
+                        <div
+                            className={this.state.initialCreateGraphicState ? "col-md-9 chart-box" : "col-md-12 chart-box"}>
+                            <div id="c1"></div >
+                        </div >
+                        {(this.state.initialCreateGraphicState) ? (
                             <div className="col-md-3">
                                 <div className="chart-dimension shim">
                                     <h5>维度: </h5>
@@ -180,7 +220,7 @@ module.exports = React.createClass({
                                     </ul>
                                 </div>
                             </div>
-                        )}
+                        ) : null}
 
                     </div>
                 </div>
@@ -228,11 +268,7 @@ module.exports = React.createClass({
     }
 });
 let ViewChart = React.createClass({
-    getInitialState: function () {
-        return {
-            'data': this.props.viewBody
-        }
-    },
+
     render: function () {
         return (
             <div>
