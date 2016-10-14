@@ -129,6 +129,9 @@ module.exports = function (option, _this) {
                     alias: dimensionConf
                 }
             });
+            chart.legend('City', {
+                position: 'top'
+            });
             chart.line().position(dimensionConf+'*Revenue').color('City');
         } else if (type === 'pie') {
             chart.coord('theta', {
@@ -143,9 +146,7 @@ module.exports = function (option, _this) {
                 percent = (percent * 100).toFixed(2) + '%';
                 return name + ' ' + percent;
             });
-
         } else if (type === 'area') {
-            console.log('@KPIChartSelect:',KPIChartSelect);
             let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', 'City', dimensionConf);
 
             chart.source(combineFrame, {
@@ -155,6 +156,9 @@ module.exports = function (option, _this) {
                 [dimensionConf]: {
                     alias: dimensionConf
                 }
+            });
+            chart.legend('City', {
+                position: 'top'
             });
             chart.area().position(dimensionConf + '*Revenue').color('City');
         } else {
@@ -172,6 +176,9 @@ module.exports = function (option, _this) {
                 [dimensionConf]: {
                     alias: dimensionConf
                 }
+            });
+            chart.legend('City', {
+                position: 'top'
             });
             chart.interval(['dodge', 'stack']).position(dimensionConf + '*Revenue').color('City');
 
