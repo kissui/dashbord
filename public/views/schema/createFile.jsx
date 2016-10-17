@@ -10,11 +10,11 @@ module.exports = React.createClass({
             isForbid: false
         }
     },
-    handleGetCubeId: function (id, dimensions) {
+    handleGetCubeId: function (id, dimension) {
         this.setState({
             cubeId: id,
-            dimensionId: dimensions[0].id,
-            dimension: dimensions[0]
+            dimensionId: dimension.id,
+            dimension: dimension
         })
     },
     handleGetDimensionId: function (id, dimension) {
@@ -28,9 +28,10 @@ module.exports = React.createClass({
             folderId: id,
         })
     },
-    handleCommit: function () {
+    handleCommit: function (conf) {
         let value = this.state.fileName;
         let state = this.state;
+        let path;
         let cubes = state.cubeId + "." + state.dimensionId;
         let fields = [];
         let tempArr = state.dimension.dimension_fields.concat(state.dimension.data_fields);
@@ -49,7 +50,15 @@ module.exports = React.createClass({
             'cubes': [cubes],
             'fields': fields
         };
-        http.post('/api/?c=table.tables&ac=add', data)
+        if (conf && conf.conf) {
+            path = '/api/?c=table.tables&ac=update&id=' + conf.conf.id;
+            data.title = this.state.fileName ? this.state.fileName : conf.conf.title;
+        } else {
+            path = '/api/?c=table.tables&ac=add';
+
+        }
+
+        http.post(path, data)
             .then(data=>data.data)
             .then((data)=> {
                 if (data.errcode === 10000) {
@@ -109,15 +118,15 @@ module.exports = React.createClass({
                               onFolderId={this.handleFolderId}
                     />
                     {this.props.onConf.name === 'globalFile' && <Folder onFolderId={this.handleFolderId}/>}
-                    <Cube
+                    {<Cube
+                        onGetCubeConf={this.props.onConf}
                         onSaveCubeId={this.handleGetCubeId}
-                        onSaveDimesionId={this.handleGetDimensionId}
                         onChecked={this.handleCheckBox}
-                    />
+                    />}
                 </div>
                 <div className="file-footer text-center">
                     <button className="btn btn-primary"
-                            onClick={this.handleCommit}>
+                            onClick={this.handleCommit.bind(this, this.props.onConf)}>
                         保存
                     </button>
                     <button className="btn btn-default"

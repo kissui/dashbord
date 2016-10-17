@@ -6,6 +6,7 @@ import ViewHeader from './widget/viewHeader';
 import ViewBody from './widget/viewBody';
 import Loading from '../../components/loading/loading';
 import CreateFilePage from './createFile';
+
 module.exports = React.createClass({
     getInitialState: function () {
         return {
@@ -83,12 +84,12 @@ module.exports = React.createClass({
         })
     },
     render: function () {
-
         let fileData = this.state.fileData,
             content;
         if (fileData && this.state.flag) {
             content = (
                 <div>
+
                     <ViewHeader
                         viewHeader={fileData}
                         onAddFile={this.handleAddFile}
