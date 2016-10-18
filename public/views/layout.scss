@@ -760,6 +760,7 @@ a {
     padding: $padding;
 }
 .shim {
-    @include block()
+    @include block();
+    position: relative;
 }
 

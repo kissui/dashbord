@@ -18,7 +18,7 @@ module.exports = React.createClass({
                 'linkWork': this.props.linkWork,
                 'defaultText': this.props.defaultText
             };
-        this.props.onSaveData(conf);
+        this.props.onSaveData(conf, this.props.onIndex);
     },
     render: function () {
 

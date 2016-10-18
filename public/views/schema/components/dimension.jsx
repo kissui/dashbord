@@ -3,21 +3,23 @@ import React from 'react';
 import _ from 'lodash';
 import Checked from '../../../components/form/checkbox';
 module.exports = React.createClass({
-    handleCheckBox: function (value,i) {
+    handleCheckBox: function (value, i) {
         this.props.onSingleChecked(value, i)
     },
     render: function () {
         let dataField;
         let dimensionField;
         let dimension = this.props.onData;
-
+        let defaultFileDetail = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
+        let defaultDimensionData = defaultFileDetail.fields.data_fields;
         if (_.isObject(dimension)) {
-            console.log(dimension)
+            console.log('@checkDimension',)
             dataField = dimension.data_fields.map((item, i)=> {
                 return (
                     <td key={i}>
                         <label>
-                            <Checked onSingleChecked={this.handleCheckBox} onIsCheck={item.selected}/>
+                            <Checked onSingleChecked={this.handleCheckBox}
+                                     onIsCheck={this.props.onOperatePage ==='editFile' ? defaultDimensionData[i].selected: true}/>
                             <span>{item.title}</span>
                         </label>
                     </td>

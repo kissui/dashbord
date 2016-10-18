@@ -11,17 +11,15 @@ module.exports = React.createClass({
         }
     },
     handleGetCubeId: function (id, dimension) {
+        console.log('@datas:', id, dimension);
+        let cubes = [];
+        let dimensions = [];
+        let cube = Object.assign({}, {id: id, dimension: dimension.id});
         this.setState({
-            cubeId: id,
-            dimensionId: dimension.id,
-            dimension: dimension
-        })
-    },
-    handleGetDimensionId: function (id, dimension) {
-        this.setState({
-            dimensionId: id,
-            dimension: dimension,
-        })
+            cubes: cubes.push(cube),
+            dimension: dimensions.push(dimension)
+        });
+
     },
     handleFolderId: function (id) {
         this.setState({
@@ -50,7 +48,7 @@ module.exports = React.createClass({
             'cubes': [cubes],
             'fields': fields
         };
-        if (conf && conf.conf) {
+        if (conf && conf.name === 'editFile') {
             path = '/api/?c=table.tables&ac=update&id=' + conf.conf.id;
             data.title = this.state.fileName ? this.state.fileName : conf.conf.title;
         } else {

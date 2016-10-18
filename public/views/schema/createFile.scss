@@ -56,6 +56,20 @@
                     color: #337ab7;
                 }
             }
+            .cube-delete{
+                cursor: pointer;
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 24px;
+                line-height: 24px;
+                width: 24px;
+                text-align: center;
+                font-size: 18px;
+                color: #fff;
+                border-radius:3px;
+                background: #337ab7;
+            }
         }
         .body-header {
             padding: 0 0 10px 0;
