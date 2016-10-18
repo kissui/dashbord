@@ -80,6 +80,9 @@ module.exports = React.createClass({
             <div className="folder-body shim">
                 <div className="body-header">
                     <h2>选择数据源:</h2>
+                    <div className="cube-add">
+                        <i className="fa fa-plus-square"></i>
+                    </div>
                 </div>
                 <div className="form-inline">
                     <div className="form-group">
@@ -100,6 +103,7 @@ module.exports = React.createClass({
                             onSaveData={this.handleChangeDimension}
                         />
                     </div>
+
                 </div>
                 <Dimensionmodule
                     onData={currentDimensionData}

@@ -30,7 +30,7 @@
             select {
                 min-width: 180px;
             }
-            .pl-25{
+            .pl-25 {
                 padding-left: 25px;
             }
             .view-cube {
@@ -44,6 +44,16 @@
                     span {
                         padding-left: 5px;
                     }
+                }
+            }
+            .cube-add {
+                position: absolute;
+                right: 0;
+                top: -2px;
+                cursor: pointer;
+                i {
+                    font-size: 28px;
+                    color: #337ab7;
                 }
             }
         }

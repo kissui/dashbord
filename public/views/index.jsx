@@ -23,17 +23,17 @@ module.exports = React.createClass({
         let sessionStorages = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
         if (sessionStorages) {
             this.context.router.push({
-                pathname: '/index/schema/'+sessionStorages.fileID,
+                pathname: '/index/schema/'+sessionStorages.id,
                 query: {
-                    'folder': sessionStorages.folderID,
-                    'file': sessionStorages.fileID
+                    'folder': sessionStorages.folder_id,
+                    'file': sessionStorages.id
                 }
             });
             this.setState({
-                'fileId': sessionStorages.fileID,
+                'fileId': sessionStorages.id,
                 'sidebarState': {
-                    fileID: sessionStorages.fileID,
-                    folderID: sessionStorages.folderID
+                    fileID: sessionStorages.id,
+                    folderID: sessionStorages.folder_id
                 }
             });
         } else if (!sessionStorages && this.props.history.query){

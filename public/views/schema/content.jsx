@@ -46,10 +46,7 @@ module.exports = React.createClass({
                             createFileState: false,
                             flag: true
                         });
-                        sessionStorage.setItem('SCHEMA_FILE_DETAIL', JSON.stringify({
-                            fileID: data.data.id,
-                            folderID: data.data.folder_id
-                        }));
+                        sessionStorage.setItem('SCHEMA_FILE_DETAIL', JSON.stringify(data.data));
                     } else {
                         _this.setState({
                             fileData: null
@@ -75,7 +72,7 @@ module.exports = React.createClass({
         this.props.onEditFile('schema', 'editFile', conf.folder_id, conf)
     },
     handleHideCreateFilePage: function () {
-        let fileId = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).fileID;
+        let fileId = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).id;
         this.initialFileData(fileId);
     },
     handleChangeChart: function () {

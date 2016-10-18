@@ -41,12 +41,12 @@ class SidebarMenu extends React.Component {
                     _me.setState({
                         sideListDate: data.data
                     });
-                    if (!sessionStorage.getItem('SCHEMA_FILE_DETAIL')) {
-                        sessionStorage.setItem('SCHEMA_FILE_DETAIL', JSON.stringify({
-                            folderID: data.data[0].id,
-                            fileID: data.data[0].tables[0].id
-                        }))
-                    }
+                    // if (!sessionStorage.getItem('SCHEMA_FILE_DETAIL')) {
+                    //     sessionStorage.setItem('SCHEMA_FILE_DETAIL', JSON.stringify({
+                    //         folderID: data.data[0].id,
+                    //         fileID: data.data[0].tables[0].id
+                    //     }))
+                    // }
                     if (!sessionStorage.getItem('SIDEBAR_LIST')) {
                         sessionStorage.setItem('SIDEBAR_LIST',JSON.stringify(data.data))
                     }

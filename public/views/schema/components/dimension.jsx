@@ -10,12 +10,14 @@ module.exports = React.createClass({
         let dataField;
         let dimensionField;
         let dimension = this.props.onData;
+
         if (_.isObject(dimension)) {
+            console.log(dimension)
             dataField = dimension.data_fields.map((item, i)=> {
                 return (
                     <td key={i}>
                         <label>
-                            <Checked onSingleChecked={this.handleCheckBox} index={i}/>
+                            <Checked onSingleChecked={this.handleCheckBox} onIsCheck={item.selected}/>
                             <span>{item.title}</span>
                         </label>
                     </td>

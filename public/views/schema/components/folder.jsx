@@ -13,20 +13,23 @@ module.exports = React.createClass({
         this.getFolderListData();
     },
     getFolderListData: function () {
-        http.get('/api/?c=table.folder&ac=tree')
-            .then(data=>data.data)
-            .then((data)=> {
-                if (data.errcode === 10000 && data.data.length > 0) {
-                    this.setState({
-                        folderData: data.data
-                    });
-                    this.props.onFolderId(data.data[0].id)
-                } else {
-                    this.setState({
-                        folderData: null
-                    })
-                }
-            })
+        let data = JSON.parse(sessionStorage.getItem('SIDEBAR_LIST'));
+
+        this.setState({
+            folderData: data
+        });
+        this.props.onFolderId(data[0].id);
+        // http.get('/api/?c=table.folder&ac=tree')
+        //     .then(data=>data.data)
+        //     .then((data)=> {
+        //         if (data.errcode === 10000 && data.data.length > 0) {
+        //
+        //         } else {
+        //             this.setState({
+        //                 folderData: null
+        //             })
+        //         }
+        //     })
     },
     handleSelect: function (i, id) {
         this.setState({
