@@ -10,14 +10,9 @@ module.exports = React.createClass({
             isForbid: false
         }
     },
-    handleGetCubeId: function (id, dimension) {
-        console.log('@datas:', id, dimension);
-        let cubes = [];
-        let dimensions = [];
-        let cube = Object.assign({}, {id: id, dimension: dimension.id});
+    handleGetCubeId: function (cubeConf) {
         this.setState({
-            cubes: cubes.push(cube),
-            dimension: dimensions.push(dimension)
+            cubeConf: cubeConf
         });
 
     },
@@ -30,22 +25,22 @@ module.exports = React.createClass({
         let value = this.state.fileName;
         let state = this.state;
         let path;
-        let cubes = state.cubeId + "." + state.dimensionId;
+        let cubes = [];
+        state.cubeConf.map((item, i)=> {
+            cubes.push(item.cubes)
+        });
         let fields = [];
-        let tempArr = state.dimension.dimension_fields.concat(state.dimension.data_fields);
-        for (let i = 0; i < tempArr.length; i++) {
-            let tempObject = {};
-            fields.push((function (i) {
-                tempObject["val_conf"] = cubes + '.' + tempArr[i].field_id;
-                tempObject["seq_no"] = i;
-                tempObject['selected'] = state.totalFieldChecked ? state.totalFieldChecked[i] : true;
-                return tempObject
-            })(i))
-        }
+        state.cubeConf.map((item, i)=> {
+            fields = _.concat(fields, item.fields.dimension_fields.concat(item.fields.data_fields));
+        });
+        fields.map((item, i)=> {
+            item["seq_no"] = i;
+        });
         let data = {
             'folder_id': state.folderId,
             'title': value,
-            'cubes': [cubes],
+            'cubes': cubes,
+            'cube_conf': state.cubeConf,
             'fields': fields
         };
         if (conf && conf.name === 'editFile') {
@@ -55,7 +50,6 @@ module.exports = React.createClass({
             path = '/api/?c=table.tables&ac=add';
 
         }
-
         http.post(path, data)
             .then(data=>data.data)
             .then((data)=> {

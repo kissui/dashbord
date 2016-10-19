@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Checked from '../../../components/form/checkbox';
 module.exports = React.createClass({
     handleCheckBox: function (value, i) {
-        this.props.onSingleChecked(value, i)
+        this.props.onSingleChecked(value, i,this.props.onIndex)
     },
     render: function () {
         let dataField;
@@ -19,6 +19,7 @@ module.exports = React.createClass({
                     <td key={i}>
                         <label>
                             <Checked onSingleChecked={this.handleCheckBox}
+                                     index={i}
                                      onIsCheck={this.props.onOperatePage ==='editFile' ? defaultDimensionData[i].selected: true}/>
                             <span>{item.title}</span>
                         </label>

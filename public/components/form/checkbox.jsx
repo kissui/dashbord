@@ -11,7 +11,7 @@ module.exports = React.createClass({
         this.setState({
             'checked': !this.state.checked
         });
-        this.props.onSingleChecked(!this.state.checked,this.props.index);
+        this.props.onSingleChecked(!this.state.checked, this.props.index);
     },
     render: function () {
         return (
