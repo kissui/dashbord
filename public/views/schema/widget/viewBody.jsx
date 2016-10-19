@@ -4,7 +4,7 @@ import React from 'react';
 import _ from 'lodash';
 import dealData from '../../../components/chart/dealData';
 import KpiDimensionItem from '../chart/dimensitonkpi';
-
+import http from '../../../lib/http';
 module.exports = React.createClass({
     getInitialState: function () {
         let viewBody = this.props.viewBody;
@@ -57,6 +57,13 @@ module.exports = React.createClass({
         };
         let _this = this;
         let deal = new dealData(chartConf, _this);
+        this.setState({
+            chartViewConf: {
+                kpis: chartConf.KPI,
+                type: chartConf.chartType,
+                dimensions: chartConf.dimension
+            }
+        });
         setTimeout(function () {
             deal.handleChartRender(chartConf.chartType);
         }, 10)
@@ -126,11 +133,24 @@ module.exports = React.createClass({
         });
         this.viewChart(conf)
     },
-    handleOperationBlank:function () {
+    handleOperationBlank: function () {
         this.setState({
             initialCreateGraphicState: !this.state.initialCreateGraphicState
         });
         this.viewChart()
+    },
+    handleSaveChartConf: function (optionType) {
+        let path, data, body = this.props.viewBody;
+        console.log(this.props.viewBody);
+        path = '/api/?c=table.tables&ac=updateChart&id=' + body.id;
+        if (optionType === 'delete') {
+            data = {};
+        } else {
+            data = this.state.chartViewConf;
+        }
+        http.post(path, {chart_conf: data}).then(data => data.data).then((data)=> {
+            console.log(data);
+        })
     },
     render: function () {
         let Fields = this.props.viewBody.fields;
@@ -170,10 +190,15 @@ module.exports = React.createClass({
                                 <i className="fa fa-edit"></i>
                                 <span>编辑</span>
                             </label>
-                            <label>
+                            <label onClick={this.handleSaveChartConf.bind(this, 'save')}>
                                 <i className="fa fa-star">
                                 </i>
-                                <span>收藏</span>
+                                <span>保存</span>
+                            </label>
+                            <label onClick={this.handleSaveChartConf.bind(this, 'delete')}>
+                                <i className="fa fa-star">
+                                </i>
+                                <span>删除</span>
                             </label>
                         </div>
                     </h4>}
