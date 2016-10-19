@@ -30,7 +30,7 @@
             select {
                 min-width: 180px;
             }
-            .pl-25{
+            .pl-25 {
                 padding-left: 25px;
             }
             .view-cube {
@@ -45,6 +45,30 @@
                         padding-left: 5px;
                     }
                 }
+            }
+            .cube-add {
+                position: absolute;
+                right: 0;
+                top: -2px;
+                cursor: pointer;
+                i {
+                    font-size: 28px;
+                    color: #337ab7;
+                }
+            }
+            .cube-delete{
+                cursor: pointer;
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 24px;
+                line-height: 24px;
+                width: 24px;
+                text-align: center;
+                font-size: 18px;
+                color: #fff;
+                border-radius:3px;
+                background: #337ab7;
             }
         }
         .body-header {

@@ -10,46 +10,47 @@ module.exports = React.createClass({
             isForbid: false
         }
     },
-    handleGetCubeId: function (id, dimensions) {
+    handleGetCubeId: function (cubeConf) {
         this.setState({
-            cubeId: id,
-            dimensionId: dimensions[0].id,
-            dimension: dimensions[0]
-        })
-    },
-    handleGetDimensionId: function (id, dimension) {
-        this.setState({
-            dimensionId: id,
-            dimension: dimension,
-        })
+            cubeConf: cubeConf
+        });
+
     },
     handleFolderId: function (id) {
         this.setState({
             folderId: id,
         })
     },
-    handleCommit: function () {
+    handleCommit: function (conf) {
         let value = this.state.fileName;
         let state = this.state;
-        let cubes = state.cubeId + "." + state.dimensionId;
+        let path;
+        let cubes = [];
+        state.cubeConf.map((item, i)=> {
+            cubes.push(item.cubes)
+        });
         let fields = [];
-        let tempArr = state.dimension.dimension_fields.concat(state.dimension.data_fields);
-        for (let i = 0; i < tempArr.length; i++) {
-            let tempObject = {};
-            fields.push((function (i) {
-                tempObject["val_conf"] = cubes + '.' + tempArr[i].field_id;
-                tempObject["seq_no"] = i;
-                tempObject['selected'] = state.totalFieldChecked ? state.totalFieldChecked[i] : true;
-                return tempObject
-            })(i))
-        }
+        state.cubeConf.map((item, i)=> {
+            fields = _.concat(fields, item.fields.dimension_fields.concat(item.fields.data_fields));
+        });
+        fields.map((item, i)=> {
+            item["seq_no"] = i;
+        });
         let data = {
             'folder_id': state.folderId,
             'title': value,
-            'cubes': [cubes],
+            'cubes': cubes,
+            'cube_conf': state.cubeConf,
             'fields': fields
         };
-        http.post('/api/?c=table.tables&ac=add', data)
+        if (conf && conf.name === 'editFile') {
+            path = '/api/?c=table.tables&ac=update&id=' + conf.conf.id;
+            data.title = this.state.fileName ? this.state.fileName : conf.conf.title;
+        } else {
+            path = '/api/?c=table.tables&ac=add';
+
+        }
+        http.post(path, data)
             .then(data=>data.data)
             .then((data)=> {
                 if (data.errcode === 10000) {
@@ -62,40 +63,19 @@ module.exports = React.createClass({
             fileName: value
         })
     },
-    handleCheckBox: function (value, i) {
-        let state = this.state;
-        let dataFieldsLen = state.dimension.data_fields.length;
-        let dimensionLen = state.dimension.dimension_fields.length;
-        let defaultChecked = [];
-        for (let df = 0; df < dimensionLen; df++) {
-            defaultChecked.push(true);
-        }
-        let checkedField = [];
-        if (!this.state.dataFieldsChecked) {
-            for (let d = 0; d < dataFieldsLen; d++) {
-                if (d === i) {
-                    checkedField.push(false);
-                } else {
-                    checkedField.push(true)
-                }
-
+    handleCheckBox: function (value, index, cubeIndex) {
+        let tempCube = this.state.cubeConf;
+        let tempFields = tempCube[cubeIndex].fields;
+        let dataFields = tempCube[cubeIndex].fields.data_fields;
+        dataFields.map((item, i)=> {
+            if (i === index) {
+                item.selected = value
             }
-            this.setState({
-                dataFieldsChecked: checkedField,
-                totalFieldChecked: defaultChecked.concat(checkedField)
-            })
-        } else {
-            let temp = this.state.dataFieldsChecked;
-            for (let f = 0; f < dataFieldsLen; f++) {
-                if (i === f) {
-                    temp[i] = value;
-                    this.setState({
-                        dataFieldsChecked: temp,
-                        totalFieldChecked: defaultChecked.concat(temp)
-                    })
-                }
-            }
-        }
+        });
+        tempFields.data_fields = dataFields;
+        this.setState({
+            cubeConf: tempCube
+        });
     },
     handleCancel: function () {
         this.props.onCancel();
@@ -109,15 +89,15 @@ module.exports = React.createClass({
                               onFolderId={this.handleFolderId}
                     />
                     {this.props.onConf.name === 'globalFile' && <Folder onFolderId={this.handleFolderId}/>}
-                    <Cube
+                    {<Cube
+                        onGetCubeConf={this.props.onConf}
                         onSaveCubeId={this.handleGetCubeId}
-                        onSaveDimesionId={this.handleGetDimensionId}
                         onChecked={this.handleCheckBox}
-                    />
+                    />}
                 </div>
                 <div className="file-footer text-center">
                     <button className="btn btn-primary"
-                            onClick={this.handleCommit}>
+                            onClick={this.handleCommit.bind(this, this.props.onConf)}>
                         保存
                     </button>
                     <button className="btn btn-default"

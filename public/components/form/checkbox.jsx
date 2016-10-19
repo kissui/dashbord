@@ -4,14 +4,14 @@ import React from 'react';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
-            'checked': this.props.onIsCheck ? this.props.onIsChecked : true
+            'checked': this.props.onIsCheck
         }
     },
     handleSingleCheck: function () {
         this.setState({
             'checked': !this.state.checked
         });
-        this.props.onSingleChecked(!this.state.checked,this.props.index);
+        this.props.onSingleChecked(!this.state.checked, this.props.index);
     },
     render: function () {
         return (

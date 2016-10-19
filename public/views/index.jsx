@@ -23,17 +23,17 @@ module.exports = React.createClass({
         let sessionStorages = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
         if (sessionStorages) {
             this.context.router.push({
-                pathname: '/index/schema/'+sessionStorages.fileID,
+                pathname: '/index/schema/'+sessionStorages.id,
                 query: {
-                    'folder': sessionStorages.folderID,
-                    'file': sessionStorages.fileID
+                    'folder': sessionStorages.folder_id,
+                    'file': sessionStorages.id
                 }
             });
             this.setState({
-                'fileId': sessionStorages.fileID,
+                'fileId': sessionStorages.id,
                 'sidebarState': {
-                    fileID: sessionStorages.fileID,
-                    folderID: sessionStorages.folderID
+                    fileID: sessionStorages.id,
+                    folderID: sessionStorages.folder_id
                 }
             });
         } else if (!sessionStorages && this.props.history.query){
@@ -81,6 +81,13 @@ module.exports = React.createClass({
             }
         });
     },
+    /**
+     * 全局的事件处理
+     * @param page
+     * @param type
+     * @param id
+     * @param conf
+     */
     onGlobalClick: function (page, type, id, conf) {
         this.setState({
             'onFileOption': {
@@ -93,6 +100,11 @@ module.exports = React.createClass({
             'fileId': null
         })
     },
+    /**
+     * 创建table,修改tab的状态更新
+     * @param id
+     * @param folderId
+     */
     onState: function (id, folderId) {
         this.setState({
             'fileId': id,
@@ -101,6 +113,13 @@ module.exports = React.createClass({
             'sidebarState': {
                 fileID: id,
                 folderID: folderId
+            }
+        });
+        this.context.router.push({
+            pathname: '/index/schema/'+id,
+            query: {
+                'folder': folderId,
+                'file': id
             }
         });
     },

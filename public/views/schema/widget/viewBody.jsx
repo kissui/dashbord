@@ -224,7 +224,20 @@ module.exports = React.createClass({
 
                     </div>
                 </div>
+                <ShowTableContent
+                    onThead={fields}
+                    onTbody={this.props.viewBody.data}
+                />
+            </div>
+        )
+    }
+});
+let ShowTableContent = React.createClass({
 
+    render: function () {
+
+        return (
+            <div>
                 <div className="body-tab-nav">
                     <ul className="nav">
                         <li className="active">数据预览</li>
@@ -243,13 +256,13 @@ module.exports = React.createClass({
                         <thead>
                         <tr>
                             {
-                                fields.map((item, i)=> {
+                                this.props.onThead.map((item, i)=> {
                                     return item.selected ? <th key={i}>{item.title}</th> : null
                                 })}
                         </tr>
                         </thead>
                         <tbody>
-                        {this.props.viewBody.data.map((item, i)=> {
+                        {this.props.onTbody.map((item, i)=> {
                             return (
                                 <tr key={i}>
                                     {item.map((td, i)=> {
@@ -263,16 +276,6 @@ module.exports = React.createClass({
                         </tbody>
                     </table>
                 </div>
-            </div>
-        )
-    }
-});
-let ViewChart = React.createClass({
-
-    render: function () {
-        return (
-            <div>
-                dd
             </div>
         )
     }

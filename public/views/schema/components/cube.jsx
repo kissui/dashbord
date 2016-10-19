@@ -1,7 +1,10 @@
 'use strict';
 import React from 'react';
 import http from '../../../lib/http';
-import Checked from '../../../components/form/checkbox';
+import Dimensionmodule from './dimension';
+import _ from 'lodash';
+import SelectTest from '../components/formSelect';
+import cube from '../../../components/cube/cube';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
@@ -10,116 +13,153 @@ module.exports = React.createClass({
         }
     },
     componentDidMount: function () {
-        this.getCubeData();
+        this.getCubeData(this.props.onGetCubeConf);
     },
-    getCubeData: function () {
+    componentWillReceiveProps: function (nextProps) {
+        if (nextProps.onGetCubeConf) {
+            // console.log('@cubeConf',nextProps.onGetCubeConf)
+        }
+    },
+    getCubeData: function (cubeConf) {
         http.get('/api/?c=cube.cubes&ac=index')
             .then(data=>data.data)
             .then((data)=> {
                 if (data.errcode === 10000) {
-                    this.setState({
-                        cubeData: data.data
+                    let tempCubeConf = _.assign({}, {
+                        cubes: data.data[0].id + '.' + data.data[0].dimensions[0].id,
+                        cube_id: data.data[0].id,
+                        dimension_id: data.data[0].dimensions[0].id,
+                        cubeIndex: 0,
+                        dimensionIndex: 0,
+                        title: data.data[0].dimensions[0].title,
+                        fields: _.assign({}, {
+                            data_fields: data.data[0].dimensions[0].data_fields,
+                            dimension_fields: data.data[0].dimensions[0].dimension_fields,
+                        })
                     });
-                    this.props.onSaveCubeId(data.data[0].id, data.data[0].dimensions)
+                    if (cubeConf.conf && cubeConf.name == 'editFile') {
+                        let editCubeConf = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).cube_conf;
+                        this.setState({
+                            cubeData: data.data,
+                            tempCubeConf: editCubeConf,
+                            initCubeConf: [tempCubeConf]
+                        });
+                        this.props.onSaveCubeId(editCubeConf)
+                    } else {
+                        // this.props.onSaveCubeId(data.data[0].id, data.data[0].dimensions[0])
+                        this.setState({
+                            cubeData: data.data,
+                            tempCubeConf: [tempCubeConf],
+                            initCubeConf: [tempCubeConf]
+                        });
+                        this.props.onSaveCubeId([tempCubeConf])
+                    }
+
                 }
             })
     },
-    onChangeFirst: function () {
-        let cube = this.state.cubeData;
-        let id = this.refs.first.value;
-        this.setState({
-            cubeSelectSecond: cube[id].dimensions,
-            firstId: cube[id].id,
-            firstIndex: id
-        });
-        this.props.onSaveCubeId(cube[id].id, cube[id].dimensions)
+    handleCheckBox: function (value, i, cubeIndex) {
+        this.props.onChecked(value, i, cubeIndex)
     },
-    onChangeSecond: function () {
-        let cube = this.state.cubeData;
-        let firstIndex = this.state.firstIndex;
-        let secondIndex = this.refs.second.value;
-        this.setState({
-            dimension: cube[firstIndex].dimensions[secondIndex],
-            dimensionIndex: secondIndex
-        });
-        this.props.onSaveDimesionId(cube[firstIndex].dimensions[secondIndex].id, cube[firstIndex].dimensions[secondIndex]);
-    },
-    handleCheckBox: function (value, i) {
+    setChangeCube: function (data, conf, index) {
 
-        this.props.onChecked(value, i)
+        let defaultCube = this.state.cubeData;
+        if (conf.linkWork == 'cube') {
+            let dimension = defaultCube[conf.selectedIndex].dimensions[0];
+            data[index] = {
+                cube_id: conf.value,
+                dimension_id: dimension.id,
+                cubeIndex: conf.selectedIndex,
+                cubes: conf.value + '.' + dimension.id,
+                dimensionIndex: 0,
+                title: dimension.title,
+                fields: _.assign({}, {
+                    data_fields: dimension.data_fields,
+                    dimension_fields: dimension.dimension_fields,
+                })
+            }
+        } else {
+            let cubeId = data[index].cube_id;
+            let cubeIndex = _.findIndex(defaultCube, (item)=> {
+                return item.id === cubeId;
+            });
+            let dimension = defaultCube[cubeIndex].dimensions[conf.selectedIndex]
+            data[index] = {
+                dimension_id: conf.value,
+                cubes: data[index].cube_id + '.' + conf.value,
+                cubeIndex: cubeIndex,
+                dimensionIndex: conf.selectedIndex,
+                title: dimension.title,
+                fields: _.assign({}, {
+                    data_fields: dimension.data_fields,
+                    dimension_fields: dimension.dimension_fields,
+                })
+            }
+        }
+        return data
+    },
+    handleChangeCube: function (conf, index) {
+        let initCubeDefaultData = this.state.tempCubeConf;
+        let CUBE = new cube(this.state.cubeData);
+        this.setState({
+            tempCubeConf: CUBE.selectedData(initCubeDefaultData, conf, index),
+        });
+        this.props.onSaveCubeId(CUBE.selectedData(initCubeDefaultData, conf, index))
+    },
+    handleChangeDimension: function (conf, index) {
+        let initCubeDefaultData = this.state.tempCubeConf;
+        let CUBE = new cube(this.state.cubeData);
+        this.setState({
+            tempCubeConf: CUBE.selectedData(initCubeDefaultData, conf, index),
+        });
+        this.props.onSaveCubeId(CUBE.selectedData(initCubeDefaultData, conf, index))
+    },
+    handleAddCube: function () {
+        this.setState({
+            tempCubeConf: _.concat(this.state.tempCubeConf, this.state.initCubeConf)
+        })
     },
     render: function () {
-        var _this = this;
-        let list = null,
-            cubeFirstSelect,
-            cubeSecondSelect;
-        let firstIndex = this.state.firstIndex ? this.state.firstIndex : 0;
-        let dimension = this.state.dimension,
-            dataField,
-            dimensionField;
-        if (this.state.cubeData) {
-            cubeFirstSelect = this.state.cubeData.map((item, i)=> {
+        let content;
+        if (this.state.tempCubeConf) {
+            content = this.state.tempCubeConf.map((item, key) => {
                 return (
-                    <option value={i} key={i}>{item.name}</option>
-                )
-            });
-            if (this.state.cubeData[firstIndex].dimensions[0] === 1) {
-                cubeSecondSelect = <option>暂无可选CUBE</option>;
-                dataField = <td>暂无指标</td>;
-                dimensionField = <td>暂无指标</td>
-            }
-
-        }
-        if (this.state.cubeSelectSecond) {
-            let changeDimension = this.state.cubeSelectSecond[0];
-            if (changeDimension != 1) {
-                cubeSecondSelect = this.state.cubeSelectSecond.map((item, i)=> {
-                    if (item === 1) return <option value="0" key={i}>暂无可选CUBE</option>;
-                    return (
-                        <option value={i} key={i}>{item.title}</option>
-                    )
-                });
-                dataField = changeDimension.data_fields.map((item, i)=> {
-                    return (
-                        <td key={i}>
-                            <label htmlFor="">
-                                <Checked onSingleChecked={this.handleCheckBox} index={i}/>
-                                <span>{item.title}</span>
-                            </label>
-
-                        </td>
-                    )
-                });
-                dimensionField = changeDimension.dimension_fields.map((item, i)=> {
-                    return (
-                        <td key={i}>
-                            {item.title}
-                        </td>
-                    )
-                })
-            } else {
-                dataField = <td>暂无指标</td>;
-                dimensionField = <td>暂无指标</td>
-            }
-        }
-        if (dimension && this.state.cubeSelectSecond[0] != 1) {
-            dataField = dimension.data_fields.map((item, i)=> {
-                return (
-                    <td key={i}>
-                        <label>
-                            <Checked onSingleChecked={this.handleCheckBox} index={i}/>
-                            <span>{item.title}</span>
-                        </label>
-
-                    </td>
-                )
-            });
-            dimensionField = dimension.dimension_fields.map((item, i)=> {
-                return (
-                    <td key={i}>
-
-                        {item.title}
-                    </td>
+                    <div className="shim" key={key}>
+                        <div className="cube-delete">
+                            <i className="fa fa-minus"></i>
+                        </div>
+                        <div className="form-inline">
+                            <div className="form-group">
+                                <label>选择数据源:</label>
+                                <SelectTest
+                                    initData={this.state.cubeData}
+                                    defaultText="暂无数据源"
+                                    onIndex={key}
+                                    linkWork="cube"
+                                    selectIndex={item.cube_id}
+                                    onSaveData={this.handleChangeCube}
+                                />
+                            </div>
+                            <div className="form-group pl-25">
+                                <label>选择CUBE:</label>
+                                <SelectTest
+                                    initData={this.state.cubeData[item.cubeIndex].dimensions}
+                                    defaultText="暂无CUBE"
+                                    onIndex={key}
+                                    linkWork="dimension"
+                                    selectIndex={item.dimension_id ? item.dimension_id : 0}
+                                    onSaveData={this.handleChangeDimension}
+                                />
+                            </div>
+                        </div>
+                        <Dimensionmodule
+                            onData={this.state.cubeData[item.cubeIndex].dimensions[item.dimensionIndex]}
+                            defaultText="暂无数据"
+                            onIndex={key}
+                            onOperatePage={this.props.onGetCubeConf.name}
+                            onSingleChecked={this.handleCheckBox}
+                        />
+                    </div>
                 )
             })
         }
@@ -127,48 +167,12 @@ module.exports = React.createClass({
             <div className="folder-body shim">
                 <div className="body-header">
                     <h2>选择数据源:</h2>
-                </div>
-                <div className="form-inline">
-                    <div className="form-group">
-                        <label>选择数据源:</label>
-                        <select ref="first" className="form-control" onChange={this.onChangeFirst}>
-                            {cubeFirstSelect}
-                        </select>
-                    </div>
-                    <div className="form-group pl-25">
-                        <label>选择CUBE:</label>
-                        <select ref="second" className="form-control" onChange={this.onChangeSecond}>
-                            {cubeSecondSelect}
-                        </select>
+                    <div className="cube-add" onClick={this.handleAddCube}>
+                        <i className="fa fa-plus-square"></i>
                     </div>
 
                 </div>
-                <div className="row view-cube">
-                    <form ref="form">
-                        <div className="col-md-6">
-                            <div className="table-responsive">
-                                <table className="table">
-                                    <tbody>
-                                    <tr>
-                                        {dataField}
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </form>
-                    <div className="col-md-6">
-                        <div className="table-responsive">
-                            <table className="table">
-                                <tbody>
-                                <tr>
-                                    {dimensionField}
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                {content}
             </div>
         )
     }
