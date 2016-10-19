@@ -63,40 +63,19 @@ module.exports = React.createClass({
             fileName: value
         })
     },
-    handleCheckBox: function (value, i) {
-        let state = this.state;
-        let dataFieldsLen = state.dimension.data_fields.length;
-        let dimensionLen = state.dimension.dimension_fields.length;
-        let defaultChecked = [];
-        for (let df = 0; df < dimensionLen; df++) {
-            defaultChecked.push(true);
-        }
-        let checkedField = [];
-        if (!this.state.dataFieldsChecked) {
-            for (let d = 0; d < dataFieldsLen; d++) {
-                if (d === i) {
-                    checkedField.push(false);
-                } else {
-                    checkedField.push(true)
-                }
-
+    handleCheckBox: function (value, index, cubeIndex) {
+        let tempCube = this.state.cubeConf;
+        let tempFields = tempCube[cubeIndex].fields;
+        let dataFields = tempCube[cubeIndex].fields.data_fields;
+        dataFields.map((item, i)=> {
+            if (i === index) {
+                item.selected = value
             }
-            this.setState({
-                dataFieldsChecked: checkedField,
-                totalFieldChecked: defaultChecked.concat(checkedField)
-            })
-        } else {
-            let temp = this.state.dataFieldsChecked;
-            for (let f = 0; f < dataFieldsLen; f++) {
-                if (i === f) {
-                    temp[i] = value;
-                    this.setState({
-                        dataFieldsChecked: temp,
-                        totalFieldChecked: defaultChecked.concat(temp)
-                    })
-                }
-            }
-        }
+        });
+        tempFields.data_fields = dataFields;
+        this.setState({
+            cubeConf: tempCube
+        });
     },
     handleCancel: function () {
         this.props.onCancel();

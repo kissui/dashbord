@@ -81,7 +81,6 @@ module.exports = React.createClass({
         })
     },
     render: function () {
-        console.log('@onFileOption: ', this.state.onFileOption);
         let fileData = this.state.fileData,
             content;
         if (fileData && this.state.flag) {

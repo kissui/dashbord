@@ -11,9 +11,8 @@ module.exports = React.createClass({
         let dimensionField;
         let dimension = this.props.onData;
         let defaultFileDetail = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
-        let defaultDimensionData = defaultFileDetail.fields.data_fields;
+        let defaultDimensionData = defaultFileDetail.cube_conf[this.props.onIndex].fields.data_fields;
         if (_.isObject(dimension)) {
-            console.log('@checkDimension',)
             dataField = dimension.data_fields.map((item, i)=> {
                 return (
                     <td key={i}>

@@ -81,6 +81,13 @@ module.exports = React.createClass({
             }
         });
     },
+    /**
+     * 全局的事件处理
+     * @param page
+     * @param type
+     * @param id
+     * @param conf
+     */
     onGlobalClick: function (page, type, id, conf) {
         this.setState({
             'onFileOption': {
@@ -93,6 +100,11 @@ module.exports = React.createClass({
             'fileId': null
         })
     },
+    /**
+     * 创建table,修改tab的状态更新
+     * @param id
+     * @param folderId
+     */
     onState: function (id, folderId) {
         this.setState({
             'fileId': id,
@@ -101,6 +113,13 @@ module.exports = React.createClass({
             'sidebarState': {
                 fileID: id,
                 folderID: folderId
+            }
+        });
+        this.context.router.push({
+            pathname: '/index/schema/'+id,
+            query: {
+                'folder': folderId,
+                'file': id
             }
         });
     },

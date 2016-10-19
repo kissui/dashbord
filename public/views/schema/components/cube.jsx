@@ -25,22 +25,6 @@ module.exports = React.createClass({
             .then(data=>data.data)
             .then((data)=> {
                 if (data.errcode === 10000) {
-                    let cubes,
-                        currentCubeIndex,
-                        dimensionIndex;
-                    if (cubeConf.conf && cubeConf.name == 'editFile') {
-
-                        // cubes = cubeConf.conf.cubes.join('').split('.');
-                        // currentCubeIndex = _.findIndex(data.data, (o) => {
-                        //     return o.id == cubes[0];
-                        // });
-                        // dimensionIndex = _.findIndex(data.data[currentCubeIndex].dimensions, (item) => {
-                        //     return item.id == cubes[1]
-                        // });
-                        // this.props.onSaveCubeId(data.data[currentCubeIndex].id, data.data[currentCubeIndex].dimensions[dimensionIndex]);
-                    } else {
-                        // this.props.onSaveCubeId(data.data[0].id, data.data[0].dimensions[0])
-                    }
                     let tempCubeConf = _.assign({}, {
                         cubes: data.data[0].id + '.' + data.data[0].dimensions[0].id,
                         cube_id: data.data[0].id,
@@ -53,27 +37,28 @@ module.exports = React.createClass({
                             dimension_fields: data.data[0].dimensions[0].dimension_fields,
                         })
                     });
-                    this.setState({
-                        cubeData: data.data,
-                        // defaultCubeIndex: currentCubeIndex ? currentCubeIndex : 0,
-                        // defaultDimensionIndex: dimensionIndex ? dimensionIndex : 0,
-                        // cubeId: cubes ? cubes[0] : 0,
-                        // dimensionId: cubes ? cubes[1] : 0,
-                        tempCubeConf: [tempCubeConf],
-                        initCubeConf: [tempCubeConf]
-                    });
+                    if (cubeConf.conf && cubeConf.name == 'editFile') {
+                        let editCubeConf = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).cube_conf;
+                        this.setState({
+                            cubeData: data.data,
+                            tempCubeConf: editCubeConf,
+                            initCubeConf: [tempCubeConf]
+                        });
+                        this.props.onSaveCubeId(editCubeConf)
+                    } else {
+                        // this.props.onSaveCubeId(data.data[0].id, data.data[0].dimensions[0])
+                        this.setState({
+                            cubeData: data.data,
+                            tempCubeConf: [tempCubeConf],
+                            initCubeConf: [tempCubeConf]
+                        });
+                        this.props.onSaveCubeId([tempCubeConf])
+                    }
 
-                    this.props.onSaveCubeId([tempCubeConf])
                 }
             })
     },
     handleCheckBox: function (value, i, cubeIndex) {
-        console.log(value, i, cubeIndex);
-        // let initCubeDefaultData = this.state.tempCubeConf;
-        // let CUBE = new cube(this.state.cubeData);
-        // this.setState({
-        //     tempCubeConf: CUBE.selectedData(initCubeDefaultData, conf, index),
-        // })
         this.props.onChecked(value, i, cubeIndex)
     },
     setChangeCube: function (data, conf, index) {
@@ -126,7 +111,7 @@ module.exports = React.createClass({
         let CUBE = new cube(this.state.cubeData);
         this.setState({
             tempCubeConf: CUBE.selectedData(initCubeDefaultData, conf, index),
-        })
+        });
         this.props.onSaveCubeId(CUBE.selectedData(initCubeDefaultData, conf, index))
     },
     handleAddCube: function () {
@@ -171,6 +156,7 @@ module.exports = React.createClass({
                             onData={this.state.cubeData[item.cubeIndex].dimensions[item.dimensionIndex]}
                             defaultText="暂无数据"
                             onIndex={key}
+                            onOperatePage={this.props.onGetCubeConf.name}
                             onSingleChecked={this.handleCheckBox}
                         />
                     </div>
