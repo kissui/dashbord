@@ -263,6 +263,7 @@ module.exports = React.createClass({
                     </div>
                 </div>
                 <ShowTableContent
+                    onFields={this.props.viewBody.fields}
                     onThead={fields}
                     onTbody={this.props.viewBody.data}
                 />
@@ -271,9 +272,56 @@ module.exports = React.createClass({
     }
 });
 let ShowTableContent = React.createClass({
+    handleSumData: function (datas, fields) {
+        let newDataAssign = [];
+        let sum = [];
+        let mean = [];
+        datas.map((item, key) => {
+            let objectAssign = {};
+            datas[key].map((d, i) => {
+                (function (i) {
+                    objectAssign[fields[i].title + i] = /(^\d+)+.+(\d+$)/.test(d) ? parseFloat(d) : d;
+                    objectAssign = _.assign(objectAssign);
+                })(i);
+            });
+            newDataAssign.push(objectAssign);
+        });
+        let frame = new G2.Frame(newDataAssign).arr;
+        frame.map((item, i)=> {
+            if (_.ceil(_.sum(item), 2) + '' == 'NaN') {
+                if (i === 0) {
+                    sum.push('合计')
+                } else {
+                    sum.push('--')
+                }
+            } else {
+                sum.push(_.ceil(_.sum(item), 2) + '');
+            }
 
+            if (_.ceil(_.mean(item), 2) + '' == 'NaN') {
+                if (i === 0) {
+                    mean.push('平均值')
+                } else {
+                    mean.push('--')
+                }
+            } else {
+                mean.push(_.ceil(_.mean(item), 2) + '');
+            }
+        });
+        return {sum: sum, mean: mean};
+        // new G2.Frame(newDataAssign).arr;
+
+    },
     render: function () {
-        let newData = this.props.onTbody.concat(this.props.onTbody);
+        let newData = this.props.onTbody;
+        // let test = [];
+        // newData.map((item,i)=>{
+        //     test.push( _.concat(item,this.props.onTbody[0],this.props.onTbody[0]));
+        // });
+        // newData = test;
+        let newTitle = this.props.onThead;
+        let dealData = this.handleSumData(newData, newTitle);
+        newData = newData.concat([dealData.mean], [dealData.sum]);
         return (
             <div>
                 <div className="body-tab-nav">

@@ -31,7 +31,6 @@ module.exports = function (option, _this) {
             let objectAssign = {};
             datas[key].map((d, i) => {
                 (function (i) {
-
                     objectAssign[fields[i].title + ''] = /\d./.test(d) ? parseFloat(d) : d;
                     objectAssign = Object.assign(objectAssign);
                 })(i);
