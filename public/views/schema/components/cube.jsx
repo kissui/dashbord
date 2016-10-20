@@ -37,6 +37,7 @@ module.exports = React.createClass({
                             dimension_fields: data.data[0].dimensions[0].dimension_fields,
                         })
                     });
+                    console.log('@tempCubeConf', tempCubeConf)
                     if (cubeConf.conf && cubeConf.name == 'editFile') {
                         let editCubeConf = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).cube_conf;
                         this.setState({
@@ -46,7 +47,6 @@ module.exports = React.createClass({
                         });
                         this.props.onSaveCubeId(editCubeConf)
                     } else {
-                        // this.props.onSaveCubeId(data.data[0].id, data.data[0].dimensions[0])
                         this.setState({
                             cubeData: data.data,
                             tempCubeConf: [tempCubeConf],
@@ -60,43 +60,6 @@ module.exports = React.createClass({
     },
     handleCheckBox: function (value, i, cubeIndex) {
         this.props.onChecked(value, i, cubeIndex)
-    },
-    setChangeCube: function (data, conf, index) {
-
-        let defaultCube = this.state.cubeData;
-        if (conf.linkWork == 'cube') {
-            let dimension = defaultCube[conf.selectedIndex].dimensions[0];
-            data[index] = {
-                cube_id: conf.value,
-                dimension_id: dimension.id,
-                cubeIndex: conf.selectedIndex,
-                cubes: conf.value + '.' + dimension.id,
-                dimensionIndex: 0,
-                title: dimension.title,
-                fields: _.assign({}, {
-                    data_fields: dimension.data_fields,
-                    dimension_fields: dimension.dimension_fields,
-                })
-            }
-        } else {
-            let cubeId = data[index].cube_id;
-            let cubeIndex = _.findIndex(defaultCube, (item)=> {
-                return item.id === cubeId;
-            });
-            let dimension = defaultCube[cubeIndex].dimensions[conf.selectedIndex]
-            data[index] = {
-                dimension_id: conf.value,
-                cubes: data[index].cube_id + '.' + conf.value,
-                cubeIndex: cubeIndex,
-                dimensionIndex: conf.selectedIndex,
-                title: dimension.title,
-                fields: _.assign({}, {
-                    data_fields: dimension.data_fields,
-                    dimension_fields: dimension.dimension_fields,
-                })
-            }
-        }
-        return data
     },
     handleChangeCube: function (conf, index) {
         let initCubeDefaultData = this.state.tempCubeConf;
@@ -117,17 +80,30 @@ module.exports = React.createClass({
     handleAddCube: function () {
         this.setState({
             tempCubeConf: _.concat(this.state.tempCubeConf, this.state.initCubeConf)
-        })
+        });
+    },
+    handleDeleteCube: function (index) {
+
+        let temp = this.state.tempCubeConf;
+        _.remove(temp, (current, key)=> {
+            return key == index
+        });
+        this.setState({
+            tempCubeConf: temp
+        });
+        this.props.onSaveCubeId(temp)
     },
     render: function () {
         let content;
         if (this.state.tempCubeConf) {
-            content = this.state.tempCubeConf.map((item, key) => {
+            let tempCubeConf = this.state.tempCubeConf;
+            console.log('this.state.tempCubeConf', this.state.tempCubeConf)
+            content = tempCubeConf.map((item, key) => {
                 return (
                     <div className="shim" key={key}>
-                        <div className="cube-delete">
+                        {tempCubeConf.length > 1 && <div className="cube-delete" onClick={this.handleDeleteCube.bind(null, key)}>
                             <i className="fa fa-minus"></i>
-                        </div>
+                        </div>}
                         <div className="form-inline">
                             <div className="form-group">
                                 <label>选择数据源:</label>

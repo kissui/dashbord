@@ -40,27 +40,12 @@ export default {
             return true;
         }
     },
-
-    // author:mancoxu,date:160606; 替换字符串（针对faq列表页面和详情页面）
-    proxyReplaceYunStr(tag){
-        // proxyName => 商户名称（如果有的话则为替换对象）
-        // tag => 替换的字符
-        // reg => 匹配替换的字符
-
-        proxyName = Auth.getDealerProxy();
-        if (proxyName != "") {
-            return tag.replace(YUNZH_STR,proxyName)
-        }else{
-            return tag;
-        }
-    },
-
-    // author:mancoxu,date:160606; 简易modal (针对一些简单的提示 eg: 验证银行卡页面)
+    // 简单的交互延迟通知功能
     delayPop(txt,delay,callback){
         let body = document.body;
         let popBox = document.createElement("div"),
             txtHtml = "",
-            idName = "yyDelayPop";
+            idName = "kepler-pop-note";
         
         popBox.id = idName;
         txtHtml += '<p>'+txt+'</p>';

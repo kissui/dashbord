@@ -4,7 +4,8 @@ import React from 'react';
 import _ from 'lodash';
 import dealData from '../../../components/chart/dealData';
 import KpiDimensionItem from '../chart/dimensitonkpi';
-
+import http from '../../../lib/http';
+import Utils from '../../../lib/utils';
 module.exports = React.createClass({
     getInitialState: function () {
         let viewBody = this.props.viewBody;
@@ -57,6 +58,13 @@ module.exports = React.createClass({
         };
         let _this = this;
         let deal = new dealData(chartConf, _this);
+        this.setState({
+            chartViewConf: {
+                kpis: chartConf.KPI,
+                type: chartConf.chartType,
+                dimensions: chartConf.dimension
+            }
+        });
         setTimeout(function () {
             deal.handleChartRender(chartConf.chartType);
         }, 10)
@@ -126,11 +134,37 @@ module.exports = React.createClass({
         });
         this.viewChart(conf)
     },
-    handleOperationBlank:function () {
+    handleOperationBlank: function () {
         this.setState({
             initialCreateGraphicState: !this.state.initialCreateGraphicState
         });
         this.viewChart()
+    },
+    handleSaveChartConf: function (optionType) {
+        let path, data, body = this.props.viewBody;
+        console.log(this.props.viewBody);
+        path = '/api/?c=table.tables&ac=updateChart&id=' + body.id;
+        if (optionType === 'delete') {
+            data = {};
+        } else {
+            data = this.state.chartViewConf;
+        }
+        http.post(path, {chart_conf: data}).then(data => data.data).then((data)=> {
+            if(data.errcode===10000) {
+                let text = '';
+                if(optionType === 'delete') {
+                    text = '您已成功删除图表';
+                    this.setState({
+                        initialCreateGraphicState: !this.state.initialCreateGraphicState
+                    });
+                    document.getElementById('c1').innerHTML = null;
+                } else {
+                    text = '当前报表的图表保存成功';
+                }
+                Utils.delayPop(text,2000);
+            }
+
+        })
     },
     render: function () {
         let Fields = this.props.viewBody.fields;
@@ -170,10 +204,15 @@ module.exports = React.createClass({
                                 <i className="fa fa-edit"></i>
                                 <span>编辑</span>
                             </label>
-                            <label>
+                            <label onClick={this.handleSaveChartConf.bind(this, 'save')}>
                                 <i className="fa fa-star">
                                 </i>
-                                <span>收藏</span>
+                                <span>保存</span>
+                            </label>
+                            <label onClick={this.handleSaveChartConf.bind(this, 'delete')}>
+                                <i className="fa fa-minus-circle">
+                                </i>
+                                <span>删除</span>
                             </label>
                         </div>
                     </h4>}
