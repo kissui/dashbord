@@ -23,7 +23,7 @@ html {
 }
 
 $fontSize: 14px;
-$fontFamily: Microsoft Yahei,Avenir,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans-serif;
+$fontFamily: Microsoft Yahei, Avenir, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
 $fontLineHeight: normal;
 $colorText: #3e3e3e;
 $colorBg: #efefef;
@@ -604,7 +604,7 @@ a {
     margin-left: 230px;
     min-height: 1000px;
     background: #FFFFFF;
-    .content{
+    .content {
         width: 100%;
         overflow: hidden;
     }
@@ -750,6 +750,7 @@ a {
 .fa-ok:before {
     content: "\f002";
 }
+
 @mixin block($bg:#fff,$border:#ddd,$padding:10px,$margin:10px) {
     margin: $margin 0;
     background-color: $bg;
@@ -759,8 +760,22 @@ a {
     box-shadow: none;
     padding: $padding;
 }
+
 .shim {
     @include block();
     position: relative;
 }
 
+#kepler-pop-note {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    background: #000000;
+    color: #fff;
+    opacity: 0.7;
+    font-size: 14px;
+    padding: 20px;
+    min-width: 300px;
+    margin-left: -150px;
+    text-align: center;
+}

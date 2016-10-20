@@ -5,6 +5,7 @@ import _ from 'lodash';
 import dealData from '../../../components/chart/dealData';
 import KpiDimensionItem from '../chart/dimensitonkpi';
 import http from '../../../lib/http';
+import Utils from '../../../lib/utils';
 module.exports = React.createClass({
     getInitialState: function () {
         let viewBody = this.props.viewBody;
@@ -149,7 +150,20 @@ module.exports = React.createClass({
             data = this.state.chartViewConf;
         }
         http.post(path, {chart_conf: data}).then(data => data.data).then((data)=> {
-            console.log(data);
+            if(data.errcode===10000) {
+                let text = '';
+                if(optionType === 'delete') {
+                    text = '您已成功删除图表';
+                    this.setState({
+                        initialCreateGraphicState: !this.state.initialCreateGraphicState
+                    });
+                    document.getElementById('c1').innerHTML = null;
+                } else {
+                    text = '当前报表的图表保存成功';
+                }
+                Utils.delayPop(text,2000);
+            }
+
         })
     },
     render: function () {
@@ -196,7 +210,7 @@ module.exports = React.createClass({
                                 <span>保存</span>
                             </label>
                             <label onClick={this.handleSaveChartConf.bind(this, 'delete')}>
-                                <i className="fa fa-star">
+                                <i className="fa fa-minus-circle">
                                 </i>
                                 <span>删除</span>
                             </label>
