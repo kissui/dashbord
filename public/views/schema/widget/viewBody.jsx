@@ -142,7 +142,6 @@ module.exports = React.createClass({
     },
     handleSaveChartConf: function (optionType) {
         let path, data, body = this.props.viewBody;
-        console.log(this.props.viewBody);
         path = '/api/?c=table.tables&ac=updateChart&id=' + body.id;
         if (optionType === 'delete') {
             data = {};
@@ -150,9 +149,9 @@ module.exports = React.createClass({
             data = this.state.chartViewConf;
         }
         http.post(path, {chart_conf: data}).then(data => data.data).then((data)=> {
-            if(data.errcode===10000) {
+            if (data.errcode === 10000) {
                 let text = '';
-                if(optionType === 'delete') {
+                if (optionType === 'delete') {
                     text = '您已成功删除图表';
                     this.setState({
                         initialCreateGraphicState: !this.state.initialCreateGraphicState
@@ -161,7 +160,7 @@ module.exports = React.createClass({
                 } else {
                     text = '当前报表的图表保存成功';
                 }
-                Utils.delayPop(text,2000);
+                Utils.delayPop(text, 2000);
             }
 
         })
@@ -274,7 +273,7 @@ module.exports = React.createClass({
 let ShowTableContent = React.createClass({
 
     render: function () {
-
+        let newData = this.props.onTbody.concat(this.props.onTbody);
         return (
             <div>
                 <div className="body-tab-nav">
@@ -301,7 +300,7 @@ let ShowTableContent = React.createClass({
                         </tr>
                         </thead>
                         <tbody>
-                        {this.props.onTbody.map((item, i)=> {
+                        {newData.map((item, i)=> {
                             return (
                                 <tr key={i}>
                                     {item.map((td, i)=> {
