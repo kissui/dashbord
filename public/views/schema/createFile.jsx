@@ -4,6 +4,7 @@ import http from "../../lib/http";
 import Folder from "./components/folder";
 import Cube from "./components/cube";
 import HeadPage from "./components/file";
+import HandleTablePage from './components/handleTable';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
@@ -94,6 +95,7 @@ module.exports = React.createClass({
                         onSaveCubeId={this.handleGetCubeId}
                         onChecked={this.handleCheckBox}
                     />}
+                    <HandleTablePage/>
                 </div>
                 <div className="file-footer text-center">
                     <button className="btn btn-primary"
