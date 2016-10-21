@@ -38,7 +38,7 @@ module.exports = React.createClass({
     viewChart: function (conf) {
         conf = Object.assign({}, conf);
         document.getElementById('c1').innerHTML = null;
-        let Fields = this.props.viewBody.fields;
+        let Fields = this.props.viewBody.table_conf.fields;
         let viewBody = this.props.viewBody;
         let initialChartConf = _.has(viewBody.chart_conf, 'type') ? viewBody.chart_conf : false;
         let fields = Fields.dimension_fields.concat(Fields.data_fields);
@@ -167,7 +167,7 @@ module.exports = React.createClass({
         })
     },
     render: function () {
-        let Fields = this.props.viewBody.fields;
+        let Fields = this.props.viewBody.table_conf.fields;
         let chartConf = _.has(this.props.viewBody.chart_conf, 'type') ? this.props.viewBody.chart_conf : false;
         let fields = Fields.dimension_fields.concat(Fields.data_fields);
 
