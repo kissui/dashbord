@@ -6,6 +6,7 @@ import dealData from '../../../components/chart/dealData';
 import KpiDimensionItem from '../chart/dimensitonkpi';
 import http from '../../../lib/http';
 import Utils from '../../../lib/utils';
+import Maths from '../../../components/table/math';
 module.exports = React.createClass({
     getInitialState: function () {
         let viewBody = this.props.viewBody;
@@ -37,7 +38,7 @@ module.exports = React.createClass({
     viewChart: function (conf) {
         conf = Object.assign({}, conf);
         document.getElementById('c1').innerHTML = null;
-        let Fields = this.props.viewBody.fields;
+        let Fields = this.props.viewBody.table_conf.fields;
         let viewBody = this.props.viewBody;
         let initialChartConf = _.has(viewBody.chart_conf, 'type') ? viewBody.chart_conf : false;
         let fields = Fields.dimension_fields.concat(Fields.data_fields);
@@ -166,7 +167,7 @@ module.exports = React.createClass({
         })
     },
     render: function () {
-        let Fields = this.props.viewBody.fields;
+        let Fields = this.props.viewBody.table_conf.fields;
         let chartConf = _.has(this.props.viewBody.chart_conf, 'type') ? this.props.viewBody.chart_conf : false;
         let fields = Fields.dimension_fields.concat(Fields.data_fields);
 
@@ -272,56 +273,15 @@ module.exports = React.createClass({
     }
 });
 let ShowTableContent = React.createClass({
-    handleSumData: function (datas, fields) {
-        let newDataAssign = [];
-        let sum = [];
-        let mean = [];
-        datas.map((item, key) => {
-            let objectAssign = {};
-            datas[key].map((d, i) => {
-                (function (i) {
-                    objectAssign[fields[i].title + i] = /(^\d+)+.+(\d+$)/.test(d) ? parseFloat(d) : d;
-                    objectAssign = _.assign(objectAssign);
-                })(i);
-            });
-            newDataAssign.push(objectAssign);
-        });
-        let frame = new G2.Frame(newDataAssign).arr;
-        frame.map((item, i)=> {
-            if (_.ceil(_.sum(item), 2) + '' == 'NaN') {
-                if (i === 0) {
-                    sum.push('合计')
-                } else {
-                    sum.push('--')
-                }
-            } else {
-                sum.push(_.ceil(_.sum(item), 2) + '');
-            }
-
-            if (_.ceil(_.mean(item), 2) + '' == 'NaN') {
-                if (i === 0) {
-                    mean.push('平均值')
-                } else {
-                    mean.push('--')
-                }
-            } else {
-                mean.push(_.ceil(_.mean(item), 2) + '');
-            }
-        });
-        return {sum: sum, mean: mean};
-        // new G2.Frame(newDataAssign).arr;
-
-    },
     render: function () {
         let newData = this.props.onTbody;
-        // let test = [];
-        // newData.map((item,i)=>{
-        //     test.push( _.concat(item,this.props.onTbody[0],this.props.onTbody[0]));
-        // });
-        // newData = test;
         let newTitle = this.props.onThead;
-        let dealData = this.handleSumData(newData, newTitle);
+        let dealData = Maths.mathDeal(newData, newTitle);
+
         newData = newData.concat([dealData.mean], [dealData.sum]);
+        newData = _.reverse(_.sortBy(newData, (item)=>{
+            return parseFloat(item[3])
+        }));
         return (
             <div>
                 <div className="body-tab-nav">
@@ -343,7 +303,10 @@ let ShowTableContent = React.createClass({
                         <tr>
                             {
                                 this.props.onThead.map((item, i)=> {
-                                    return item.selected ? <th key={i}>{item.title}</th> : null
+                                    return item.selected ? <th key={i}>
+                                        {item.title}
+                                        <i className="fa fa-arrow-up"></i>
+                                        </th> : null
                                 })}
                         </tr>
                         </thead>

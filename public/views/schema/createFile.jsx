@@ -4,6 +4,8 @@ import http from "../../lib/http";
 import Folder from "./components/folder";
 import Cube from "./components/cube";
 import HeadPage from "./components/file";
+import HandleTablePage from './components/handleTable';
+import Drag from './components/drag';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
@@ -29,19 +31,27 @@ module.exports = React.createClass({
         state.cubeConf.map((item, i)=> {
             cubes.push(item.cubes)
         });
-        let fields = [];
+        let dimension_fields = [];
+        let data_fields = [];
         state.cubeConf.map((item, i)=> {
-            fields = _.concat(fields, item.fields.dimension_fields.concat(item.fields.data_fields));
+            dimension_fields = _.concat(dimension_fields, item.fields.dimension_fields);
+            data_fields = _.concat(data_fields, item.fields.data_fields);
         });
-        fields.map((item, i)=> {
-            item["seq_no"] = i;
+
+        _.remove(data_fields,(item)=>{
+            return item.selected === false
         });
         let data = {
             'folder_id': state.folderId,
             'title': value,
             'cubes': cubes,
             'cube_conf': state.cubeConf,
-            'fields': fields
+            'table_conf': {
+                'fields': {
+                    'dimension_fields': dimension_fields,
+                    'data_fields': data_fields
+                },
+            }
         };
         if (conf && conf.name === 'editFile') {
             path = '/api/?c=table.tables&ac=update&id=' + conf.conf.id;
@@ -94,6 +104,8 @@ module.exports = React.createClass({
                         onSaveCubeId={this.handleGetCubeId}
                         onChecked={this.handleCheckBox}
                     />}
+                    <HandleTablePage/>
+                    {/*<Drag onTable={this.props.onConf}/>*/}
                 </div>
                 <div className="file-footer text-center">
                     <button className="btn btn-primary"

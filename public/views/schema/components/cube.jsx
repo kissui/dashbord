@@ -37,7 +37,6 @@ module.exports = React.createClass({
                             dimension_fields: data.data[0].dimensions[0].dimension_fields,
                         })
                     });
-                    console.log('@tempCubeConf', tempCubeConf)
                     if (cubeConf.conf && cubeConf.name == 'editFile') {
                         let editCubeConf = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).cube_conf;
                         this.setState({
@@ -97,7 +96,6 @@ module.exports = React.createClass({
         let content;
         if (this.state.tempCubeConf) {
             let tempCubeConf = this.state.tempCubeConf;
-            console.log('this.state.tempCubeConf', this.state.tempCubeConf)
             content = tempCubeConf.map((item, key) => {
                 return (
                     <div className="shim" key={key}>
