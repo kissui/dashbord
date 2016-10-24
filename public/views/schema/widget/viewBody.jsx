@@ -6,7 +6,8 @@ import dealData from '../../../components/chart/dealData';
 import KpiDimensionItem from '../chart/dimensitonkpi';
 import http from '../../../lib/http';
 import Utils from '../../../lib/utils';
-import Maths from '../../../components/table/math';
+import ShowTableContent from './table';
+
 module.exports = React.createClass({
     getInitialState: function () {
         let viewBody = this.props.viewBody;
@@ -264,67 +265,9 @@ module.exports = React.createClass({
                     </div>
                 </div>
                 <ShowTableContent
-                    onFields={this.props.viewBody.fields}
-                    onThead={fields}
+                    onTableConf={this.props.viewBody.table_conf}
                     onTbody={this.props.viewBody.data}
                 />
-            </div>
-        )
-    }
-});
-let ShowTableContent = React.createClass({
-    render: function () {
-        let newData = this.props.onTbody;
-        let newTitle = this.props.onThead;
-        let dealData = Maths.mathDeal(newData, newTitle);
-
-        newData = newData.concat([dealData.mean], [dealData.sum]);
-        newData = _.reverse(_.sortBy(newData, (item)=>{
-            return parseFloat(item[3])
-        }));
-        return (
-            <div>
-                <div className="body-tab-nav">
-                    <ul className="nav">
-                        <li className="active">数据预览</li>
-                        <li>关联情况</li>
-                    </ul>
-                </div>
-                <div className="body-wrap">
-                    <table className="table table-bordered">
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                </div>
-                <div className="body-wrap">
-                    <table className="table table-bordered">
-                        <thead>
-                        <tr>
-                            {
-                                this.props.onThead.map((item, i)=> {
-                                    return item.selected ? <th key={i}>
-                                        {item.title}
-                                        <i className="fa fa-arrow-up"></i>
-                                        </th> : null
-                                })}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {newData.map((item, i)=> {
-                            return (
-                                <tr key={i}>
-                                    {item.map((td, i)=> {
-                                        return (
-                                            <td key={i}>{td}</td>
-                                        )
-                                    })}
-                                </tr>
-                            )
-                        })}
-                        </tbody>
-                    </table>
-                </div>
             </div>
         )
     }
