@@ -34,13 +34,14 @@ module.exports = React.createClass({
         let dimension_fields = [];
         let data_fields = [];
         state.cubeConf.map((item, i)=> {
-            dimension_fields = _.concat(dimension_fields, item.fields.dimension_fields);
+            // dimension_fields = _.concat(dimension_fields, item.fields.dimension_fields);
             data_fields = _.concat(data_fields, item.fields.data_fields);
         });
-
+        console.log(dimension_fields);
         _.remove(data_fields,(item)=>{
             return item.selected === false
         });
+        dimension_fields = state.cubeConf[0].fields.dimension_fields;
         let data = {
             'folder_id': state.folderId,
             'title': value,
@@ -51,6 +52,8 @@ module.exports = React.createClass({
                     'dimension_fields': dimension_fields,
                     'data_fields': data_fields
                 },
+                'sum': _.isObject(state.tableOptionConf) ? state.tableOptionConf.sum : false,
+                'mean': _.isObject(state.tableOptionConf)? state.tableOptionConf.mean : false
             }
         };
         if (conf && conf.name === 'editFile') {
@@ -90,6 +93,11 @@ module.exports = React.createClass({
     handleCancel: function () {
         this.props.onCancel();
     },
+    handleChangeTableConf: function (conf) {
+        this.setState({
+            tableOptionConf: conf
+        })
+    },
     render: function () {
         return (
             <div className="create-file">
@@ -104,7 +112,10 @@ module.exports = React.createClass({
                         onSaveCubeId={this.handleGetCubeId}
                         onChecked={this.handleCheckBox}
                     />}
-                    <HandleTablePage/>
+                    <HandleTablePage
+                        onChange={this.handleChangeTableConf}
+                        onConf={this.props.onConf}
+                    />
                     {/*<Drag onTable={this.props.onConf}/>*/}
                 </div>
                 <div className="file-footer text-center">

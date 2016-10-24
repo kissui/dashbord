@@ -2,11 +2,36 @@
 
 import React from 'react';
 import Checked from '../../../components/form/checkbox';
+
 module.exports = React.createClass({
+    propsType: {
+        'onConf': React.PropTypes.Object, //初始化操作项的状态
+        // 'onChange': React.prototype.Function //checked event处理状态
+    },
     handleCheckBox: function (value, index) {
-        console.log(value, index)
+        let sum = false,
+            mean = false;
+
+        if (index === 'sum') {
+            sum = value;
+        } else if(index ==='mean') {
+            mean = value;
+        }
+        let conf = {
+            sum: sum,
+            mean: mean
+        };
+        this.props.onChange(conf);
     },
     render: function () {
+        let defaultConf = this.props.onConf.conf;
+        let sumIsChecked = false;
+        let meanIsChecked = false;
+        if(_.isObject(defaultConf)) {
+
+            sumIsChecked = defaultConf.table_conf.sum;
+            meanIsChecked = defaultConf.table_conf.mean;
+        }
         return (
             <div className="folder-body table-conf shim">
                 <div className="body-header">
@@ -17,13 +42,13 @@ module.exports = React.createClass({
                         当前报表是否显示和值:
                         <Checked onSingleChecked={this.handleCheckBox}
                                  index={'sum'}
-                                 onIsCheck={true}/>
+                                 onIsCheck={sumIsChecked}/>
                     </label>
                     <label>
                         当前报表是否显示平均值:
                         <Checked onSingleChecked={this.handleCheckBox}
                                  index={'mean'}
-                                 onIsCheck={true}/>
+                                 onIsCheck={meanIsChecked}/>
                     </label>
                 </div>
             </div>

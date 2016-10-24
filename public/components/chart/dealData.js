@@ -26,6 +26,7 @@ module.exports = function (option, _this) {
         return selectK;
     };
     this._handleChartData = function () {
+        console.log(datas)
         let newDataAssign = [];
         datas.map((item, key) => {
             let objectAssign = {};
