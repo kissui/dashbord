@@ -1,10 +1,11 @@
 'use strict';
 
 export default {
-    mathDeal (datas, fields) {
+    mathDeal (datas, fields, len) {
         let newDataAssign = [];
         let sum = [];
         let mean = [];
+        console.log(fields,len);
         datas.map((item, key) => {
             let objectAssign = {};
             datas[key].map((d, i) => {
@@ -21,10 +22,15 @@ export default {
                 if (i === 0) {
                     sum.push('合计')
                 } else {
-                    sum.push('--')
+                    sum.push('-')
                 }
             } else {
-                sum.push(_.ceil(_.sum(item), 2) + '');
+                if (i > 0 && i < len) {
+                    sum.push('-')
+                } else {
+                    sum.push(_.ceil(_.sum(item), 2) + '');
+                }
+
             }
 
             if (_.ceil(_.mean(item), 2) + '' == 'NaN') {
@@ -34,7 +40,12 @@ export default {
                     mean.push('--')
                 }
             } else {
-                mean.push(_.ceil(_.mean(item), 2) + '');
+                if (i > 0 && i < len) {
+                    mean.push('-')
+                } else {
+                    mean.push(_.ceil(_.mean(item), 2) + '');
+                }
+
             }
         });
         return {sum: sum, mean: mean};

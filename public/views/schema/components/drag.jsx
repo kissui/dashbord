@@ -8,14 +8,31 @@ module.exports = React.createClass({
             activeDrags: 0,
             deltaPosition: {
                 x: 0, y: 0
-            },
-            controlledPosition: {
-                x: -400, y: 200
             }
         };
     },
+    componentWillReceiveProps: function (nextProps) {
+        if (nextProps.onChangeConf) {
+            let cubeConf = nextProps.onChangeConf;
+            let data_fields = [];
+            cubeConf.map((item, i)=> {
+                // dimension_fields = _.concat(dimension_fields, item.fields.dimension_fields);
+                data_fields = _.concat(data_fields, item.fields.data_fields);
+            });
+            if (data_fields && data_fields.length > 0) {
+                _.remove(data_fields, (item)=> {
+                    return item.selected === false
+                });
+            }
 
-    handleDrag: function (e, ui) {
+            this.setState({
+                'data_fields': data_fields
+            })
+        }
+
+    },
+    handleDrag: function (e, i, ui) {
+        // console.log(e,ui)
         const {x, y} = this.state.deltaPosition;
         this.setState({
             deltaPosition: {
@@ -25,48 +42,40 @@ module.exports = React.createClass({
         });
     },
 
-    onStart: function() {
-        console.log('@start',++this.state.activeDrags)
+    onStart: function (e, ui) {
         this.setState({activeDrags: ++this.state.activeDrags});
     },
 
-    onStop: function() {
-        console.log('@stop',++this.state.activeDrags)
+    onStop: function (e, ui) {
+        console.log(document.getElementById('drag-body').style.width)
         this.setState({activeDrags: --this.state.activeDrags});
     },
+    move: function (ele) {
+
+    },
     render: function () {
-        console.log(this.props.onTable)
-        let data = this.props.onTable.conf.table_conf.fields.data_fields;
-        const dragHandlers = {onStart: this.onStart, onStop: this.onStop};
-        const {deltaPosition, controlledPosition} = this.state;
+        let data = this.state.data_fields;
+        let content = null;
+        if (this.state.data_fields && this.state.data_fields.length > 0) {
+            const dragHandlers = {onStart: this.onStart, onStop: this.onStop};
+            const {deltaPosition, controlledPosition} = this.state;
+            content = data.map((item, i)=> {
+                return (
+                    <Draggable bounds="parent" onDrag={this.handleDrag.bind(this, i)}
+                               {...dragHandlers}
+                               key={i}>
+                        <div className="drag-box shim">
+                            <div>{item.title}</div>
+                            <div>x: {deltaPosition.x.toFixed(0)}, y: {deltaPosition.y.toFixed(0)}</div>
+                        </div>
+                    </Draggable>
+                )
+            });
+        }
         return (
-            <div>
-                {data.map((item,i)=>{
-                    return (
-                        <Draggable onDrag={this.handleDrag} {...dragHandlers}>
-                            <div className="box">
-                                <div>{item.title}</div>
-                                <div>x: {deltaPosition.x.toFixed(0)}, y: {deltaPosition.y.toFixed(0)}</div>
-                            </div>
-                        </Draggable>
-                    )
-                })}
-
-                <Draggable handle="strong" {...dragHandlers}>
-                    <div className="box no-cursor">
-                        <strong className="cursor"><div>哈哈</div></strong>
-                        <div>什么鬼什么鬼</div>
-                    </div>
-                </Draggable>
-                <Draggable cancel="strong" {...dragHandlers}>
-                    <div className="box">
-                        <strong className="no-cursor">不能拖着</strong>
-                        <div>什么鬼什么鬼什么鬼</div>
-                    </div>
-                </Draggable>
-
+            <div className="drag-body shim" style={{height: '100%', width: '100%'}} id="drag-body">
+                {content}
             </div>
-
         )
     }
 });

@@ -24,20 +24,16 @@ module.exports = React.createClass({
         })
     },
     handleCommit: function (conf) {
+        console.log(conf)
         let value = this.state.fileName;
         let state = this.state;
         let path;
-        let cubes = [];
-        state.cubeConf.map((item, i)=> {
-            cubes.push(item.cubes)
-        });
         let dimension_fields = [];
         let data_fields = [];
         state.cubeConf.map((item, i)=> {
             // dimension_fields = _.concat(dimension_fields, item.fields.dimension_fields);
             data_fields = _.concat(data_fields, item.fields.data_fields);
         });
-        console.log(dimension_fields);
         _.remove(data_fields,(item)=>{
             return item.selected === false
         });
@@ -45,7 +41,6 @@ module.exports = React.createClass({
         let data = {
             'folder_id': state.folderId,
             'title': value,
-            'cubes': cubes,
             'cube_conf': state.cubeConf,
             'table_conf': {
                 'fields': {
@@ -86,6 +81,7 @@ module.exports = React.createClass({
             }
         });
         tempFields.data_fields = dataFields;
+
         this.setState({
             cubeConf: tempCube
         });
@@ -116,7 +112,10 @@ module.exports = React.createClass({
                         onChange={this.handleChangeTableConf}
                         onConf={this.props.onConf}
                     />
-                    {/*<Drag onTable={this.props.onConf}/>*/}
+                    <Drag
+                        onDefaultConf={this.props.onConf}
+                        onChangeConf={this.state.cubeConf}
+                    />
                 </div>
                 <div className="file-footer text-center">
                     <button className="btn btn-primary"

@@ -28,7 +28,6 @@ module.exports = React.createClass({
         let sumIsChecked = false;
         let meanIsChecked = false;
         if(_.isObject(defaultConf)) {
-
             sumIsChecked = defaultConf.table_conf.sum;
             meanIsChecked = defaultConf.table_conf.mean;
         }
