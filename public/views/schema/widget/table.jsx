@@ -13,9 +13,9 @@ module.exports = React.createClass({
         let newData = this.props.onTbody;
         let newTitle = _.concat(tableConf.fields.dimension_fields,tableConf.fields.data_fields);
         let dealData = Maths.mathDeal(newData, newTitle);
-        newData = _.reverse(_.sortBy(newData, (item)=> {
-            return parseFloat(item[3])
-        }));
+        // newData = _.reverse(_.sortBy(newData, (item)=> {
+        //     return parseFloat(item[3])
+        // }));
 
         if(tableConf.sum){
             newData = newData.concat([dealData.sum]);
