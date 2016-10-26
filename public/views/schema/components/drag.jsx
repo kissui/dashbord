@@ -50,34 +50,32 @@ module.exports = React.createClass({
     },
 
     onStart: function (i) {
-        let ele = $('.drag-body');
-        let currentEle = $('.drag-box').eq(i);
+        let body = $('.drag-body');
+        let dragBox = $('.drag-box')
+        let currentEle = dragBox.eq(i);
         let listPosition = [];
         currentEle.css({opacity: 0.6, zIndex: 10000});
-        ele.width(ele.height())
-        $('.drag-box').map((index)=> {
-            let _this = $('.drag-box').eq(index);
-            _this.css({
-                position: 'absolute',
-                top: _this.position().top,
-                left: _this.position().left,
-            });
+        body.height(body.height());
+        dragBox.map((index)=> {
+            let _this = dragBox.eq(index);
             listPosition.push(
                 {
-                    top: ~~_this.position().top,
-                    left: ~~_this.position().left,
-                    width: ~~_this.width()
+                    top: _this.position().top,
+                    left: _this.position().left,
+                    width: _this.width()
                 }
-            )
+            );
         });
-
-        console.log(ele.width(), ele.height(), currentEle.position().left, currentEle.position().top,listPosition);
+        listPosition.map((item, i)=> {
+            dragBox.eq(i).css({position: 'absolute', left: item.left, top: item.top})
+        });
+        console.log(body.width(), body.height(), currentEle.position().left, currentEle.position().top, listPosition);
         this.setState({
             activeDrags: ++this.state.activeDrags,
             index: i,
-            client: {
-                width: ele.width(),
-                height: ele.height(),
+            moveBox: {
+                top: currentEle.position().top,
+                left: currentEle.position().left,
             }
         })
         ;
@@ -85,7 +83,10 @@ module.exports = React.createClass({
 
     onStop: function (i, e, ui) {
         let currentEle = $('.drag-box').eq(i);
-        currentEle.css({opacity: 1, zIndex: 1});
+        // const {top, left} = this.state.moveBox;
+        let top = currentEle.position().top;
+        let left = currentEle.position().left;
+        currentEle.css({opacity: 1, zIndex: 1, top: top, left: left});
         this.setState({
             activeDrags: --this.state.activeDrags,
             deltaPosition: {
@@ -93,9 +94,6 @@ module.exports = React.createClass({
                 y: 0
             }
         });
-        // $('.drag-box').eq(i).css({
-        //     transform: 'translate(0px,0px)'
-        // });
 
     },
     render: function () {
@@ -103,18 +101,21 @@ module.exports = React.createClass({
         let content = null;
         const {x, y} = this.state.deltaPosition;
         if (this.state.data_fields && this.state.data_fields.length > 0) {
-            content = this.state.data_fields.map((item, i)=> {
-                return (
-                    <Draggable bounds="parent" onDrag={this.handleDrag.bind(this, i)}
-                               onStart={this.onStart.bind(this, i)}
-                               onStop={this.onStop.bind(this, i)}
-                               key={i}>
-                        <div className={this.state.dragCurrentIndex === i ? 'drag-box high' : "drag-box"}>
-                            <div>{item.title}</div>
-                        </div>
-                    </Draggable>
-                )
-            });
+            if (!this.state.listPosition) {
+                content = this.state.data_fields.map((item, i)=> {
+                    return (
+                        <Draggable bounds="parent" onDrag={this.handleDrag.bind(this, i)}
+                                   onStart={this.onStart.bind(this, i)}
+                                   onStop={this.onStop.bind(this, i)}
+                                   key={i}>
+                            <div className={this.state.dragCurrentIndex === i ? 'drag-box high' : "drag-box"}>
+                                <div>{item.title}</div>
+                            </div>
+                        </Draggable>
+                    )
+                });
+            }
+
         }
         return (
             <div className="drag-body shim" style={{height: '100%', width: '100%'}} id="drag-body">
