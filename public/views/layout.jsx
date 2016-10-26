@@ -73,6 +73,7 @@ module.exports = React.createClass({
             </div>
             {shimScript}
             <script src="https://as.alipayobjects.com/g/datavis/g2/2.0.3/index.js"></script>
+            <script src="/bower/jquery/dist/jquery.min.js"></script>
             <script src='/bundle.js'></script>
             </body>
             </html>
