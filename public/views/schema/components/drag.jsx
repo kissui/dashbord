@@ -66,13 +66,14 @@ module.exports = React.createClass({
                 }
             );
         });
-        listPosition.map((item, i)=> {
-            dragBox.eq(i).css({position: 'absolute', left: item.left, top: item.top})
-        });
+        // listPosition.map((item, i)=> {
+        //     dragBox.eq(i).css({position: 'absolute', left: item.left, top: item.top})
+        // });
         console.log(body.width(), body.height(), currentEle.position().left, currentEle.position().top, listPosition);
         this.setState({
             activeDrags: ++this.state.activeDrags,
             index: i,
+            listPosition: listPosition,
             moveBox: {
                 top: currentEle.position().top,
                 left: currentEle.position().left,
@@ -86,7 +87,7 @@ module.exports = React.createClass({
         // const {top, left} = this.state.moveBox;
         let top = currentEle.position().top;
         let left = currentEle.position().left;
-        currentEle.css({opacity: 1, zIndex: 1, top: top, left: left});
+        currentEle.css({opacity: 1, zIndex: 1});
         this.setState({
             activeDrags: --this.state.activeDrags,
             deltaPosition: {
