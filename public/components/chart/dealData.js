@@ -20,7 +20,7 @@ module.exports = function (option, _this) {
         let selectK = [];
         combineKPI.map((item, i) => {
             if (item.k_selected === true) {
-                selectK.push(item.title);
+                selectK.push(item.title+item.val_conf);
             }
         });
         return selectK;
@@ -31,7 +31,7 @@ module.exports = function (option, _this) {
             let objectAssign = {};
             datas[key].map((d, i) => {
                 (function (i) {
-                    objectAssign[fields[i].title + ''] = /^\d+(\.\d+)?$/.test(d) ? parseFloat(d) : d;
+                    objectAssign[fields[i].title + fields[i].val_conf] = /^\d+(\.\d+)?$/.test(d) ? parseFloat(d) : d;
                     objectAssign = Object.assign(objectAssign);
                 })(i);
             });
@@ -52,11 +52,11 @@ module.exports = function (option, _this) {
                 kpiConf: conf,
             })
         } else {
-            dimensionConf = dimension[0].title;
-            kpiConf = KPI[0].title;
+            dimensionConf = dimension[0].title + dimension[0].val_conf;
+            kpiConf = KPI[0].title + KPI[0].val_conf;
             _this.setState({
-                dimensionConf: dimension[0].title,
-                kpiConf: KPI[0].title
+                dimensionConf: dimension[0].title + dimension[0].val_conf,
+                kpiConf: KPI[0].title + KPI[0].val_conf
             })
         }
         return {
