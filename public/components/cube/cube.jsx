@@ -24,12 +24,13 @@ module.exports = function (cube) {
             });
             let dimension = defaultCube[cubeIndex].dimensions[conf.selectedIndex]
             temp[index] = {
+                cube_id: cubeId,
                 dimension_id: conf.value,
-                cubes: temp[index].cube_id + '.' + conf.value,
+                cubes: cubeId + '.' + conf.value,
                 cubeIndex: cubeIndex,
                 dimensionIndex: conf.selectedIndex,
                 title: dimension.title,
-                fields: _this.handleFields(temp[index].cube_id + '.' + conf.value, dimension,isChecked,checkedIndex)
+                fields: _this.handleFields(temp[index].cube_id + '.' + conf.value, dimension, isChecked, checkedIndex)
             }
         }
         return temp
