@@ -5,7 +5,7 @@ function getDis(obj1, obj2) {
 
     var a = obj1.position().left - obj2.position().left;
     var b = obj1.position().top - obj2.position().top;
-console.log(a,b,obj1.position().left,obj2.position().left)
+// console.log(a,b,obj1.position().left,obj2.position().left)
     return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
 }
 module.exports = React.createClass({
@@ -39,18 +39,22 @@ module.exports = React.createClass({
     },
     handleDrag: function (i, e, ui) {
         const {x, y} = this.state.deltaPosition;
-        let data = this.state.data_fields;
-        let position = this.state.listPosition;
         let box = $('.drag-box');
         let currentEle = box.eq(i);
-        let left = currentEle.position().left;
-        let top = currentEle.position().top;
-        let chageInde = i;
-        // console.log(currentEle.position().top, currentEle.position().left)
+        let duration =Math.sqrt(Math.pow(currentEle.width(), 2) + Math.pow(currentEle.height(), 2));
+        let disArr = [];
         for (let d = 0; d < box.length; d++) {
-            console.log('dis:',getDis(currentEle, box.eq(d)));
-
+            box.eq(d).css({border: 'none'});
+            disArr.push({
+                value: i === d ? duration : getDis(currentEle, box.eq(d)),
+                index: d
+            });
         }
+        disArr = _.sortBy(disArr, (o=> {
+            return o.value
+        }));
+        // .css({border: '1px solid red'});
+        console.log(disArr, disArr[1]['index'], box.eq(disArr[0]['index']).css({border: '1px solid red'}));
         this.setState({
                 deltaPosition: {
                     x: x + ui.deltaX,
@@ -82,7 +86,7 @@ module.exports = React.createClass({
         this.setState({
             activeDrags: ++this.state.activeDrags,
             index: i,
-            listPosition: listPosition
+            listPosition: listPosition,
         })
         ;
     },
