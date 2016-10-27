@@ -20,7 +20,7 @@ module.exports = function (option, _this) {
         let selectK = [];
         combineKPI.map((item, i) => {
             if (item.k_selected === true) {
-                selectK.push(item.title+item.val_conf);
+                selectK.push(item.title + item.val_conf);
             }
         });
         return selectK;
@@ -31,7 +31,7 @@ module.exports = function (option, _this) {
             let objectAssign = {};
             datas[key].map((d, i) => {
                 (function (i) {
-                    objectAssign[fields[i].title + fields[i].val_conf] = /^\d+(\.\d+)?$/.test(d) ? parseFloat(d) : d;
+                    objectAssign[fields[i].title + fields[i].val_conf] = /^\d+(\.\d+)?$/.test(d) ? parseFloat(d) : (d === '-' ? 0 : d);
                     objectAssign = Object.assign(objectAssign);
                 })(i);
             });
@@ -101,7 +101,10 @@ module.exports = function (option, _this) {
         let chart = new G2.Chart({
             id: 'c1',
             forceFit: true,
-            height: 400
+            height: 400,
+            plotCfg: {
+                // margin: [10, 20, 10, 20],
+            }
         }); // create the chart object
         let frame = new Frame(this._handleChartData());
         chart.source(me._handleChartData(), {
@@ -113,7 +116,7 @@ module.exports = function (option, _this) {
             }
         });
         if (type === 'line') {
-            let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', 'City', dimensionConf);
+            let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', '指标项', dimensionConf);
             let aliasText;
             if (KPIChartSelect.length === 1) {
                 aliasText = KPIChartSelect[0]
@@ -121,18 +124,19 @@ module.exports = function (option, _this) {
                 aliasText = KPIChartSelect.join(',')
             }
             chart.source(combineFrame, {
-                'Revenue': {
-                    alias: aliasText
-                },
+                // 'Revenue': {
+                //     alias: aliasText
+                // },
                 [dimensionConf]: {
                     type: 'cat',
                     alias: dimensionConf
                 }
             });
             chart.legend('City', {
-                position: 'bottom'
+                position: 'right',
+                dx: -10
             });
-            chart.line().position(dimensionConf + '*Revenue').color('City');
+            chart.line().position(dimensionConf + '*Revenue').color('指标项');
         } else if (type === 'pie') {
             chart.coord('theta', {
                 radius: 0.8 // 设置饼图的大小
@@ -147,7 +151,7 @@ module.exports = function (option, _this) {
                     return name + ' ' + percent;
                 });
         } else if (type === 'area') {
-            let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', 'City', dimensionConf);
+            let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', '指标项', dimensionConf);
 
             chart.source(combineFrame, {
                 'Revenue': {
@@ -159,11 +163,12 @@ module.exports = function (option, _this) {
                 }
             });
             chart.legend('City', {
-                position: 'bottom'
+                position: 'right',
+                dx: -10
             });
-            chart.area().position(dimensionConf + '*Revenue').color('City');
+            chart.area().position(dimensionConf + '*Revenue').color('指标项');
         } else {
-            let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', 'City', dimensionConf);
+            let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', '指标项', dimensionConf);
             let aliasText;
             if (KPIChartSelect.length === 1) {
                 aliasText = KPIChartSelect[0]
@@ -180,9 +185,10 @@ module.exports = function (option, _this) {
                 }
             });
             chart.legend('City', {
-                position: 'bottom'
+                position: 'right',
+                dx: 30,
             });
-            chart.interval(['stack']).position(dimensionConf + '*Revenue').color('City');
+            chart.interval(['stack']).position(dimensionConf + '*Revenue').color('指标项');
 
         }
         chart.render();
