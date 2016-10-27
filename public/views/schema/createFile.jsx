@@ -14,6 +14,7 @@ module.exports = React.createClass({
     },
     handleGetCubeId: function (cubeConf) {
         let data_fields = [];
+        let sessionConf = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
         cubeConf.map((item, i)=> {
             data_fields = _.concat(data_fields, item.fields.data_fields);
         });
@@ -22,9 +23,13 @@ module.exports = React.createClass({
                 return item.selected === false
             });
         }
+        let defaultDataFields;
+        if(sessionConf.table_conf && _.has(sessionConf.table_conf,'fields')) {
+            defaultDataFields = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).table_conf.fields.data_fields;
+        }
         this.setState({
             cubeConf: cubeConf,
-            dragConf: data_fields
+            dragConf: defaultDataFields ? defaultDataFields : data_fields
         });
 
     },
@@ -106,7 +111,8 @@ module.exports = React.createClass({
             });
         }
         this.setState({
-            cubeConf: tempCube
+            cubeConf: tempCube,
+            dragStart: false
         });
 
     },
@@ -145,6 +151,7 @@ module.exports = React.createClass({
                     <Drag
                         onDefaultConf={this.props.onConf}
                         onChangeConf={this.state.dragConf}
+                        onIsFirst={this.state.dragStart}
                         onHandleDrag={this.handleSaveDragConf}
                     />
                 </div>

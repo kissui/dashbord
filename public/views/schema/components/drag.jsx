@@ -17,13 +17,14 @@ module.exports = React.createClass({
     },
     componentWillReceiveProps: function (nextProps) {
         let defaultDataFields;
+
         if (this.props.onDefaultConf.conf && this.props.onDefaultConf.name == 'editFile') {
             defaultDataFields = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).table_conf.fields.data_fields;
         }
         if (nextProps.onChangeConf) {
-
+            let isFirst = !this.props.onIsFirst || this.state.dragStart;
             this.setState({
-                'data_fields': defaultDataFields ? defaultDataFields : nextProps.onChangeConf
+                'data_fields': !isFirst ? defaultDataFields : nextProps.onChangeConf
             })
         }
 
@@ -76,8 +77,8 @@ module.exports = React.createClass({
             activeDrags: ++this.state.activeDrags,
             index: i,
             listPosition: listPosition,
+            dragStart:true
         })
-        ;
     },
     onStop: function (i, e, ui) {
         let box = $('.drag-box');
