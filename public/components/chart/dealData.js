@@ -16,23 +16,22 @@ module.exports = function (option, _this) {
         dimension = option.dimension;
         KPI = option.KPI;
     }
-    this.combineSum = function (combineKPI,combineDimension) {
+    this.combineSum = function (combineKPI, combineDimension) {
         let selectK = [];
         combineKPI.map((item, i) => {
-            if(item.k_selected === true) {
-                selectK.push(item.title);
+            if (item.k_selected === true) {
+                selectK.push(item.title+item.val_conf);
             }
         });
         return selectK;
     };
     this._handleChartData = function () {
-        console.log(datas)
         let newDataAssign = [];
         datas.map((item, key) => {
             let objectAssign = {};
             datas[key].map((d, i) => {
                 (function (i) {
-                    objectAssign[fields[i].title + ''] = /\d./.test(d) ? parseFloat(d) : d;
+                    objectAssign[fields[i].title + fields[i].val_conf] = /^\d+(\.\d+)?$/.test(d) ? parseFloat(d) : d;
                     objectAssign = Object.assign(objectAssign);
                 })(i);
             });
@@ -53,11 +52,11 @@ module.exports = function (option, _this) {
                 kpiConf: conf,
             })
         } else {
-            dimensionConf = dimension[0].title;
-            kpiConf = KPI[0].title;
+            dimensionConf = dimension[0].title + dimension[0].val_conf;
+            kpiConf = KPI[0].title + KPI[0].val_conf;
             _this.setState({
-                dimensionConf: dimension[0].title,
-                kpiConf: KPI[0].title
+                dimensionConf: dimension[0].title + dimension[0].val_conf,
+                kpiConf: KPI[0].title + KPI[0].val_conf
             })
         }
         return {
@@ -116,7 +115,7 @@ module.exports = function (option, _this) {
         if (type === 'line') {
             let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', 'City', dimensionConf);
             let aliasText;
-            if(KPIChartSelect.length ===1) {
+            if (KPIChartSelect.length === 1) {
                 aliasText = KPIChartSelect[0]
             } else {
                 aliasText = KPIChartSelect.join(',')
@@ -126,13 +125,14 @@ module.exports = function (option, _this) {
                     alias: aliasText
                 },
                 [dimensionConf]: {
+                    type: 'cat',
                     alias: dimensionConf
                 }
             });
             chart.legend('City', {
-                position: 'top'
+                position: 'bottom'
             });
-            chart.line().position(dimensionConf+'*Revenue').color('City');
+            chart.line().position(dimensionConf + '*Revenue').color('City');
         } else if (type === 'pie') {
             chart.coord('theta', {
                 radius: 0.8 // 设置饼图的大小
@@ -142,10 +142,10 @@ module.exports = function (option, _this) {
             });
             chart.intervalStack().position(Stat.summary.percent(kpiConf))
                 .color(dimensionConf)
-                .label(dimensionConf+'*..percent',function(name, percent){
-                percent = (percent * 100).toFixed(2) + '%';
-                return name + ' ' + percent;
-            });
+                .label(dimensionConf + '*..percent', function (name, percent) {
+                    percent = (percent * 100).toFixed(2) + '%';
+                    return name + ' ' + percent;
+                });
         } else if (type === 'area') {
             let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', 'City', dimensionConf);
 
@@ -154,17 +154,18 @@ module.exports = function (option, _this) {
                     alias: '销售总额（美元）'
                 },
                 [dimensionConf]: {
+                    type: 'cat',
                     alias: dimensionConf
                 }
             });
             chart.legend('City', {
-                position: 'top'
+                position: 'bottom'
             });
             chart.area().position(dimensionConf + '*Revenue').color('City');
         } else {
             let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', 'City', dimensionConf);
             let aliasText;
-            if(KPIChartSelect.length ===1) {
+            if (KPIChartSelect.length === 1) {
                 aliasText = KPIChartSelect[0]
             } else {
                 aliasText = KPIChartSelect.join(',')
@@ -174,13 +175,14 @@ module.exports = function (option, _this) {
                     alias: aliasText
                 },
                 [dimensionConf]: {
+                    type: 'cat',
                     alias: dimensionConf
                 }
             });
             chart.legend('City', {
-                position: 'top'
+                position: 'bottom'
             });
-            chart.interval(['dodge', 'stack']).position(dimensionConf + '*Revenue').color('City');
+            chart.interval(['stack']).position(dimensionConf + '*Revenue').color('City');
 
         }
         chart.render();

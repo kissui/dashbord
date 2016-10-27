@@ -65,6 +65,7 @@ module.exports = React.createClass({
         let CUBE = new cube(this.state.cubeData);
         this.setState({
             tempCubeConf: CUBE.selectedData(initCubeDefaultData, conf, index),
+            isChange: true,
         });
         this.props.onSaveCubeId(CUBE.selectedData(initCubeDefaultData, conf, index))
     },
@@ -73,6 +74,7 @@ module.exports = React.createClass({
         let CUBE = new cube(this.state.cubeData);
         this.setState({
             tempCubeConf: CUBE.selectedData(initCubeDefaultData, conf, index),
+            isChange: true,
         });
         this.props.onSaveCubeId(CUBE.selectedData(initCubeDefaultData, conf, index))
     },
@@ -99,7 +101,8 @@ module.exports = React.createClass({
             content = tempCubeConf.map((item, key) => {
                 return (
                     <div className="shim" key={key}>
-                        {tempCubeConf.length > 1 && <div className="cube-delete" onClick={this.handleDeleteCube.bind(null, key)}>
+                        {tempCubeConf.length > 1 &&
+                        <div className="cube-delete" onClick={this.handleDeleteCube.bind(null, key)}>
                             <i className="fa fa-minus"></i>
                         </div>}
                         <div className="form-inline">
@@ -129,6 +132,7 @@ module.exports = React.createClass({
                         <Dimensionmodule
                             onData={this.state.cubeData[item.cubeIndex].dimensions[item.dimensionIndex]}
                             defaultText="暂无数据"
+                            onChange={this.state.isChange}
                             onIndex={key}
                             onOperatePage={this.props.onGetCubeConf.name}
                             onSingleChecked={this.handleCheckBox}
