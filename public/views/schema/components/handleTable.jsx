@@ -6,32 +6,41 @@ import Checked from '../../../components/form/checkbox';
 module.exports = React.createClass({
     propsType: {
         'onConf': React.PropTypes.Object, //初始化操作项的状态
-        // 'onChange': React.prototype.Function //checked event处理状态
+    },
+    getInitialState: function () {
+        let defaultConf = this.props.onConf.conf;
+        if (_.isObject(defaultConf) && _.has(defaultConf, 'table_conf')) {
+            return {
+                conf: {
+                    sum: defaultConf.table_conf.sum,
+                    mean: defaultConf.table_conf.mean
+                }
+            }
+        } else {
+            return {
+                conf: {
+                    sum: false,
+                    mean: false
+                }
+            }
+        }
+    },
+    componentDidMount: function () {
+        this.props.onChange(this.state.conf);
     },
     handleCheckBox: function (value, index) {
-        let sum = false,
-            mean = false;
-
+        let conf = this.state.conf;
         if (index === 'sum') {
-            sum = value;
-        } else if(index ==='mean') {
-            mean = value;
+           conf.sum = value;
+        } else if (index === 'mean') {
+            conf.mean = value;
         }
-        let conf = {
-            sum: sum,
-            mean: mean
-        };
         this.props.onChange(conf);
     },
     render: function () {
-        let defaultConf = this.props.onConf.conf;
-        let sumIsChecked = false;
-        let meanIsChecked = false;
-
-        if(_.isObject(defaultConf) && _.has(defaultConf,'table_conf')) {
-            sumIsChecked = defaultConf.table_conf.sum;
-            meanIsChecked = defaultConf.table_conf.mean;
-        }
+        let defaultConf = this.state.conf;
+        let sumIsChecked = defaultConf.sum;
+        let meanIsChecked = defaultConf.mean;
         return (
             <div className="folder-body table-conf shim">
                 <div className="body-header">

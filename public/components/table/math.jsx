@@ -9,7 +9,7 @@ export default {
             let objectAssign = {};
             datas[key].map((d, i) => {
                 (function (i) {
-                    objectAssign[fields[i].title + i] = /(^\d+)+.+(\d+$)/.test(d) ? parseFloat(d) : d;
+                    objectAssign[fields[i].title + i] = /^\d+(\.\d+)?$/.test(d) ? parseFloat(d) : (d === '-' ? 0 : d);
                     objectAssign = _.assign(objectAssign);
                 })(i);
             });

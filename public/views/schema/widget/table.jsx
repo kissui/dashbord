@@ -18,13 +18,15 @@ module.exports = React.createClass({
         // newData = _.reverse(_.sortBy(newData, (item)=> {
         //     return parseFloat(item[3])
         // }));
+        console.log(tableConf,[dealData.sum],[dealData.mean])
         if(tableConf.sum){
+            console.log(1)
             newData = newData.concat([dealData.sum]);
-        } else if(tableConf.mean) {
+        };
+        if(tableConf['mean']) {
+            console.log(2)
             newData = newData.concat([dealData.mean]);
         }
-
-
         return (
             <div>
                 <div className="body-tab-nav">
