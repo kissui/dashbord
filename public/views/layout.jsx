@@ -72,6 +72,7 @@ module.exports = React.createClass({
                 {this.props.children}
             </div>
             {shimScript}
+            <script src="/bower/jquery/dist/jquery.min.js"></script>
             <script src="/g2/index.js"></script>
             <script src='/bundle.js'></script>
             </body>

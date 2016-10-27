@@ -1,7 +1,7 @@
 'use strict';
 
 export default {
-    mathDeal (datas, fields) {
+    mathDeal (datas, fields, len) {
         let newDataAssign = [];
         let sum = [];
         let mean = [];
@@ -25,12 +25,10 @@ export default {
                 } else {
                     sum.push(_.ceil(_.sum(item), 2) + '');
                 }
-
             }
             if (i === 0) {
                 mean.push('平均值')
             } else {
-
                 if (_.ceil(_.mean(item), 2) + '' == 'NaN') {
                     mean.push('--')
                 } else {

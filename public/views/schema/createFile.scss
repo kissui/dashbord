@@ -138,4 +138,27 @@
             margin: 0 16px;
         }
     }
+    .drag-body {
+        width: 100%;
+        overflow: hidden;
+        .drag-box{
+            position: relative;
+            max-width: 150px;
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+            cursor: move;
+            border: 1px solid #DDD;
+            border-radius: 5px;
+            background: #337ab7;
+            color: #fff;
+            height: 40px;
+            padding: 0 8px;
+            line-height: 40px;
+        }
+    }
+    
+}
+.high{
+    border: 1px solid red;
 }

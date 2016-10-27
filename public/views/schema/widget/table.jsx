@@ -11,12 +11,13 @@ module.exports = React.createClass({
 
         let tableConf = this.props.onTableConf;
         let newData = this.props.onTbody;
+        let dimensionsLen = tableConf.fields.dimension_fields.length;
         let newTitle = _.concat(tableConf.fields.dimension_fields,tableConf.fields.data_fields);
+
         let dealData = Maths.mathDeal(newData, newTitle);
         // newData = _.reverse(_.sortBy(newData, (item)=> {
         //     return parseFloat(item[3])
         // }));
-
         if(tableConf.sum){
             newData = newData.concat([dealData.sum]);
         } else if(tableConf.mean) {
