@@ -162,7 +162,7 @@ module.exports = function (option, _this) {
                     alias: dimensionConf
                 }
             });
-            chart.legend('City', {
+            chart.legend('指标项', {
                 position: 'right',
                 dx: -10
             });
@@ -184,7 +184,7 @@ module.exports = function (option, _this) {
                     alias: dimensionConf
                 }
             });
-            chart.legend('City', {
+            chart.legend('指标项', {
                 position: 'right',
                 dx: 30,
             });
