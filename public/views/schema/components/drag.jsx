@@ -2,10 +2,8 @@
 import React from 'react';
 import Draggable from 'react-draggable';
 function getDis(obj1, obj2) {
-
     var a = obj1.position().left - obj2.position().left;
     var b = obj1.position().top - obj2.position().top;
-// console.log(a,b,obj1.position().left,obj2.position().left)
     return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
 }
 module.exports = React.createClass({
@@ -18,20 +16,14 @@ module.exports = React.createClass({
         };
     },
     componentWillReceiveProps: function (nextProps) {
+        let defaultDataFields;
+        if (this.props.onDefaultConf.conf && this.props.onDefaultConf.name == 'editFile') {
+            defaultDataFields = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).table_conf.fields.data_fields;
+        }
         if (nextProps.onChangeConf) {
-            let cubeConf = nextProps.onChangeConf;
-            let data_fields = [];
-            cubeConf.map((item, i)=> {
-                data_fields = _.concat(data_fields, item.fields.data_fields);
-            });
-            if (data_fields && data_fields.length > 0) {
-                _.remove(data_fields, (item)=> {
-                    return item.selected === false
-                });
-            }
 
             this.setState({
-                'data_fields': data_fields
+                'data_fields': defaultDataFields ? defaultDataFields : nextProps.onChangeConf
             })
         }
 
@@ -91,7 +83,7 @@ module.exports = React.createClass({
         let box = $('.drag-box');
         let dataFields = this.state.data_fields;
         let forkData = dataFields[i];
-        let selectData = dataFields[this.state.changeIndex ? this.state.changeIndex : i];
+        let selectData = dataFields[this.state.changeIndex != 'undefined' ? this.state.changeIndex : i];
         dataFields.map((item, c)=> {
             if (c === i) {
                 dataFields[c] = selectData
@@ -118,11 +110,11 @@ module.exports = React.createClass({
                 }
             );
         }
+        this.props.onHandleDrag(dataFields);
     },
     render: function () {
         let data = this.state.data_fields;
         let content = null;
-        console.log('@this.state.data_fields', this.state.data_fields)
         if (this.state.data_fields && this.state.data_fields.length > 0) {
             content = this.state.data_fields.map((item, i)=> {
                 return (

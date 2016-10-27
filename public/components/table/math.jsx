@@ -5,7 +5,6 @@ export default {
         let newDataAssign = [];
         let sum = [];
         let mean = [];
-        console.log(fields,len);
         datas.map((item, key) => {
             let objectAssign = {};
             datas[key].map((d, i) => {

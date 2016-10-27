@@ -13,8 +13,18 @@ module.exports = React.createClass({
         }
     },
     handleGetCubeId: function (cubeConf) {
+        let data_fields = [];
+        cubeConf.map((item, i)=> {
+            data_fields = _.concat(data_fields, item.fields.data_fields);
+        });
+        if (data_fields && data_fields.length > 0) {
+            _.remove(data_fields, (item)=> {
+                return item.selected === false
+            });
+        }
         this.setState({
-            cubeConf: cubeConf
+            cubeConf: cubeConf,
+            dragConf: data_fields
         });
 
     },
@@ -24,20 +34,22 @@ module.exports = React.createClass({
         })
     },
     handleCommit: function (conf) {
-        console.log(conf)
         let value = this.state.fileName;
         let state = this.state;
         let path;
-        let dimension_fields = [];
         let data_fields = [];
-        state.cubeConf.map((item, i)=> {
-            // dimension_fields = _.concat(dimension_fields, item.fields.dimension_fields);
-            data_fields = _.concat(data_fields, item.fields.data_fields);
-        });
-        _.remove(data_fields,(item)=>{
-            return item.selected === false
-        });
-        dimension_fields = state.cubeConf[0].fields.dimension_fields;
+        if (!this.state.dragConf) {
+            state.cubeConf.map((item, i)=> {
+                data_fields = _.concat(data_fields, item.fields.data_fields);
+            });
+            _.remove(data_fields, (item)=> {
+                return item.selected === false
+            });
+        } else {
+            data_fields = this.state.dragConf;
+        }
+
+        let dimension_fields = state.cubeConf[0].fields.dimension_fields;
         let data = {
             'folder_id': state.folderId,
             'title': value,
@@ -48,7 +60,7 @@ module.exports = React.createClass({
                     'data_fields': data_fields
                 },
                 'sum': _.isObject(state.tableOptionConf) ? state.tableOptionConf.sum : false,
-                'mean': _.isObject(state.tableOptionConf)? state.tableOptionConf.mean : false
+                'mean': _.isObject(state.tableOptionConf) ? state.tableOptionConf.mean : false
             }
         };
         if (conf && conf.name === 'editFile') {
@@ -81,17 +93,35 @@ module.exports = React.createClass({
             }
         });
         tempFields.data_fields = dataFields;
-
+        // 处理drag事件的数据
+        if (value === true) {
+            this.setState({
+                dragConf: _.concat(this.state.dragConf, tempCube[cubeIndex].fields.data_fields[index])
+            })
+        } else {
+            this.setState({
+                dragConf: _.remove(this.state.dragConf, (item)=> {
+                    return item.title != tempCube[cubeIndex].fields.data_fields[index].title
+                })
+            });
+        }
         this.setState({
             cubeConf: tempCube
         });
+
     },
+
     handleCancel: function () {
         this.props.onCancel();
     },
     handleChangeTableConf: function (conf) {
         this.setState({
             tableOptionConf: conf
+        })
+    },
+    handleSaveDragConf: function (conf) {
+        this.setState({
+            dragConf: conf
         })
     },
     render: function () {
@@ -114,7 +144,8 @@ module.exports = React.createClass({
                     />
                     <Drag
                         onDefaultConf={this.props.onConf}
-                        onChangeConf={this.state.cubeConf}
+                        onChangeConf={this.state.dragConf}
+                        onHandleDrag={this.handleSaveDragConf}
                     />
                 </div>
                 <div className="file-footer text-center">
