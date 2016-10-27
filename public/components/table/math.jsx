@@ -17,34 +17,23 @@ export default {
         });
         let frame = new G2.Frame(newDataAssign).arr;
         frame.map((item, i)=> {
-            if (_.ceil(_.sum(item), 2) + '' == 'NaN') {
-                if (i === 0) {
-                    sum.push('合计')
-                } else {
-                    sum.push('-')
-                }
+            if (i === 0) {
+                sum.push('合计')
             } else {
-                if (i > 0 && i < len) {
-                    sum.push('-')
+                if (_.ceil(_.sum(item), 2) + '' == 'NaN') {
+                    sum.push('--')
                 } else {
                     sum.push(_.ceil(_.sum(item), 2) + '');
                 }
-
             }
-
-            if (_.ceil(_.mean(item), 2) + '' == 'NaN') {
-                if (i === 0) {
-                    mean.push('平均值')
-                } else {
-                    mean.push('--')
-                }
+            if (i === 0) {
+                mean.push('平均值')
             } else {
-                if (i > 0 && i < len) {
-                    mean.push('-')
+                if (_.ceil(_.mean(item), 2) + '' == 'NaN') {
+                    mean.push('--')
                 } else {
                     mean.push(_.ceil(_.mean(item), 2) + '');
                 }
-
             }
         });
         return {sum: sum, mean: mean};

@@ -16,7 +16,7 @@ module.exports = React.createClass({
             'body': viewBody,
             'dimension_new': false,
             'kpi_new': false,
-            'changeChartType': 'interval',
+            'changeChartType': _.has(viewBody.chart_conf, 'type') ? viewBody.chart_conf.type : 'interval',
             'initialGraphicState': graphicState
         }
     },
@@ -220,7 +220,7 @@ module.exports = React.createClass({
                     <div className="row">
                         <div
                             className={this.state.initialCreateGraphicState ? "col-md-9 chart-box" : "col-md-12 chart-box"}>
-                            <div id="c1"></div >
+                            <div id="c1"></div>
                         </div >
                         {(this.state.initialCreateGraphicState) ? (
                             <div className="col-md-3">
@@ -234,7 +234,7 @@ module.exports = React.createClass({
                                         />
                                     </ul>
                                 </div>
-                                <div className="chart-kpi shim">
+                                <div className="chart-kpi shim height-limit">
                                     <h5>指标: </h5>
                                     <KpiDimensionItem
                                         type="kpi"
