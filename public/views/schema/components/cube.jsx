@@ -148,7 +148,6 @@ module.exports = React.createClass({
                     <div className="cube-add" onClick={this.handleAddCube}>
                         <i className="fa fa-plus-square"></i>
                     </div>
-
                 </div>
                 {content}
             </div>
