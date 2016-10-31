@@ -779,3 +779,32 @@ a {
     margin-left: -150px;
     text-align: center;
 }
+.datePicker-container {
+    .datePicker-view-input {
+        width: 335px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        cursor: pointer;
+        input{
+            border:none;
+            cursor: pointer;
+        }
+        .character{
+            padding-right: 13px;
+        }
+    }
+}
+.datePicker-box {
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    width: 570px;
+    padding: 7px;
+    margin-top: 8px;
+    position: absolute;
+    z-index: 999;
+    background: #fff;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.1),0 16px 24px 0 rgba(81,129,228,.1);
+    -moz-box-shadow: 0 2px 4px 0 rgba(0,0,0,.1),0 16px 24px 0 rgba(81,129,228,.1);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.1),0 16px 24px 0 rgba(81,129,228,.1);
+}

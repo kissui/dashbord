@@ -2,33 +2,41 @@
 import React from 'react';
 import Maths from '../../../components/table/math';
 import _ from  'lodash';
+
+import {defaultRanges, Calendar, DateRange} from 'react-date-range';
+import DataPage from '../datePage';
 module.exports = React.createClass({
     propsType: {
         'onTableConf': React.PropTypes.Object, //table conf {sum,mean,fields}
         'onTbody': React.PropTypes.array // BE 返回的table 数据结构
     },
+    handleFieldSort: function (i) {
+
+    },
+    handleReceiveDateRange: function (start, end) {
+        // console.log(start, end);
+    },
     render: function () {
-
         let tableConf = this.props.onTableConf;
+        let _this = this;
         let newData = this.props.onTbody;
-        let dimensionsLen = tableConf.fields.dimension_fields.length;
-        let newTitle = _.concat(tableConf.fields.dimension_fields,tableConf.fields.data_fields);
-
-        let dealData = Maths.mathDeal(newData, newTitle);
+        //初始化表格表头的内容部分高
+        let newTitle = _.concat(tableConf.fields.dimension_fields, tableConf.fields.data_fields);
+        // 单独指标项排序
         // newData = _.reverse(_.sortBy(newData, (item)=> {
         //     return parseFloat(item[3])
         // }));
-        console.log(tableConf,[dealData.sum],[dealData.mean])
-        if(tableConf.sum){
-            console.log(1)
+        // 返回和值,均值的处理
+        let dealData = Maths.mathDeal(newData, newTitle);
+        if (tableConf.sum) {
             newData = newData.concat([dealData.sum]);
-        };
-        if(tableConf['mean']) {
-            console.log(2)
+        }
+        if (tableConf['mean']) {
             newData = newData.concat([dealData.mean]);
         }
         return (
             <div>
+                <DataPage onReceiveData={this.handleReceiveDateRange} isShowRange={false}/>
                 <div className="body-tab-nav">
                     <ul className="nav">
                         <li className="active">数据预览</li>
@@ -50,7 +58,10 @@ module.exports = React.createClass({
                                 newTitle.map((item, i)=> {
                                     return item.selected ? <th key={i}>
                                         {item.title}
-                                        <i className="fa fa-arrow-up"></i>
+                                        <i className="fa fa-arrow-up"
+                                           onClick={_this.handleFieldSort.bind(this, i)}
+                                        >
+                                        </i>
                                     </th> : null
                                 })}
                         </tr>
