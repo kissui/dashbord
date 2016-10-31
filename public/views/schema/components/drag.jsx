@@ -10,6 +10,7 @@ module.exports = React.createClass({
     getInitialState: function () {
         return {
             activeDrags: 0,
+            changeIndex: null,
             deltaPosition: {
                 x: 0, y: 0
             }
@@ -33,6 +34,8 @@ module.exports = React.createClass({
         const {x, y} = this.state.deltaPosition;
         let box = $('.drag-box');
         let currentEle = box.eq(i);
+        console.log('@dragRange:',x,y);
+        currentEle.css({transform: "translate(" + x + 'px,' + y + "px)"});
         let duration = Math.sqrt(Math.pow(currentEle.width(), 2) + Math.pow(currentEle.height(), 2));
         let disArr = [];
         for (let d = 0; d < box.length; d++) {
@@ -45,7 +48,9 @@ module.exports = React.createClass({
         disArr = _.sortBy(disArr, (o=> {
             return o.value
         }));
-        box.eq(disArr[0]['index']).css({border: '1px solid red'});
+        box.eq(disArr[0]['index']).css({
+            border: '1px solid red'
+        });
         this.setState({
                 deltaPosition: {
                     x: x + ui.deltaX,
@@ -77,22 +82,40 @@ module.exports = React.createClass({
             activeDrags: ++this.state.activeDrags,
             index: i,
             listPosition: listPosition,
-            dragStart:true
+            dragStart: true
         })
     },
     onStop: function (i, e, ui) {
         let box = $('.drag-box');
         let dataFields = this.state.data_fields;
-        let forkData = dataFields[i];
-        let selectData = dataFields[this.state.changeIndex != 'undefined' ? this.state.changeIndex : i];
-        dataFields.map((item, c)=> {
-            if (c === i) {
-                dataFields[c] = selectData
-            }
-            if (c === this.state.changeIndex) {
-                dataFields[c] = forkData;
-            }
-        });
+        const {changeIndex} = this.state;
+
+        function pushBy(collection, inject, index) {
+            let collect = collection;
+            let byBefore = collect.splice(0, index);
+            return byBefore.concat(inject).concat(collect);
+        }
+
+        if (changeIndex != null && i != changeIndex) {
+            // console.log(11111)
+            // let forkData = dataFields[i];
+            // let selectData = dataFields[changeIndex != 'undefined' ? changeIndex : i];
+            //
+            // dataFields.map((item, c)=> {
+            //     if (c === i) {
+            //         dataFields[c] = selectData
+            //     }
+            //     if (c === this.state.changeIndex) {
+            //         dataFields[c] = forkData;
+            //     }
+            // });
+
+            let injectField = _.remove(dataFields, (item, ind)=> {
+                return ind === i;
+            });
+            dataFields = pushBy(dataFields, injectField, changeIndex);
+            console.log('@interRange:', changeIndex, i, dataFields);
+        }
         this.setState({
             activeDrags: --this.state.activeDrags,
             data_fields: dataFields,
@@ -112,6 +135,7 @@ module.exports = React.createClass({
             );
         }
         this.props.onHandleDrag(dataFields);
+
     },
     render: function () {
         let data = this.state.data_fields;
