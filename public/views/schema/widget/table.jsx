@@ -10,8 +10,21 @@ module.exports = React.createClass({
         'onTableConf': React.PropTypes.Object, //table conf {sum,mean,fields}
         'onTbody': React.PropTypes.array // BE 返回的table 数据结构
     },
-    handleFieldSort: function (i) {
-
+    getInitialState: function () {
+        return {
+            sort:{
+                sortBy:null,
+                sortType:'up'
+            }
+        }
+    },
+    handleFieldSort: function (i,type) {
+        this.setState({
+            'sort':{
+                sortBy: i,
+                sortType: type === 'up' ? 'down': 'up'
+            }
+        })
     },
     handleReceiveDateRange: function (start, end) {
         // console.log(start, end);
@@ -23,9 +36,20 @@ module.exports = React.createClass({
         //初始化表格表头的内容部分高
         let newTitle = _.concat(tableConf.fields.dimension_fields, tableConf.fields.data_fields);
         // 单独指标项排序
-        // newData = _.reverse(_.sortBy(newData, (item)=> {
-        //     return parseFloat(item[3])
-        // }));
+        let dimensionLen = tableConf.fields.dimension_fields.length;
+        const {sort} = this.state;
+        if(sort && sort.sortBy) {
+            if(sort.sortType === 'up'){
+                newData = _.sortBy(newData, (item)=> {
+                    return parseFloat(item[sort.sortBy])
+                });
+            } else {
+                newData = _.reverse(_.sortBy(newData, (item)=> {
+                    return parseFloat(item[sort.sortBy])
+                }));
+            }
+        };
+
         // 返回和值,均值的处理
         let dealData = Maths.mathDeal(newData, newTitle);
         if (tableConf.sum) {
@@ -36,7 +60,7 @@ module.exports = React.createClass({
         }
         return (
             <div>
-                <DataPage onReceiveData={this.handleReceiveDateRange} isShowRange={false}/>
+                {/*<DataPage onReceiveData={this.handleReceiveDateRange} isShowRange={false}/>*/}
                 <div className="body-tab-nav">
                     <ul className="nav">
                         <li className="active">数据预览</li>
@@ -51,17 +75,17 @@ module.exports = React.createClass({
                     </table>
                 </div>
                 <div className="body-wrap">
-                    <table className="table table-bordered">
+                    <table className="table table-bordered wrap-table">
                         <thead>
                         <tr>
                             {
                                 newTitle.map((item, i)=> {
                                     return item.selected ? <th key={i}>
                                         {item.title}
-                                        <i className="fa fa-arrow-up"
-                                           onClick={_this.handleFieldSort.bind(this, i)}
+                                        {i >= dimensionLen && <i className="fa fa-sort"
+                                                                 onClick={_this.handleFieldSort.bind(this, i,sort.sortType)}
                                         >
-                                        </i>
+                                        </i>}
                                     </th> : null
                                 })}
                         </tr>
