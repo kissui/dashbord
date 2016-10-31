@@ -17,7 +17,8 @@ module.exports = React.createClass({
             'dimension_new': false,
             'kpi_new': false,
             'changeChartType': _.has(viewBody.chart_conf, 'type') ? viewBody.chart_conf.type : 'interval',
-            'initialGraphicState': graphicState
+            'initialGraphicState': graphicState,
+            'initialCreateGraphicState': _.has(this.props.viewBody.chart_conf, 'type') ? true : false
         }
     },
     componentDidMount: function () {
@@ -156,7 +157,7 @@ module.exports = React.createClass({
                 if (optionType === 'delete') {
                     text = '您已成功删除图表';
                     this.setState({
-                        initialCreateGraphicState: !this.state.initialCreateGraphicState
+                        initialCreateGraphicState: false
                     });
                     document.getElementById('c1').innerHTML = null;
                 } else {
@@ -171,7 +172,6 @@ module.exports = React.createClass({
         let Fields = this.props.viewBody.table_conf.fields;
         let chartConf = _.has(this.props.viewBody.chart_conf, 'type') ? this.props.viewBody.chart_conf : false;
         let fields = Fields.dimension_fields.concat(Fields.data_fields);
-
         let dimension;
         let KPI;
         if (chartConf && this.state.initialGraphicState) {
@@ -197,7 +197,7 @@ module.exports = React.createClass({
         }
         return (
             <div className="view-body">
-                <div className={(this.state.initialCreateGraphicState || chartConf) && 'view-chart shim'}>
+                <div className={(this.state.initialCreateGraphicState ) ? 'view-chart shim' : 'hide'}>
                     {(this.state.initialCreateGraphicState || chartConf) && <h4 className="chart-title">
                         {this.props.viewBody.title}图表
                         <div className="chart-option">
