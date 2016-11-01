@@ -31,7 +31,7 @@ module.exports = function (option, _this) {
             let objectAssign = {};
             datas[key].map((d, i) => {
                 (function (i) {
-                    objectAssign[fields[i].title + '-' + fields[i].val_conf] = /^\d+(\.\d+)?$/.test(d) ? parseFloat(d) : (d === '-' ? 0 : d);
+                    objectAssign[fields[i].title + '-' + fields[i].val_conf] = (/^\d+(\.\d+)?$/.test(d) && i>0) ? parseFloat(d) : (d === '-' ? 0 : d);
                     objectAssign = Object.assign(objectAssign);
                 })(i);
             });
@@ -107,14 +107,7 @@ module.exports = function (option, _this) {
             }
         }); // create the chart object
         let frame = new Frame(this._handleChartData());
-        chart.source(me._handleChartData(), {
-            [dimensionConf]: {
-                alias: dimensionConf
-            },
-            [kpiConf]: {
-                alias: kpiConf
-            }
-        });
+
         if (type === 'line') {
             let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', '指标项', dimensionConf);
             let aliasText;
@@ -124,11 +117,7 @@ module.exports = function (option, _this) {
                 aliasText = KPIChartSelect.join(',')
             }
             chart.source(combineFrame, {
-                // 'Revenue': {
-                //     alias: aliasText
-                // },
                 [dimensionConf]: {
-                    type: 'cat',
                     alias: dimensionConf
                 }
             });
@@ -138,13 +127,19 @@ module.exports = function (option, _this) {
             });
             chart.line().position(dimensionConf + '*Revenue').color('指标项');
         } else if (type === 'pie') {
+            kpiConf = KPIChartSelect.join('');
+            chart.source(me._handleChartData());
+            // 重要：绘制饼图时，必须声明 theta 坐标系
             chart.coord('theta', {
                 radius: 0.8 // 设置饼图的大小
             });
             chart.legend(dimensionConf, {
-                position: 'bottom'
+                position: 'bottom',
+                itemWrap: true,
+                dy: 30, // 垂直偏移
             });
-            chart.intervalStack().position(Stat.summary.percent(kpiConf))
+            chart.intervalStack()
+                .position(Stat.summary.percent(kpiConf))
                 .color(dimensionConf)
                 .label(dimensionConf + '*..percent', function (name, percent) {
                     percent = (percent * 100).toFixed(2) + '%';
@@ -158,7 +153,6 @@ module.exports = function (option, _this) {
                     alias: '销售总额（美元）'
                 },
                 [dimensionConf]: {
-                    type: 'cat',
                     alias: dimensionConf
                 }
             });
@@ -182,7 +176,6 @@ module.exports = function (option, _this) {
 
                 },
                 [dimensionConf]: {
-                    type: 'cat',
                     alias: dimensionConf.split('-')[0],
                 },
             });
@@ -195,9 +188,9 @@ module.exports = function (option, _this) {
             chart.interval(['stack']).position(dimensionConf + '*Revenue').color('指标项');
 
         }
-        chart.on('tooltipchange',function(ev){
+        chart.on('tooltipchange', function (ev) {
             var items = ev.items; // 获取tooltip要显示的内容
-            items.map((item,i)=>{
+            items.map((item, i)=> {
                 item.name = item.name.split('-')[0]
             })
 
