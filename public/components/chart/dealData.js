@@ -20,7 +20,7 @@ module.exports = function (option, _this) {
         let selectK = [];
         combineKPI.map((item, i) => {
             if (item.k_selected === true) {
-                selectK.push(item.title + item.val_conf);
+                selectK.push(item.title + '-' + item.val_conf);
             }
         });
         return selectK;
@@ -31,7 +31,7 @@ module.exports = function (option, _this) {
             let objectAssign = {};
             datas[key].map((d, i) => {
                 (function (i) {
-                    objectAssign[fields[i].title + fields[i].val_conf] = /^\d+(\.\d+)?$/.test(d) ? parseFloat(d) : (d === '-' ? 0 : d);
+                    objectAssign[fields[i].title + '-' + fields[i].val_conf] = /^\d+(\.\d+)?$/.test(d) ? parseFloat(d) : (d === '-' ? 0 : d);
                     objectAssign = Object.assign(objectAssign);
                 })(i);
             });
@@ -52,11 +52,11 @@ module.exports = function (option, _this) {
                 kpiConf: conf,
             })
         } else {
-            dimensionConf = dimension[0].title + dimension[0].val_conf;
-            kpiConf = KPI[0].title + KPI[0].val_conf;
+            dimensionConf = dimension[0].title + '-' + dimension[0].val_conf;
+            kpiConf = KPI[0].title + '-' + KPI[0].val_conf;
             _this.setState({
-                dimensionConf: dimension[0].title + dimension[0].val_conf,
-                kpiConf: KPI[0].title + KPI[0].val_conf
+                dimensionConf: dimension[0].title + '-' + dimension[0].val_conf,
+                kpiConf: KPI[0].title + '-' + KPI[0].val_conf
             })
         }
         return {
@@ -103,7 +103,7 @@ module.exports = function (option, _this) {
             forceFit: true,
             height: 400,
             plotCfg: {
-                // margin: [10, 20, 10, 20],
+                margin: [10, 80, 60, 40],
             }
         }); // create the chart object
         let frame = new Frame(this._handleChartData());
@@ -166,6 +166,7 @@ module.exports = function (option, _this) {
                 position: 'right',
                 dx: -10
             });
+
             chart.area().position(dimensionConf + '*Revenue').color('指标项');
         } else {
             let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', '指标项', dimensionConf);
@@ -177,20 +178,30 @@ module.exports = function (option, _this) {
             }
             chart.source(combineFrame, {
                 'Revenue': {
-                    alias: aliasText
+                    alias: aliasText.split('-')[0],
+
                 },
                 [dimensionConf]: {
                     type: 'cat',
-                    alias: dimensionConf
-                }
+                    alias: dimensionConf.split('-')[0],
+                },
             });
-            chart.legend('指标项', {
+
+            chart.legend(KPIChartSelect.toString().split('-')[0], {
                 position: 'right',
-                dx: 30,
+                itemWrap: true,
             });
+
             chart.interval(['stack']).position(dimensionConf + '*Revenue').color('指标项');
 
         }
+        chart.on('tooltipchange',function(ev){
+            var items = ev.items; // 获取tooltip要显示的内容
+            items.map((item,i)=>{
+                item.name = item.name.split('-')[0]
+            })
+
+        });
         chart.render();
     };
 
