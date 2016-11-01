@@ -2,7 +2,29 @@
 
 import React from 'react';
 import Checked from '../../../components/form/checkbox';
-
+import SelectInputBox from '../components/selectinputbox';
+const data = [
+    {
+        'title': 'year',
+        'value': 'year'
+    },
+    {
+        'title': 'month',
+        'value': 'month'
+    },
+    {
+        'title': 'week',
+        'value': 'week'
+    },
+    {
+        'title': 'day',
+        'value': 'day'
+    },
+    {
+        'title': 'hour',
+        'value': 'hour'
+    }
+];
 module.exports = React.createClass({
     propsType: {
         'onConf': React.PropTypes.Object, //初始化操作项的状态
@@ -37,6 +59,9 @@ module.exports = React.createClass({
         }
         this.props.onChange(conf);
     },
+    handleSelectValue: function (value) {
+        console.log('@selectBox: ',value);
+    },
     render: function () {
         let defaultConf = this.state.conf;
         let sumIsChecked = defaultConf.sum;
@@ -58,6 +83,17 @@ module.exports = React.createClass({
                         <Checked onSingleChecked={this.handleCheckBox}
                                  index={'mean'}
                                  onIsCheck={meanIsChecked}/>
+                    </label>
+                </div>
+                <div className="form-inline shim">
+                    <label>
+                        数据周期:
+                        <SelectInputBox
+                            onValue={this.handleSelectValue}
+                            defaultValues={data}
+                            isWarning={true}
+                            onSelect="week"
+                        />
                     </label>
                 </div>
             </div>
