@@ -103,22 +103,16 @@ module.exports = function (option, _this) {
             forceFit: true,
             height: 400,
             plotCfg: {
-                margin: [10, 80, 60, 40],
+                margin: [10, 120, 60, 80],
             }
         }); // create the chart object
         let frame = new Frame(this._handleChartData());
 
         if (type === 'line') {
             let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', '指标项', dimensionConf);
-            let aliasText;
-            if (KPIChartSelect.length === 1) {
-                aliasText = KPIChartSelect[0]
-            } else {
-                aliasText = KPIChartSelect.join(',')
-            }
             chart.source(combineFrame, {
                 [dimensionConf]: {
-                    alias: dimensionConf
+                    alias: dimensionConf.split('-')[0]
                 }
             });
             chart.legend('City', {
@@ -149,11 +143,8 @@ module.exports = function (option, _this) {
             let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', '指标项', dimensionConf);
 
             chart.source(combineFrame, {
-                'Revenue': {
-                    alias: '销售总额（美元）'
-                },
                 [dimensionConf]: {
-                    alias: dimensionConf
+                    alias: dimensionConf.split('-')[0]
                 }
             });
             chart.legend('指标项', {
@@ -171,10 +162,7 @@ module.exports = function (option, _this) {
                 aliasText = KPIChartSelect.join(',')
             }
             chart.source(combineFrame, {
-                'Revenue': {
-                    alias: aliasText.split('-')[0],
 
-                },
                 [dimensionConf]: {
                     alias: dimensionConf.split('-')[0],
                 },
