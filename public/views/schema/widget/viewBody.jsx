@@ -7,7 +7,7 @@ import KpiDimensionItem from '../chart/dimensitonkpi';
 import http from '../../../lib/http';
 import Utils from '../../../lib/utils';
 import ShowTableContent from './table';
-
+import ChartOptionPage from './chartOptionHeader';
 module.exports = React.createClass({
     getInitialState: function () {
         let viewBody = this.props.viewBody;
@@ -16,6 +16,7 @@ module.exports = React.createClass({
             'body': viewBody,
             'dimension_new': false,
             'kpi_new': false,
+            isShowOption: false,
             'changeChartType': _.has(viewBody.chart_conf, 'type') ? viewBody.chart_conf.type : 'interval',
             'initialGraphicState': graphicState,
             'initialCreateGraphicState': _.has(this.props.viewBody.chart_conf, 'type') ? true : false
@@ -139,7 +140,7 @@ module.exports = React.createClass({
     },
     handleOperationBlank: function () {
         this.setState({
-            initialCreateGraphicState: !this.state.initialCreateGraphicState
+            isShowOption: !this.state.isShowOption
         });
         this.viewChart()
     },
@@ -198,31 +199,18 @@ module.exports = React.createClass({
         return (
             <div className="view-body">
                 <div className={(this.state.initialCreateGraphicState ) ? 'view-chart shim' : 'hide'}>
-                    {(this.state.initialCreateGraphicState || chartConf) && <h4 className="chart-title">
-                        {this.props.viewBody.title}图表
-                        <div className="chart-option">
-                            <label onClick={this.handleOperationBlank}>
-                                <i className="fa fa-edit"></i>
-                                <span>编辑</span>
-                            </label>
-                            <label onClick={this.handleSaveChartConf.bind(this, 'save')}>
-                                <i className="fa fa-star">
-                                </i>
-                                <span>保存</span>
-                            </label>
-                            <label onClick={this.handleSaveChartConf.bind(this, 'delete')}>
-                                <i className="fa fa-minus-circle">
-                                </i>
-                                <span>删除</span>
-                            </label>
-                        </div>
-                    </h4>}
+                    <ChartOptionPage
+                        onTitle={this.props.viewBody.title}
+                        onShowHead={this.state.initialCreateGraphicState}
+                        onReceiveShowType={this.handleOperationBlank}
+                        onReceiveSettingType={this.handleSaveChartConf}
+                    />
                     <div className="row">
                         <div
-                            className={this.state.initialCreateGraphicState ? "col-md-9 chart-box" : "col-md-12 chart-box"}>
+                            className={this.state.isShowOption ? "col-md-9 chart-box" : "col-md-12 chart-box"}>
                             <div id="c1"></div>
                         </div >
-                        {(this.state.initialCreateGraphicState) ? (
+                        {(this.state.isShowOption) ? (
                             <div className="col-md-3">
                                 <div className="chart-dimension shim">
                                     <h5>维度: </h5>

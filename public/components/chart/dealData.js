@@ -115,7 +115,7 @@ module.exports = function (option, _this) {
                     alias: dimensionConf.split('-')[0]
                 }
             });
-            chart.legend('City', {
+            chart.legend( {
                 position: 'right',
                 dx: -10
             });
@@ -156,23 +156,13 @@ module.exports = function (option, _this) {
         } else {
             let combineFrame = Frame.combinColumns(frame, KPIChartSelect, 'Revenue', '指标项', dimensionConf);
             let aliasText;
-            if (KPIChartSelect.length === 1) {
-                aliasText = KPIChartSelect[0]
-            } else {
-                aliasText = KPIChartSelect.join(',')
-            }
             chart.source(combineFrame, {
 
                 [dimensionConf]: {
                     alias: dimensionConf.split('-')[0],
                 },
             });
-
-            chart.legend(KPIChartSelect.toString().split('-')[0], {
-                position: 'right',
-                itemWrap: true,
-            });
-
+            chart.legend(false);
             chart.interval(['stack']).position(dimensionConf + '*Revenue').color('指标项');
 
         }
