@@ -1,6 +1,6 @@
 'use strict';
 
-const PORT = 3000;
+const PORT = 3000; //ch
 
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -10,6 +10,7 @@ import auth from './lib/auth';
 
 import enrouten from 'express-enrouten';
 
+import StaticFiles from './middlewares/static';
 import CheckAuth from './middlewares/check_auth';
 import View from './middlewares/view';
 import Proxy from './middlewares/proxy';
@@ -68,17 +69,18 @@ app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 // cookie parser
 app.use(cookieParser())
 
+StaticFiles.setup(app);
 
 // app.use(CheckAuth.middleware());
 
 // 对一些老接口做重定向
-// app.get('/autoLogin', function(req, res, next) {
-//     req.url = '/user/auto-login';
-//     next();
-// });
+app.get('/autoLogin', function(req, res, next) {
+    req.url = '/user/auto-login';
+    next();
+});
 
 // 设置自有路由
-// app.use(enrouten({directory: 'controllers'}));
+app.use(enrouten({directory: 'controllers'}));
 
 // 设置 react view
 View.setup(app);
@@ -89,36 +91,38 @@ Proxy.setup(app);
 
 // 记录错误（即使 401 也记录）
 app.use(function(err, req, res, next) {
+
   errorLogger.error('error', {
     api: req.method + ' ' + req.path,
     err: _.isPlainObject(err) ? err : err.toString(),
     headersSent: res.headersSent
   });
+
   // http://expressjs.com/en/guide/error-handling.html
   if (res.headersSent) {
     // 如果错误信息已返回给前段，则不再处理
     return;
   }
+
   // 否则继续处理
   return next(err);
 });
 
 // 处理 auth 错误
-app.use(CheckAuth.errorHandler);
+// app.use(CheckAuth.errorHandler);
 // 处理 view 出错
-app.use(View.errorHandler);
+// app.use(View.errorHandler);
 // 处理其它出错
 app.use(function (err, req, res, next) {
 
-    if (_.isObject(err) && err.code && err.msg) {
-        console.log(err,'sever',res.statusCode)
+    if (_.isObject(err) && err.code && err.message) {
         // 如果我们规定的规范的 err，则直接返回
-        return res.redirect('/index');
+        return res.status(400).json(err);
     }
 
+    // return res.redirect('/app/error');
     // @todo 将错误信息隐藏
-    return next(err);
-    // return res.send(err.message);
+    // return res.status(500).send(err.message);
 });
 
 // 开启服务

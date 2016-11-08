@@ -114,6 +114,12 @@ module.exports = {
       },
       //sourceMap: true,
       mangle: {
+
+        // 根据 es6/es5 shims 的 package.json，build 时 keep fnames 才能保证正常
+        // https://github.com/es-shims/es6-shim/blob/master/package.json#L45
+        // https://github.com/es-shims/es5-shim/blob/master/package.json#L26
+        keep_fnames: true,
+
         toplevel: true,
         sort: true,
         eval: true,
@@ -133,7 +139,7 @@ module.exports = {
 
 function cdnReplace() {
   var layoutTemplate = "public/views/layout.jsx";
-  // var cdn = 'http://ss.com';
+  // var cdn = 'http://cdn3.yunzhanghu.com';
   var cdn = '';
 
   var cssLine = 'link.*styles.*link';

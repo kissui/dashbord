@@ -22,24 +22,57 @@ html {
     height: 100%;
 }
 
+@import "../fontcss/animation";
+@import "../fontcss/fontello";
+
 $fontSize: 14px;
 $fontFamily: Microsoft Yahei, Avenir, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
 $fontLineHeight: normal;
 $colorText: #3e3e3e;
-$colorBg: #efefef;
+$colorBg: #fff;
 $colorLink: #35b7f3;
 $colorPlaceholder: #333;
 $positiveColor: #35b7f3;
 $buttonFontColor: #ffffff;
+/**
+ * font
+ * --------------------------------------------------
+ */
 
+$font-color-3e: #3e3e3e !default;
+$font-color-6e: #6e6e6e !default;
+$font-color-9e: #9e9e9e !default;
+$font-color-base: #ffffff !default;
+
+$font-size-10: 10px !default;
+$font-size-12: 12px !default;
+$font-size-14: 14px !default;
+$font-size-16: 16px !default;
+$font-size-18: 18px !default;
+$font-size-26: 26px !default;
+$half: 50% !default;
+
+$border-des: 0.5px solid #c7c7c7 !default;
+/**
+ * font end
+ * --------------------------------------------------
+ */
 // 1. Remove default margin
+.header {
+    height: 70px;
+    img {
+        width: 80px;
+        padding: 10px;
+    }
+}
+
 body {
     margin: 0; // 1
     font-size: $fontSize;
     font-family: $fontFamily;
     line-height: $fontLineHeight;
     color: $colorText;
-    background-color: $colorBg;
+    background-color: #d2d9e5;
     min-height: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -113,7 +146,7 @@ template {
 a {
     background: transparent; // 1
     text-decoration: none;
-    color: #73879C;
+    color: nth($colorLink, 1);
     
     &:active {
         outline: 0; // 2
@@ -417,6 +450,18 @@ h1, h2, h3 {
     font-weight: normal;
 }
 
+h1 {
+    font-size: 18px;
+}
+
+h2 {
+    font-size: 16px;
+}
+
+h3 {
+    font-size: 14px;
+}
+
 // icon
 i {
     font-style: normal;
@@ -459,43 +504,6 @@ i {
 
 .text-center {
     text-align: center;
-}
-
-//通用的list样式
-.item {
-    h5, h4, h3, h6, p {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    background-color: #fff;
-    color: #444;
-    position: relative;
-    z-index: 2;
-    display: block;
-    
-    .item-icon-left.icon,
-    .item-icon-right.icon {
-        display: -webkit-flex;
-        display: -moz-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-align: center;
-        -webkit-align-items: center;
-        -moz-align-items: center;
-        align-items: center;
-        position: absolute;
-        top: 0;
-        height: 100%;
-        color: #c7c7cc;
-    }
-    .item-icon-left.icon {
-        left: 10px;
-    }
-    .item-icon-right.icon {
-        right: 10px;
-    }
-    
 }
 
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
@@ -577,222 +585,112 @@ input:-ms-input-placeholder, textarea:-moz-placeholder {
     animation-name: fadeInDown;
 }
 
-.kepler {
+//loading
+.hb-isloading {
+    display: table;
     width: 100%;
-    position: relative;
-    color: #fff;
-}
-
-.container {
-    width: 100%;
-    padding: 0;
-}
-
-body {
-    color: #73879C;
-    background: #2A3F54;
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 1.471;
-}
-
-a {
-    text-decoration: none;
-}
-
-.kepler-container {
-    margin-left: 230px;
-    min-height: 1000px;
-    background: #FFFFFF;
-    .content {
-        width: 100%;
-        overflow: hidden;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    z-index: 999;
+    background: #efefef;
+    i {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 30px;
+        color: $positiveColor;
+        
     }
 }
 
-.kepler-tabs {
-    li {
-        position: relative;
-        float: left;
-        padding: 0 20px;
-        font-size: 14px;
-        height: 60px;
-        font-weight: 800;
+.sidebar {
+    .sidebar_first {
+        i {
+            padding-right: 4px;
+        }
         a {
-            display: inline-block;
+            color: white;
             text-decoration: none;
+            height: 36px;
+            line-height: 32px;
+            display: inline-block;
+            width: 160px;
             
         }
-    }
-    li.current {
-        background: #fff;
-        border-bottom: 3px solid #73879C;
-        a {
-            color: #23527c;
+        a:hover {
+            color: white;
         }
-        
-    }
-    li:hover {
-        background: #fff;
-        color: #73879C;
-    }
-}
-
-.top_nav {
-    display: block;
-    margin-left: 230px;
-    .nav_menu {
-        background: #EDEDED;
-        border-bottom: 1px solid #D9DEE4;
-        margin-bottom: 10px;
-        width: 100%;
-        height: 60px;
-        line-height: 60px;
-        position: relative;
-        padding-left: 60px;
-        .user {
-            img {
-                width: 30px;
-                height: 30px;
-                -webkit-border-radius: 15px;
-                -moz-border-radius: 15px;
-                border-radius: 15px;
-                border: 1px solid #2a3f54;
-                margin: 0 10px;
-            }
-            span {
-                margin: 0 10px;
-            }
+        a.active {
+            color: #1ffdf0;
+        }
+        .angle {
+            position: absolute;
+            right: 10px;
+            top: 10px;
         }
     }
-    .row {
-        margin: 0;
+    .sidebar_second {
+        li {
+            padding: 8px;
+            color: #bfd2df;
+            cursor: pointer;
+        }
+        li:hover {
+            color: #1ffdf0;
+        }
+        .active {
+            color: #1ffdf0;
+        }
     }
 }
 
-.ml-0 {
-    margin-left: 0;
-}
-
-.pl-0 {
-    padding-left: 0;
-}
-
-.loading {
-    padding: 100px;
-    .spinner {
-        margin: 0 auto;
-        width: 50px;
-        height: 40px;
-        text-align: center;
-        font-size: 10px;
-    }
-    
-    .spinner > div {
-        background-color: #333;
-        height: 100%;
-        width: 6px;
+.select-bar {
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    width: 182px;
+    font-size: 12px;
+    height: 30px;
+    line-height: 28px;
+    li {
         display: inline-block;
-        
-        -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
-        animation: sk-stretchdelay 1.2s infinite ease-in-out;
-    }
-    
-    .spinner .rect2 {
-        -webkit-animation-delay: -1.1s;
-        animation-delay: -1.1s;
-    }
-    
-    .spinner .rect3 {
-        -webkit-animation-delay: -1.0s;
-        animation-delay: -1.0s;
-    }
-    
-    .spinner .rect4 {
-        -webkit-animation-delay: -0.9s;
-        animation-delay: -0.9s;
-    }
-    
-    .spinner .rect5 {
-        -webkit-animation-delay: -0.8s;
-        animation-delay: -0.8s;
-    }
-    
-    @-webkit-keyframes sk-stretchdelay {
-        0%, 40%, 100% {
-            -webkit-transform: scaleY(0.4)
-        }
-        20% {
-            -webkit-transform: scaleY(1.0)
-        }
-    }
-    
-    @keyframes sk-stretchdelay {
-        0%, 40%, 100% {
-            transform: scaleY(0.4);
-            -webkit-transform: scaleY(0.4);
-        }
-        20% {
-            transform: scaleY(1.0);
-            -webkit-transform: scaleY(1.0);
-        }
-    }
-}
-
-//内容不存在的样式
-.content-warning {
-    padding-top: 100px;
-    h2 {
+        cursor: pointer;
+        color: #999999;
+        border-radius: 10px;
+        width: 60px;
         text-align: center;
+        i{
+            font-size: 16px;
+        }
+    }
+    li.active {
+        background: #2cbfbe;
+        color: #fff;
     }
 }
-
-.fa-ok:before {
-    content: "\f002";
-}
-
-@mixin block($bg:#fff,$border:#ddd,$padding:10px,$margin:10px) {
-    margin: $margin 0;
-    background-color: $bg;
-    border: 1px solid $border;
-    border-radius: 4px 4px 0 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    padding: $padding;
-}
-
-.shim {
-    @include block();
-    position: relative;
-}
-
-#kepler-pop-note {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    background: #000000;
-    color: #fff;
-    opacity: 0.7;
-    font-size: 14px;
-    padding: 20px;
-    min-width: 300px;
-    margin-left: -150px;
-    text-align: center;
-}
-
 .datePicker-container {
     .datePicker-view-input {
-        width: 335px;
+        width: 340px;
         border: 1px solid #ddd;
         border-radius: 4px;
         padding: 5px;
         cursor: pointer;
+        position: relative;
         input {
             border: none;
             cursor: pointer;
         }
         .character {
             padding-right: 13px;
+        }
+        i{
+            position: absolute;
+            right: 6px;
+            top: 9px;
         }
     }
 }
@@ -804,54 +702,10 @@ a {
     padding: 7px;
     margin-top: 8px;
     position: absolute;
+    right: 0;
     z-index: 999;
     background: #fff;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1), 0 16px 24px 0 rgba(81, 129, 228, .1);
     -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1), 0 16px 24px 0 rgba(81, 129, 228, .1);
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1), 0 16px 24px 0 rgba(81, 129, 228, .1);
-}
-@mixin boxShadow(){
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-}
-.selectInputBox {
-    cursor: pointer;
-    position: relative;
-    top: 0;
-    width: 200px;
-    border: 1px solid #ccc;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    height: 30px;
-    @include boxShadow;
-    input {
-        position: relative;
-        height: 28px;
-        border: 0;
-        min-width: 180px;
-    }
-    
-    ul {
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        position: absolute;
-        z-index: 11;
-        background: #ddd;
-        min-width: 200px;
-        margin-top: 4px;
-        li{
-           padding: 5px 20px;
-            position: relative;
-            i{
-                position: absolute;
-                left: 5px;
-                top: 10px;
-            }
-        }
-    }
-}
-.warning{
-    border-color: #8a6d3b;
-    @include boxShadow;
 }
