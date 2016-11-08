@@ -5,6 +5,7 @@
     display: -ms-flexbox;
     display: flex;
     z-index: 9999;
+    min-height: 1000px;
     .sidebar-box {
         background: #2a3f54;
         width: 100%;
@@ -127,7 +128,7 @@
                 }
                 &.hover {
                     background: none;
-                   
+                    
                 }
                 .child_menu {
                     display: none;
@@ -154,8 +155,8 @@
                             }
                         }
                     }
-                    li.current_page{
-                        background: rgba(255,255,255,0.05);
+                    li.current_page {
+                        background: rgba(255, 255, 255, 0.05);
                     }
                     li:hover {
                         background-color: rgba(255, 255, 255, 0.06);
@@ -183,6 +184,7 @@
 .dropdown-content {
     position: relative;
 }
+
 .dropdown-wrap {
     cursor: pointer;
     position: absolute;
@@ -227,7 +229,7 @@
     }
     .modal-body {
         padding: 10px 15px;
-        label{
+        label {
             font-size: 14px;
         }
         input {
@@ -247,14 +249,15 @@
             background-color: #fff;
             border-color: #fff;
             color: #2a3f54;
-        
+            
         }
         .btn-primary:hover, .btn:hover {
-            background: rgba(81,130,228,.1);
+            background: rgba(81, 130, 228, .1);
         }
     }
 }
-.msg-warning{
+
+.msg-warning {
     font-size: 12px;
     color: red;
     padding: 8px 0;

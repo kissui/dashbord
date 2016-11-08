@@ -41,12 +41,12 @@ function setup(app) {
 
     // add our app routes
     app.get('/', function(req, res) {
-        res.redirect('/app');
+        res.redirect('/group');
         // @todo 改为下面的写法，减少一次来回请求，
         // 但需 router 挂载多个地址
-        // req.url = '/app';
+        // req.url = '/group';
     });
-    app.get(['/app', '/app/*'], function(req, res, next) {
+    app.get(['/group', '/group/*'], function(req, res, next) {
         console.log(req.url,req.user,req.accessToken);
         if (!pathNeedLoggedIn(req.url)) {
             console.log('NOT-NEED logged in');
@@ -61,7 +61,7 @@ function setup(app) {
         // 因为 render 在 match 时无法传自定义属性，所以需要
         // 在 render 前判断权限、跳转
         // if (!req.user) {
-        //     req.url = '/app/login';
+        //     req.url = '/group/login';
         // }
 
         // console.log('### should get', req.url);
@@ -122,11 +122,11 @@ function errorHandler(err, req, res, next) {
     return res.redirect(302, err.redirectLocation);
   }
   else if (err._type && err._type === ReactEngine.reactRouterServerErrors.MATCH_NOT_FOUND) {
-    return res.redirect('/app/error');
+    return res.redirect('/group/error');
     // return res.status(404).send('Route Not Found!');
   }
   else if (err._type && err._type === ReactEngine.reactRouterServerErrors.MATCH_INTERNAL_ERROR) {
-    return res.redirect('/app/error');
+    return res.redirect('/group/error');
     // for ReactEngine.reactRouterServerErrors.MATCH_INTERNAL_ERROR just send the error message back
     // return res.status(500).send(err.message);
   }
