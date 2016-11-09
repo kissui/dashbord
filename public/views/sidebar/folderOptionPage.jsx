@@ -1,6 +1,17 @@
 'use strict';
 import React from 'react';
-
+/**
+ * @todo 一级菜单的操作模块
+ * @props => onFolderId 当前菜单的ID
+ * @props => onHideOption 操作模块的显示隐藏操作
+ * @props => onReceiveFolderSetting 当前菜单的设置操作,返回的参数(folderID,[option...])
+ * @DEMO <FolderSetPage
+ * 			onFolderId={item.id}
+ *			onReceiveFolderSetting={_this.handleReceiveFolderSetting}
+ *			onHideOption={_this.handleHideOption}
+ *		/>
+ * @type {any}
+ */
 module.exports = React.createClass({
 	// getInitialState: function () {
 	//

@@ -2,10 +2,22 @@
 import React from 'react';
 import SidebarMenuSuperItem from './superItemPage';
 import FolderSetPage from './folderOptionPage';
+/**
+ * @todo 菜单显示模块
+ * @props => onSidebarData 菜单显示的数据
+ * @props => onParams 初始化路由的params参数,操作默认菜单显示的结构
+ * @props => onReceiveFolderSetting 一级菜单操作
+ * @props => onReceiveDeleteFileId 当前报表的删除操作传递
+ * @DEMO <SidebarMenuItem
+ *			onSidebarData={sideListDate}
+ *			onParams={this.props.onParams}
+ *			onReceiveFolderSetting={this.handleFolderSetting}
+ *			onReceiveDeleteFileId={this.handleDeleteFile}
+ *		/>
+ * @type {any}
+ */
 module.exports = React.createClass({
 	getInitialState: function () {
-		const {onSidebarData} = this.props;
-		let id = onSidebarData[0].id;
 		return {
 			dropDownWrapState: null,
 		}
@@ -30,10 +42,10 @@ module.exports = React.createClass({
 		})
 	},
 	handleReceiveFolderSetting: function (id, type) {
-		console.log(id, type)
+		this.props.onReceiveFolderSetting(id,type);
 	},
-	onReceiveDeleteFileId: function (fileId) {
-		console.log(fileId);
+	handleDeleteFile: function (fileId) {
+		this.props.onReceiveDeleteFileId(fileId);
 	},
 	render: function () {
 		const {onSidebarData, onParams} = this.props;
@@ -55,9 +67,10 @@ module.exports = React.createClass({
 							  onClick={_this.handleSettingFolder.bind(null, i)}>
                         </span>
 						{_this.state.dropDownWrapState === ('schema_' + i) ?
-							<FolderSetPage onFolderId={item.id}
-										   onReceiveFolderSetting={_this.handleReceiveFolderSetting}
-										   onHideOption={_this.handleHideOption}
+							<FolderSetPage
+								onFolderId={item.id}
+								onReceiveFolderSetting={_this.handleReceiveFolderSetting}
+								onHideOption={_this.handleHideOption}
 							/>
 							: null}
 						{item.tables ?
@@ -65,7 +78,7 @@ module.exports = React.createClass({
 								onMenu={item.tables}
 								onFolderId={item.id}
 								onParams={onParams}
-								onReceiveDeleteFileId={this.handleDeleteFile}
+								onReceiveDeleteFileId={_this.handleDeleteFile}
 							/> :
 							null}
 					</li>

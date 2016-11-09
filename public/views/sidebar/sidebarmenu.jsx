@@ -14,18 +14,12 @@ class SidebarMenu extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			fileType: 'folder',
 			'dropDownWrapState': null,
 			sideListDate: null
 		};
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.state.dropDownWrapState) {
-			this.setState({
-				'dropDownWrapState': nextProps.dropDownWrapState
-			});
-		}
 		if (nextProps.menuChangeState) {
 			this.initAndRefreshMenu()
 		}
@@ -54,14 +48,13 @@ class SidebarMenu extends React.Component {
 			})
 	}
 
-	handleOpenFile() {
+	handleHideDropDownWrap() { //隐藏全局文件操作的函数
 		this.setState({
-			fileType: 'list'
+			dropDownWrapState: null
 		})
 	}
 
-	handlePlusFolder() {
-
+	handleShowFolderPlusModal() { //显示全局添加目录
 		if (!this.state.dropDownWrapState) {
 			this.setState({
 				'dropDownWrapState': 'schema'
@@ -72,44 +65,28 @@ class SidebarMenu extends React.Component {
 			})
 		}
 	}
+	handleShowOpenFile() { // 暂时未启用
+	}
 
-	handleEditFinder() {
+	handleHeadAddFolder() { //添加目录文件
 		this.props.onClick('schema', 'plus');
 		this.setState({
 			'dropDownWrapState': null
 		})
 	}
-
-	handleGlobalAddFile(id, folder) {
+	handleHeadAddFile(id, folder) {
 		let type = (id && id.length > 0) ? 'folderFile' : 'globalFile';
 		this.props.onGlobalClick('schema', type, id, folder)
 	}
-
-	/**
-	 * @description finder setting 'add read update delete"
-	 * @param index 当前列表索引,根据索引获取详细信息
-	 * @param tabType 当前hash的类型 'schema chart orig'
-	 * @param optionType 操作类型 'ARUD'
-	 * @param id 当前文件夹的ID
-	 * @param title 当前文件夹的title
-	 */
-	handleSettingFinder(index, tabType, optionType, id, title) {
-		this.props.onClick(tabType, optionType, index, id, title);
-		this.setState({
-			dropDownWrapState: null
-		})
+	// sidebar 的操作
+	handleFolderSetting(id, option) {
+		console.log(id, option);
 	}
 
-	onChangeFile(index, tabName, optionType, finderId, fileId) {
-		this.props.onChangeFile(index, tabName, optionType, finderId, fileId);
+	handleDeleteFile(fileId) {
+		console.log(fileId)
 	}
-
-	handleHideDropDownWrap() {
-		this.setState({
-			dropDownWrapState: null
-		})
-	}
-
+	// sidebar 的操作 ending
 	render() {
 		const {sideListDate, dropDownWrapState} = this.state;
 		return (
@@ -121,21 +98,25 @@ class SidebarMenu extends React.Component {
                         </span>
 					</div>
 					<div className="col-md-6 text-right sidebar-icon">
-						<i className="fa fa-plus" onClick={this.handlePlusFolder.bind(this)}>
+						<i className="fa fa-plus" onClick={this.handleShowFolderPlusModal.bind(this)}>
 						</i>
-						<i className="fa fa-list" onClick={this.handleOpenFile.bind(this)}>
+						<i className="fa fa-list" onClick={this.handleShowOpenFile.bind(this)}>
 						</i>
 					</div>
 					{dropDownWrapState ?
 						<ul className="dropdown-wrap" onMouseLeave={this.handleHideDropDownWrap.bind(this)}>
-							<li className="dropdown-item" onClick={this.handleEditFinder.bind(this)}>添加文件夹</li>
-							<li className="dropdown-item" onClick={this.handleGlobalAddFile.bind(this)}>添加工作表</li>
+							<li className="dropdown-item" onClick={this.handleHeadAddFolder.bind(this)}>添加文件夹</li>
+							<li className="dropdown-item" onClick={this.handleHeadAddFile.bind(this)}>添加工作表</li>
 						</ul> : null}
 				</h3>
-				{sideListDate ? <SidebarMenuItem
-					onSidebarData={sideListDate}
-					onParams={this.props.onParams}
-				/> : null}
+				{sideListDate ?
+					<SidebarMenuItem
+						onSidebarData={sideListDate}
+						onParams={this.props.onParams}
+						onReceiveFolderSetting={this.handleFolderSetting}
+						onReceiveDeleteFileId={this.handleDeleteFile}
+					/>
+					: null}
 			</div>
 		)
 	}
