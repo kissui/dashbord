@@ -67,8 +67,10 @@ export default (
     <Router>
         <Route path='/group' component={Layout} >
             <IndexRoute component={HomePage}/>
-            <Route path='/group/schema' component={HomePage}>
-                <Route path='/group/schema/:fileId' component={HomePage}/>
+            <Route path='/group/table' component={HomePage}>
+                <Route path='/group/table/report/:folderId/:fileId' component={HomePage}/>
+                <Route path='/group/table/new/:fileId' component={HomePage}/>
+                <Route path='/group/table/edit/:fileId' component={HomePage}/>
             </Route>
             <Route path="/group/analysis" component={analysisPage}/>
             <Route path="/group/mock" component={MockPage}/>

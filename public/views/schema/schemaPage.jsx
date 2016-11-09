@@ -15,6 +15,7 @@ module.exports = React.createClass({
 		}
 	},
 	componentDidMount: function () {
+
 		let sessionStorages = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
 		if (sessionStorages) {
 			// this.context.router.push({
@@ -43,6 +44,7 @@ module.exports = React.createClass({
 		}
 	},
 	render: function render() {
+		console.log(this.props);
 		return (
 			<div>
 				<SideMenu
