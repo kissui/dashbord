@@ -44,13 +44,16 @@ module.exports = React.createClass({
 		}
 	},
 	render: function render() {
-		console.log(this.props);
+
+		let params = this.props.params;
+		console.log(this.props,params);
 		return (
 			<div>
 				<SideMenu
 					selectIndex={1}
 					defaultFile={this.state.sidebarState}
 					state={this.state.dropDownWrapState}
+					onParams={params}
 					onModal={false}
 				/>
 				<NavigationTab selectIndex={1}/>

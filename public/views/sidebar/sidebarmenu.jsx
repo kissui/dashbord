@@ -134,6 +134,7 @@ class SidebarMenu extends React.Component {
 				</h3>
 				{sideListDate ? <SidebarMenuItem
 					onSidebarData={sideListDate}
+					onParams={this.props.onParams}
 				/> : null}
 			</div>
 		)

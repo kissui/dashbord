@@ -6,7 +6,7 @@ module.exports = React.createClass({
 	//
 	// },
 	handleHideDropDownWrap: function () {
-
+		this.props.onHideOption();
 	},
 	handleFolderOperate: function (id, type) {
 		this.props.onReceiveFolderSetting(id, type)

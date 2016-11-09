@@ -75,6 +75,7 @@ module.exports = React.createClass({
                         onGlobalClick={this.onGlobalClick}
                         selectIndex={this.props.selectIndex}
                         defaultFile={this.props.defaultFile}
+                        onParams={this.props.onParams}
                     />
                 </div>
             </div>
