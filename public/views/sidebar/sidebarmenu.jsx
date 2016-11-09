@@ -56,7 +56,7 @@ class SidebarMenu extends React.Component {
 	handleShowFolderPlusModal() { //显示全局添加目录
 		if (!this.state.dropDownWrapState) {
 			this.setState({
-				'dropDownWrapState': 'schema'
+				'dropDownWrapState': 'tables'
 			})
 		} else {
 			this.setState({

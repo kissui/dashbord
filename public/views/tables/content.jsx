@@ -66,10 +66,10 @@ module.exports = React.createClass({
         this.props.onState(id, folderId)
     },
     handleAddFile: function () {
-        this.props.onAddFile('schema', 'globalFile')
+        this.props.onAddFile('tables', 'globalFile')
     },
     handleEditFile: function (conf) {
-        this.props.onEditFile('schema', 'editFile', conf.folder_id, conf)
+        this.props.onEditFile('tables', 'editFile', conf.folder_id, conf)
     },
     handleHideCreateFilePage: function () {
         let fileId = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).id;

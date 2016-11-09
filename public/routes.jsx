@@ -7,7 +7,7 @@ import Auth, {pathNeedLoggedIn} from './lib/auth';
 
 
 import Layout from './views/layout.jsx';
-import HomePage from './views/schema/schemaPage.jsx';
+import HomePage from './views/tables/schemaPage.jsx';
 import analysisPage from './views/analysis/analysis.jsx';
 import MockPage from './views/mock/mock.jsx';
 import LoginPage from './views/login.jsx';
@@ -69,8 +69,8 @@ export default (
             <IndexRoute component={HomePage}/>
             <Route path='/group/table' component={HomePage}>
                 <Route path='/group/table/report/:folderId/:fileId' component={HomePage}/>
-                <Route path='/group/table/new/:fileId' component={HomePage}/>
                 <Route path='/group/table/edit/:fileId' component={HomePage}/>
+                <Route path='/group/table/new' component={HomePage}/>
             </Route>
             <Route path="/group/analysis" component={analysisPage}/>
             <Route path="/group/mock" component={MockPage}/>

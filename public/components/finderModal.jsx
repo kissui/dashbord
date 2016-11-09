@@ -31,7 +31,7 @@ const customStyles = {
  * @TODO  modal的容器
  * @des 此类接受两个属性
  * isShow => 初始化modal 是否是open的
- * type   => modal展示的类型处理,eg: 工作表:schema,仪表盘:chart
+ * type   => modal展示的类型处理,eg: 工作表:tables,仪表盘:chart
  * @type {any}
  */
 
