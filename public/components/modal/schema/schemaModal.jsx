@@ -18,7 +18,6 @@ module.exports = React.createClass({
     },
     handleAddSchemaFinder: function () {
         let value = this.refs.finderName.value;
-        console.log(this.props.currentFinderDetail);
         let httpUrl,
             finderDetail = this.props.currentFinderDetail;
         if (finderDetail) {

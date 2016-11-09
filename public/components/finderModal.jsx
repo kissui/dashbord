@@ -47,10 +47,8 @@ module.exports = React.createClass({
         })
     },
     menuChange: function () {
-        if (this.state.modalIsOpen) {
-            this.setState({modalIsOpen: false});
-        }
         this.props.menuChange();
+		this.setState({modalIsOpen: false});
     },
     openModal: function () {
         this.setState({modalIsOpen: true});
@@ -61,30 +59,26 @@ module.exports = React.createClass({
     },
 
     render: function () {
+        console.log(this.state.modalType);
         let content,
             modalTypeData = this.state.modalType;
-        if (modalTypeData && modalTypeData.tabType === 'schema') {
-            if (modalTypeData.optionType === 'plus') {
-                content = <SchemaModal
-                    onClick={this.closeModal}
-                    menuChange={this.menuChange}/>
-            } else if (modalTypeData.optionType === 'delete') {
+        if (modalTypeData && modalTypeData.tabType === 'tables') {
+            if (modalTypeData.optionType === 'DELETEFOLDER') {
                 content = <SchemaDeleteModal
                     onClick={this.closeModal}
                     menuChange={this.menuChange}
                     currentFinderDetail={this.state.modalType}
                 />
-            } else if (modalTypeData.optionType === 'rename') {
+            } else if (modalTypeData.optionType === 'RENAMEFOLDER') {
                 content = <SchemaModal
                     onClick={this.closeModal}
                     menuChange={this.menuChange}
                     currentFinderDetail={this.state.modalType}
                 />
-            } else if (modalTypeData.optionType === 'plusFile') {
-                content = <SchemaAddFile
-                    onClick={this.closeModal}
-                    menuChange = {this.menuChange}
-                />
+            } else if (modalTypeData.optionType === 'addFolder') {
+				content = <SchemaModal
+					onClick={this.closeModal}
+					menuChange={this.menuChange}/>
             } else if (modalTypeData.optionType === 'deleteFile') {
                 content = <SchemaDeleteFile
                     onClick={this.closeModal}

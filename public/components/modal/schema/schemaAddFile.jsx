@@ -13,6 +13,14 @@ module.exports = React.createClass({
     closeModal: function () {
         this.props.onClick()
     },
+    handleInputChange: function () {
+        this.setState({
+            initialInputState: this.refs.finderName.value
+        })
+    },
+    handleAddSchemaFinder: function () {
+
+    },
     render: function () {
         return (
             <div className="finder-modal">
@@ -26,9 +34,6 @@ module.exports = React.createClass({
                                ref="finderName"
                                placeholder="文件名称"/>
                     </form>
-                    {/*{!this.state.initialInputState && this.state.changeState ?*/}
-                        {/*<div className="msg-warning">文件夹名称不能为空</div> : null}*/}
-                    {/*{this.state.errMsg ? <div className="msg-warning">{this.state.errMsg}</div> : null}*/}
                 </div>
                 <div className="modal-footer">
                     <button className="btn btn-primary"

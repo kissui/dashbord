@@ -19,7 +19,7 @@ class SidebarMenu extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.menuChangeState) {
+		if (nextProps.onChangeSidebar) {
 			this.initAndRefreshMenu()
 		}
 	}

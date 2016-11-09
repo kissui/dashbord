@@ -34,10 +34,7 @@ module.exports = React.createClass({
             <div className="finder-modal">
                 <Header title="删除工作表" onClick={this.closeModal}/>
                 <div className="modal-body">
-                    <form className="form-inline">
-                        <label>工作表名称:</label>
-                        <span>{this.state.fileData['title']}</span>
-                    </form>
+                    您确定删除当前工作表
                 </div>
                 <div className="modal-footer">
                     <button className="btn btn-primary"

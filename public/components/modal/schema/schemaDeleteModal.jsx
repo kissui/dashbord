@@ -4,16 +4,11 @@ import Header from '../header';
 import http from '../../../lib/http';
 
 module.exports = React.createClass({
-    getInitialState: function () {
-        return {
-            finderDetail: this.props.currentFinderDetail
-        }
-    },
     closeModal: function () {
         this.props.onClick();
     },
     deleteFinder: function () {
-        let data = this.state.finderDetail;
+        let data = this.props.currentFinderDetail;
         console.log(data,'@delete_id')
         http.get('/api/?c=table.folder&ac=del&id=' + data.id)
             .then(data => data.data)
@@ -34,12 +29,7 @@ module.exports = React.createClass({
             <div className="finder-modal">
                 <Header title="提示" onClick={this.closeModal}/>
                 <div className="modal-body">
-                    <form className="form-inline">
-                        <label>文件夹名称:</label>
-                        <span>{this.state.finderDetail.title}</span>
-                    </form>
-                    {this.state.errMsg ?
-                        <div className="msg-warning">{this.state.errMsg}</div> : null}
+                    您当前确定删除当前文件夹!
                 </div>
                 <div className="modal-footer">
                     <button className="btn btn-primary"

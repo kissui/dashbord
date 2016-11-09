@@ -6,23 +6,55 @@ import SidebarMenu from './sidebarmenu';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
-            'isShow': this.props.onModal
+            'isShow': this.props.onModal,
+			'change': false
         }
     },
     handleDeleteFile: function (fileId) {
-        console.log(fileId)
+		this.setState({
+			isShow: true,
+			modalType: {
+				tabType: 'tables',
+				optionType: "deleteFile",
+				id: fileId
+			}
+		})
     },
     handleFolderSetting: function (id,option) {
-        console.log(id,option);
+    	console.log(option);
+		if(option ==='ADDFILE') {
+			//new tab
+			return;
+		}
+		this.setState({
+			isShow: true,
+			modalType: {
+				tabType: 'tables',
+				optionType: option,
+				id: id
+			}
+		})
     },
     handleHeadAddFolder: function () {
-
+		this.setState({
+			isShow: true,
+			modalType: {
+				tabType: 'tables',
+				optionType: 'addFolder'
+			}
+		})
     },
     handleHeadAddFile: function () {
-
+		// new tab
     },
+	menuChange: function () {
+		this.setState({
+			change: true
+		})
+	},
     render: function () {
         const {onParams} = this.props;
+        const {isShow,modalType,change} = this.state;
         return (
             <div className="kepler-sidebar">
                 <div className="sidebar-box">
@@ -39,13 +71,15 @@ module.exports = React.createClass({
                         </div>
                     </div>
                     <EditFinderModal
-                        isShow={this.state.isShow}
-                        type={this.state.modalType}
+                        isShow={isShow}
+                        type={modalType}
                         menuChange={this.menuChange}
                     />
 
                     <SidebarMenu
                         onParams={onParams}
+
+						onChangeSidebar={change}
 
                         onReceiveDeleteFile={this.handleDeleteFile}
 
