@@ -6,46 +6,23 @@ import SidebarMenu from './sidebarmenu';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
-            'defaultProps': this.props.defaultFile,
-            'selectIndex': this.props.selectIndex,
-            'dropDownWrapState': this.props.state,
             'isShow': this.props.onModal
         }
     },
-    componentWillReceiveProps: function (nextProps) {
-        this.setState({
-            'isShow': false,
-            'defaultProps': nextProps.defaultFile,
-            'menuChangeState': 'true',
-        })
+    handleDeleteFile: function (fileId) {
+        console.log(fileId)
     },
-    handleFinderOpen: function (tabType, optionType, index, id, title) {
-        let option = {
-            'tabType': tabType,
-            'optionType': optionType ? optionType : null,
-            'index': index,
-            'id': id,
-            'title': title ? title : null
-        };
-        this.setState({
-            'isShow': true,
-            'modalType': option
-        });
+    handleFolderSetting: function (id,option) {
+        console.log(id,option);
+    },
+    handleHeadAddFolder: function () {
 
     },
-    menuChange: function () {
-        this.setState({
-            menuChangeState: 'true',
-            'isShow': false
-        })
-    },
-    onChangeFile: function (index, tabName, optionType, finderId, fileId) {
-        this.props.onChangeFile(index, tabName, optionType, finderId, fileId);
-    },
-    onGlobalClick: function (page, type, id, folder) {
-        this.props.onGlobalClick(page, type, id, folder);
+    handleHeadAddFile: function () {
+
     },
     render: function () {
+        const {onParams} = this.props;
         return (
             <div className="kepler-sidebar">
                 <div className="sidebar-box">
@@ -66,16 +43,17 @@ module.exports = React.createClass({
                         type={this.state.modalType}
                         menuChange={this.menuChange}
                     />
+
                     <SidebarMenu
-                        currentIndex={this.props.selectIndex}
-                        onClick={this.handleFinderOpen}
-                        menuChangeState={this.state.menuChangeState}
-                        dropDownWrapState={this.state.dropDownWrapState}
-                        onChangeFile={this.onChangeFile}
-                        onGlobalClick={this.onGlobalClick}
-                        selectIndex={this.props.selectIndex}
-                        defaultFile={this.props.defaultFile}
-                        onParams={this.props.onParams}
+                        onParams={onParams}
+
+                        onReceiveDeleteFile={this.handleDeleteFile}
+
+                        onReceiveFolderSetting={this.handleFolderSetting}
+
+                        onReceiveHeadAddFolder={this.handleHeadAddFolder}
+
+                        onReceiveHeadAddFile={this.handleHeadAddFile}
                     />
                 </div>
             </div>

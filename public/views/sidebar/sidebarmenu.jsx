@@ -2,7 +2,6 @@
 
 import React from 'react';
 import http from '../../lib/http';
-import _ from 'lodash';
 import SidebarMenuItem from './SidebarMenuPage';
 /**
  * @todo 左侧菜单,default width 200px
@@ -69,22 +68,21 @@ class SidebarMenu extends React.Component {
 	}
 
 	handleHeadAddFolder() { //添加目录文件
-		this.props.onClick('schema', 'plus');
+		this.props.onReceiveHeadAddFolder();
 		this.setState({
 			'dropDownWrapState': null
 		})
 	}
-	handleHeadAddFile(id, folder) {
-		let type = (id && id.length > 0) ? 'folderFile' : 'globalFile';
-		this.props.onGlobalClick('schema', type, id, folder)
+	handleHeadAddFile() {
+		this.props.onReceiveHeadAddFile()
 	}
 	// sidebar 的操作
 	handleFolderSetting(id, option) {
-		console.log(id, option);
+		this.props.onReceiveFolderSetting(id, option)
 	}
 
 	handleDeleteFile(fileId) {
-		console.log(fileId)
+		this.props.onReceiveDeleteFile(fileId);
 	}
 	// sidebar 的操作 ending
 	render() {
@@ -113,8 +111,8 @@ class SidebarMenu extends React.Component {
 					<SidebarMenuItem
 						onSidebarData={sideListDate}
 						onParams={this.props.onParams}
-						onReceiveFolderSetting={this.handleFolderSetting}
-						onReceiveDeleteFileId={this.handleDeleteFile}
+						onReceiveFolderSetting={this.handleFolderSetting.bind(this)}
+						onReceiveDeleteFileId={this.handleDeleteFile.bind(this)}
 					/>
 					: null}
 			</div>

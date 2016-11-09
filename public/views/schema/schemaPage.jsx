@@ -16,43 +16,12 @@ module.exports = React.createClass({
 	},
 	componentDidMount: function () {
 
-		let sessionStorages = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
-		if (sessionStorages) {
-			// this.context.router.push({
-			// 	pathname: '/app/schema/'+sessionStorages.id,
-			// 	query: {
-			// 		'folder': sessionStorages.folder_id,
-			// 		'file': sessionStorages.id
-			// 	}
-			// });
-			this.setState({
-				'fileId': sessionStorages.id,
-				'sidebarState': {
-					fileID: sessionStorages.id,
-					folderID: sessionStorages.folder_id
-				}
-			});
-		} else if (!sessionStorages && this.props.history.query){
-			let query = this.props.history.query;
-			this.setState({
-				'fileId': query.file,
-				'sidebarState': {
-					fileID: query.file,
-					folderID: query.folder
-				}
-			});
-		}
 	},
 	render: function render() {
-
 		let params = this.props.params;
-		console.log(this.props,params);
 		return (
 			<div>
 				<SideMenu
-					selectIndex={1}
-					defaultFile={this.state.sidebarState}
-					state={this.state.dropDownWrapState}
 					onParams={params}
 					onModal={false}
 				/>
