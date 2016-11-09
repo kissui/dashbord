@@ -72,7 +72,7 @@ body {
     font-family: $fontFamily;
     line-height: $fontLineHeight;
     color: $colorText;
-    background-color: #d2d9e5;
+    background-color: #2a3f54;
     min-height: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -715,9 +715,7 @@ input:-ms-input-placeholder, textarea:-moz-placeholder {
     background: #FFFFFF;
     box-shadow: 0 2px 2px rgba(0,0,0,.05),0 1px 0 rgba(0,0,0,.05);
     .nav_menu {
-        
         border-bottom: 1px solid #D9DEE4;
-        margin-bottom: 10px;
         height: 60px;
         line-height: 60px;
         position: relative;
@@ -848,7 +846,15 @@ input:-ms-input-placeholder, textarea:-moz-placeholder {
 .fa-ok:before {
     content: "\f002";
 }
-
+.kepler-container {
+    margin-left: 230px;
+    min-height: 1000px;
+    background: #FFFFFF;
+    .content {
+        width: 100%;
+        overflow: hidden;
+    }
+}
 @mixin block($bg:#fff,$border:#ddd,$padding:10px,$margin:10px) {
     margin: $margin 0;
     background-color: $bg;

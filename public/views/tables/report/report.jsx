@@ -3,7 +3,7 @@
 var React = require('react');
 import SideMenu from '../../sidebar/sidebar';
 import NavigationTab from '../../tab/tab';
-import CreateFilePage from '../createFile';
+import ContentPage from './content';
 module.exports = React.createClass({
 	contextTypes: {
 		router: React.PropTypes.object.isRequired
@@ -30,15 +30,7 @@ module.exports = React.createClass({
 				/>
 				<NavigationTab selectIndex={1}/>
 				<div className="kepler-container">
-					<SchemaPage
-						currentPage={this.state.fileData}
-						fileId={this.state.fileId}
-						onFileOption={this.state.onFileOption}
-						createFileState={this.state.createFileState}
-						onState={this.onState}
-						onAddFile={this.onGlobalClick}
-						onEditFile={this.onGlobalClick}
-					/>
+					<ContentPage onParams={params}/>
 				</div>
 			</div>
 		);
