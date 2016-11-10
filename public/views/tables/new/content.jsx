@@ -154,13 +154,15 @@ module.exports = React.createClass({
 		} else {
 			onConf.name = 'new';
 		}
-
 		onConf.fileName = '';
 		const {dragConf, dragStart} = this.state;
 		return (
 			<div className="create-file">
 				<div className="file-body">
-					<HeadPage onReceiveFileName={this.handleSetName}/>
+					<HeadPage
+						onReceiveFileName={this.handleSetName}
+						onTypeConf={onConf}
+					/>
 					{/*<Folder onFolderId={this.handleFolderId}/>*/}
 					<CubeModule
 						onGetCubeConf={onConf}
