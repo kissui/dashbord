@@ -18,100 +18,97 @@
         }
         
     }
-    .file-body {
-        
-        .folder-body {
-            padding: 0 20px;
-            position: relative;
-            height: 100%;
-            label {
-                padding-right: 10px;
-            }
-            select {
-                min-width: 180px;
-            }
-            .pl-25 {
-                padding-left: 25px;
-            }
-            .view-cube {
-                margin-top: 10px;
-                td {
-                    border: 1px solid #dddddd;
-                    text-align: center;
-                    input[type=checkbox], input[type=radio] {
-                        margin: 0;
-                    }
-                    span {
-                        padding-left: 5px;
-                    }
-                }
-            }
-            .cube-add {
-                position: absolute;
-                right: 0;
-                top: -2px;
-                cursor: pointer;
-                i {
-                    font-size: 28px;
-                    color: #337ab7;
-                }
-            }
-            .cube-delete{
-                cursor: pointer;
-                position: absolute;
-                top: 0;
-                right: 0;
-                height: 24px;
-                line-height: 24px;
-                width: 24px;
+    .folder-body {
+        padding: 0 20px;
+        position: relative;
+        height: 100%;
+        label {
+            padding-right: 10px;
+        }
+        select {
+            min-width: 180px;
+        }
+        .pl-25 {
+            padding-left: 25px;
+        }
+        .view-cube {
+            margin-top: 10px;
+            td {
+                border: 1px solid #dddddd;
                 text-align: center;
-                font-size: 18px;
-                color: #fff;
-                border-radius:3px;
-                background: #337ab7;
-            }
-        }
-        .body-header {
-            padding: 0 0 10px 0;
-            h2 {
-                font-size: 16px;
-            }
-        }
-        .file-name {
-            padding: 15px 0;
-            input {
-                margin-left: 10px;
-            }
-        }
-        .padding {
-            padding: 10px;
-        }
-        .col-md-2 {
-            width: 100px;
-        }
-        .folder-list {
-            li {
-                padding: 0 5px;
-                height: 30px;
-                line-height: 30px;
-                border-color: #3c763d;
+                input[type=checkbox], input[type=radio] {
+                    margin: 0;
+                }
                 span {
-                    padding-left: 15px;
-                }
-                .success {
-                    position: absolute;
-                    right: 30px;
-                    padding: 8px 0 0 0;
-                    color: #3c763d;;
+                    padding-left: 5px;
                 }
             }
-            .active, li:hover {
-                background: #fff;
+        }
+        .cube-add {
+            position: absolute;
+            right: 0;
+            top: -2px;
+            cursor: pointer;
+            i {
+                font-size: 28px;
+                color: #337ab7;
             }
-            
+        }
+        .cube-delete {
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 24px;
+            line-height: 24px;
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+            color: #fff;
+            border-radius: 3px;
+            background: #337ab7;
         }
     }
-    .table-conf{
+    .body-header {
+        padding: 0 0 10px 0;
+        h2 {
+            font-size: 16px;
+        }
+    }
+    .file-name {
+        padding: 15px 0;
+        input {
+            margin-left: 10px;
+        }
+    }
+    .padding {
+        padding: 10px;
+    }
+    .col-md-2 {
+        width: 100px;
+    }
+    .folder-list {
+        li {
+            padding: 0 5px;
+            height: 30px;
+            line-height: 30px;
+            border-color: #3c763d;
+            span {
+                padding-left: 15px;
+            }
+            .success {
+                position: absolute;
+                right: 30px;
+                padding: 8px 0 0 0;
+                color: #3c763d;;
+            }
+        }
+        .active, li:hover {
+            background: #fff;
+        }
+        
+    }
+    .table-conf {
         label {
             input {
                 margin-left: 6px;
@@ -141,7 +138,7 @@
     .drag-body {
         width: 100%;
         overflow: hidden;
-        .drag-box{
+        .drag-box {
             position: relative;
             max-width: 150px;
             display: inline-block;
@@ -159,6 +156,7 @@
     }
     
 }
-.high{
+
+.high {
     border: 1px solid red;
 }
