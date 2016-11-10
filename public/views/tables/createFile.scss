@@ -141,6 +141,7 @@
         .drag-box {
             position: relative;
             max-width: 150px;
+            overflow: hidden;
             display: inline-block;
             margin: 10px;
             text-align: center;

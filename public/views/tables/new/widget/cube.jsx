@@ -15,11 +15,6 @@ module.exports = React.createClass({
 	componentDidMount: function () {
 		this.getCubeData(this.props.onGetCubeConf);
 	},
-	componentWillReceiveProps: function (nextProps) {
-		if (nextProps.onGetCubeConf) {
-			// console.log('@cubeConf',nextProps.onGetCubeConf)
-		}
-	},
 	getCubeData: function (cubeConf) {
 		http.get('/api/?c=cube.cubes&ac=index')
 			.then(data=>data.data)
@@ -37,14 +32,24 @@ module.exports = React.createClass({
 							dimension_fields: data.data[0].dimensions[0].dimension_fields,
 						})
 					});
+					let defaultCubeData = data.data
 					if (cubeConf.name == 'update') {
-						// let editCubeConf = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).cube_conf;
-						this.setState({
-							cubeData: data.data,
-							tempCubeConf: editCubeConf,
-							initCubeConf: [tempCubeConf]
-						});
-						this.props.onSaveCubeId(editCubeConf)
+						http.get('/api/?c=table.tables&ac=index&id=' + cubeConf.fileId)
+							.then(data => data.data)
+							.then((data) => {
+								if (data.errcode === 10000) {
+									if (data.data && data.msg === 'success') {
+										console.log('@update:', data.data);
+										this.setState({
+											cubeData: defaultCubeData,
+											tempCubeConf: data.data.cube_conf,
+											initCubeConf: [tempCubeConf]
+										});
+										this.props.onSaveCubeId(data.data.cube_conf, data.data.table_conf)
+									}
+
+								}
+							});
 					} else {
 						this.setState({
 							cubeData: data.data,
@@ -131,6 +136,7 @@ module.exports = React.createClass({
 						</div>
 						<Dimensionmodule
 							onData={this.state.cubeData[item.cubeIndex].dimensions[item.dimensionIndex]}
+							onCubeConf={this.state.tempCubeConf}
 							defaultText="暂无数据"
 							onChange={this.state.isChange}
 							onIndex={key}

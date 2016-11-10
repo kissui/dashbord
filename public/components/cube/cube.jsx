@@ -40,12 +40,16 @@ module.exports = function (cube) {
             data_fields: dimension.data_fields,
             dimension_fields: dimension.dimension_fields,
         });
-        let concatFields = fields.data_fields.concat(fields.dimension_fields);
-        concatFields.map((item, i)=> {
-            item.val_conf = cubes + '.' + item.field_id;
-            item.selected = true;
-        });
-        if (index) concatFields[index].selected = isChecked;
+        if(fields.data_fields&&fields.dimension_fields) {
+            let concatFields = fields.data_fields && fields.data_fields.concat(fields.dimension_fields);
+
+            concatFields.map((item, i)=> {
+                item.val_conf = cubes + '.' + item.field_id;
+                item.selected = true;
+            });
+            if (index) concatFields[index].selected = isChecked;
+        }
+
         return fields;
     }
 };

@@ -71,7 +71,7 @@ export default (
             <IndexRoute component={HomePage}/>
             <Route path='/group/table' component={HomePage}/>
             <Route path='/group/table/report/:folderId/:fileId' component={ReportPage}/>
-            <Route path='/group/table/edit/:fileId' component={HomePage}/>
+            <Route path='/group/table/edit/:fileId' component={NewReportPage}/>
             <Route path='/group/table/new' component={NewReportPage}/>
             <Route path="/group/analysis" component={analysisPage}/>
             <Route path="/group/mock" component={MockPage}/>

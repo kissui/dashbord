@@ -18,14 +18,17 @@ module.exports = React.createClass({
 	},
 	componentWillReceiveProps: function (nextProps) {
 		let defaultDataFields;
-		console.log(nextProps.onChangeConf)
-		if (this.props.onDefaultConf.conf && this.props.onDefaultConf.name == 'editFile') {
-			defaultDataFields = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).table_conf.fields.data_fields;
+		if (nextProps.onDefaultConf.name == 'update' && nextProps.onDefaultConf.tableConf) {
+			defaultDataFields = nextProps.onDefaultConf.tableConf.fields.data_fields;
 		}
 		if (nextProps.onChangeConf) {
 			let isFirst = !this.props.onIsFirst || this.state.dragStart;
 			this.setState({
 				'data_fields': !isFirst ? defaultDataFields : nextProps.onChangeConf
+			})
+		} else {
+			this.setState({
+				'data_fields': null
 			})
 		}
 

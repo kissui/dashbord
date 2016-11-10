@@ -2,10 +2,10 @@
 import React from "react";
 import http from "../../../lib/http";
 import Folder from "../components/folder";
-import Cube from "./widget/cube";
+import CubeModule from './widget/cube';
 import HeadPage from "./widget/newHead";
 import HandleTablePage from '../components/handleTable';
-import Drag from './widget/drag';
+import DragModdule from './widget/drag';
 module.exports = React.createClass({
 	getInitialState: function () {
 		return {
@@ -14,13 +14,13 @@ module.exports = React.createClass({
 	},
 	componentDidMount: function () {
 		const {onParams} = this.props;
-		console.log('@init:',onParams);
 	},
-	handleGetCubeId: function (cubeConf) {
+	handleGetCubeId: function (cubeConf, tableConf) {
+		const {onParams} = this.props;
+		onParams.tableConf = tableConf;
 		let data_fields = [];
-		let sessionConf = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
 		cubeConf.map((item, i)=> {
-			data_fields = _.concat(data_fields, item.fields.data_fields);
+			data_fields = item.fields.data_fields ? _.concat(data_fields, item.fields.data_fields):[];
 		});
 		if (data_fields && data_fields.length > 0) {
 			_.remove(data_fields, (item)=> {
@@ -28,12 +28,14 @@ module.exports = React.createClass({
 			});
 		}
 		let defaultDataFields;
-		if (sessionConf.table_conf && _.has(sessionConf.table_conf, 'fields')) {
-			defaultDataFields = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).table_conf.fields.data_fields;
+		if (tableConf && _.has(tableConf, 'fields')) {
+			defaultDataFields = tableConf.fields.data_fields;
+		} else {
+			defaultDataFields = data_fields;
 		}
 		this.setState({
 			cubeConf: cubeConf,
-			dragConf: defaultDataFields ? defaultDataFields : data_fields
+			dragConf: defaultDataFields
 		});
 
 	},
@@ -132,7 +134,12 @@ module.exports = React.createClass({
 	},
 	render: function () {
 		let onConf = this.props.onParams;
-		onConf.name = 'new';
+		if (onConf.fileId) {
+			onConf.name = 'update';
+		} else {
+			onConf.name = 'new';
+		}
+
 		onConf.fileName = '';
 		const {dragConf, dragStart} = this.state;
 		return (
@@ -140,17 +147,17 @@ module.exports = React.createClass({
 				<div className="file-body">
 					{/*<HeadPage onReceiveFileName={this.handleSetName}/>*/}
 					{/*<Folder onFolderId={this.handleFolderId}/>*/}
-					<Cube
+					<CubeModule
 						onGetCubeConf={onConf}
 						onSaveCubeId={this.handleGetCubeId}
 						onChecked={this.handleCheckBox}
 					/>
-					{/*<Drag*/}
-						{/*onDefaultConf={onConf}*/}
-						{/*onChangeConf={dragConf}*/}
-						{/*onIsFirst={dragStart}*/}
-						{/*onHandleDrag={this.handleSaveDragConf}*/}
-					{/*/>*/}
+					<DragModdule
+						onDefaultConf={onConf}
+						onChangeConf={dragConf}
+						onIsFirst={dragStart}
+						onHandleDrag={this.handleSaveDragConf}
+					/>
 				</div>
 				<div className="file-footer text-center">
 					<button className="btn btn-primary"

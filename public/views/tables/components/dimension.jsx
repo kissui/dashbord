@@ -10,9 +10,9 @@ module.exports = React.createClass({
         let dataField;
         let dimensionField;
         let dimension = this.props.onData;
-        let defaultFileDetail = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
-        let defaultDimensionData = defaultFileDetail.cube_conf[this.props.onIndex] ?
-            defaultFileDetail.cube_conf[this.props.onIndex].fields.data_fields : null;
+        let defaultFileDetail = this.props.onCubeConf;
+        let defaultDimensionData = defaultFileDetail[this.props.onIndex] ?
+            defaultFileDetail[this.props.onIndex].fields.data_fields : null;
         if (_.isObject(dimension)) {
             dataField = dimension.data_fields.map((item, i)=> {
                 return (
@@ -20,7 +20,7 @@ module.exports = React.createClass({
                         <label>
                             <Checked onSingleChecked={this.handleCheckBox}
                                      index={i}
-                                     onIsCheck={this.props.onOperatePage === 'editFile' ?
+                                     onIsCheck={this.props.onOperatePage === 'update' ?
                                          (this.props.onChange ? true : (defaultDimensionData ? defaultDimensionData[i].selected : true)) : true}/>
                             <span>{item.title}</span>
                         </label>
