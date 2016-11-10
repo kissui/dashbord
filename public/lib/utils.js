@@ -7,9 +7,6 @@ import _isEmpty from 'lodash/isEmpty';
     项目中一些公用的方法
 */
 
-
-
-
 const YUNZH_STR = /kepler/g;
 let proxyName;
 

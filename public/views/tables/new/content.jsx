@@ -6,7 +6,12 @@ import CubeModule from './widget/cube';
 import HeadPage from "./widget/newHead";
 import HandleTablePage from '../components/handleTable';
 import DragModdule from './widget/drag';
+import Loadingpage from '../../../components/loading/loading';
+import Utils from '../../../lib/utils';
 module.exports = React.createClass({
+	contextTypes: {
+		router: React.PropTypes.object.isRequired
+	},
 	getInitialState: function () {
 		return {
 			isForbid: false
@@ -59,12 +64,11 @@ module.exports = React.createClass({
 		})
 	},
 	handleCommit: function (conf) {
-		let value = this.state.fileName;
-		let state = this.state;
+		const {fileName, cubeConf, folderId, dragConf, tableOptionConf} = this.state;
 		let path;
 		let data_fields = [];
-		if (!this.state.dragConf) {
-			state.cubeConf.map((item, i)=> {
+		if (!dragConf) {
+			cubeConf.map((item, i)=> {
 				data_fields = _.concat(data_fields, item.fields.data_fields);
 			});
 			_.remove(data_fields, (item)=> {
@@ -74,23 +78,24 @@ module.exports = React.createClass({
 			data_fields = this.state.dragConf;
 		}
 
-		let dimension_fields = state.cubeConf[0].fields.dimension_fields;
+		let dimension_fields = cubeConf[0].fields.dimension_fields;
+		console.log(fileName, cubeConf, folderId, dragConf, tableOptionConf);
 		let data = {
-			'folder_id': state.folderId,
-			'title': value,
-			'cube_conf': state.cubeConf,
+			'folder_id': folderId,
+			'title': fileName,
+			'cube_conf': cubeConf,
 			'table_conf': {
 				'fields': {
 					'dimension_fields': dimension_fields,
 					'data_fields': data_fields
 				},
-				'sum': _.isObject(state.tableOptionConf) ? state.tableOptionConf.sum : false,
-				'mean': _.isObject(state.tableOptionConf) ? state.tableOptionConf.mean : false
+				'sum': _.isObject(tableOptionConf) ? tableOptionConf.sum : false,
+				'mean': _.isObject(tableOptionConf) ? tableOptionConf.mean : false
 			}
 		};
-		if (conf && conf.name === 'editFile') {
-			path = '/api/?c=table.tables&ac=update&id=' + conf.conf.id;
-			data.title = this.state.fileName ? this.state.fileName : conf.conf.title;
+		if (conf && conf.name === 'update') {
+			path = '/api/?c=table.tables&ac=update&id=' + conf.fileId;
+			data.title = fileName;
 		} else {
 			path = '/api/?c=table.tables&ac=add';
 
@@ -99,7 +104,17 @@ module.exports = React.createClass({
 			.then(data=>data.data)
 			.then((data)=> {
 				if (data.errcode === 10000) {
-					this.props.onState(data.data.id, state.folderId)
+					let res = data.data;
+					this.context.router.push({
+						pathname: '/group/table/report/'+ res.folder_id +'/' + res.id,
+						state: {
+							folderId: res.folder_id,
+							fileId: res.id
+						}
+					})
+				} else {
+					console.log(data);
+					Utils.delayPop(data.msg, 2000);
 				}
 			})
 	},
@@ -137,6 +152,7 @@ module.exports = React.createClass({
 
 	},
 	handleChangeTableConf: function (conf) {
+		console.log(conf);
 		this.setState({
 			tableOptionConf: conf
 		})
@@ -146,42 +162,91 @@ module.exports = React.createClass({
 			dragConf: conf
 		})
 	},
+	handleReceiveDateRange: function (dateRange) {
+		console.log(dateRange)
+	},
 	render: function () {
-		let onConf = this.props.onParams;
+		let onConf = this.props.onParams, content = <Loadingpage/>;
+		const {dragConf, dragStart, initialFileConf} = this.state;
 		if (onConf.fileId) {
 			onConf.name = 'update';
-			onConf.initFileConf = this.state.initialFileConf;
+			onConf.initFileConf = initialFileConf;
+			if (initialFileConf) {
+				content = (
+					<div>
+						<div className="file-body">
+							<HeadPage
+								onReceiveFileName={this.handleSetName}
+								onTypeConf={onConf}
+								onReceiveFolderId={this.handleFolderId}
+							/>
+							{/*<Folder onFolderId={this.handleFolderId}/>*/}
+							<CubeModule
+								onGetCubeConf={onConf}
+								onSaveCubeId={this.handleGetCubeId}
+								onChecked={this.handleCheckBox}
+							/>
+							<HandleTablePage
+								onChange={this.handleChangeTableConf}
+								onConf={onConf}
+								onReceiveDateRange={this.handleReceiveDateRange}
+							/>
+							<DragModdule
+								onDefaultConf={onConf}
+								onChangeConf={dragConf}
+								onIsFirst={dragStart}
+								onHandleDrag={this.handleSaveDragConf}
+							/>
+						</div>
+						<div className="file-footer text-center">
+							<button className="btn btn-primary"
+									onClick={this.handleCommit.bind(this, onConf)}>
+								保存
+							</button>
+						</div>
+					</div>
+				)
+			}
 		} else {
 			onConf.name = 'new';
+			content = (
+				<div>
+					<div className="file-body">
+						<HeadPage
+							onReceiveFileName={this.handleSetName}
+							onTypeConf={onConf}
+							onReceiveFolderId={this.handleFolderId}
+						/>
+						{/*<Folder onFolderId={this.handleFolderId}/>*/}
+						<CubeModule
+							onGetCubeConf={onConf}
+							onSaveCubeId={this.handleGetCubeId}
+							onChecked={this.handleCheckBox}
+						/>
+						<HandleTablePage
+							onChange={this.handleChangeTableConf}
+							onConf={onConf}
+							onReceiveDateRange={this.handleReceiveDateRange}
+						/>
+						<DragModdule
+							onDefaultConf={onConf}
+							onChangeConf={dragConf}
+							onIsFirst={dragStart}
+							onHandleDrag={this.handleSaveDragConf}
+						/>
+					</div>
+					<div className="file-footer text-center">
+						<button className="btn btn-primary"
+								onClick={this.handleCommit.bind(this, onConf)}>
+							保存
+						</button>
+					</div>
+				</div>
+			)
 		}
-		onConf.fileName = '';
-		const {dragConf, dragStart} = this.state;
 		return (
 			<div className="create-file">
-				<div className="file-body">
-					<HeadPage
-						onReceiveFileName={this.handleSetName}
-						onTypeConf={onConf}
-					/>
-					{/*<Folder onFolderId={this.handleFolderId}/>*/}
-					<CubeModule
-						onGetCubeConf={onConf}
-						onSaveCubeId={this.handleGetCubeId}
-						onChecked={this.handleCheckBox}
-					/>
-					<DragModdule
-						onDefaultConf={onConf}
-						onChangeConf={dragConf}
-						onIsFirst={dragStart}
-						onHandleDrag={this.handleSaveDragConf}
-					/>
-				</div>
-				<div className="file-footer text-center">
-					<button className="btn btn-primary"
-							onClick={this.handleCommit.bind(this, onConf)}>
-						保存
-					</button>
-				</div>
+				{content}
 			</div>
 		)
 	}

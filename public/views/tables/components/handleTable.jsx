@@ -3,6 +3,7 @@
 import React from 'react';
 import Checked from '../../../components/form/checkbox';
 import SelectInputBox from '../components/selectinputbox';
+import _ from 'lodash';
 const data = [
     {
         'title': 'year',
@@ -30,12 +31,12 @@ module.exports = React.createClass({
         'onConf': React.PropTypes.Object, //初始化操作项的状态
     },
     getInitialState: function () {
-        let defaultConf = this.props.onConf.conf;
-        if (_.isObject(defaultConf) && _.has(defaultConf, 'table_conf')) {
+        let defaultConf = this.props.onConf;
+        if (_.isObject(defaultConf) && _.has(defaultConf, 'initFileConf')) {
             return {
                 conf: {
-                    sum: defaultConf.table_conf.sum,
-                    mean: defaultConf.table_conf.mean
+                    sum: defaultConf.initFileConf.table_conf.sum,
+                    mean: defaultConf.initFileConf.table_conf.mean
                 }
             }
         } else {
@@ -60,7 +61,7 @@ module.exports = React.createClass({
         this.props.onChange(conf);
     },
     handleSelectValue: function (value) {
-        console.log('@selectBox: ',value);
+        this.props.onReceiveDateRange(value)
     },
     render: function () {
         let defaultConf = this.state.conf;
