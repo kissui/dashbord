@@ -8,6 +8,9 @@ import Loading from '../../../components/loading/loading';
 import _ from 'lodash'
 
 module.exports = React.createClass({
+	contextTypes: {
+		router: React.PropTypes.object.isRequired
+	},
 	getInitialState: function () {
 		return {
 			contentDefault: null,
@@ -52,10 +55,15 @@ module.exports = React.createClass({
 	},
 
 	handleAddFile: function () {
-		this.props.onAddFile('tables', 'globalFile')
+		this.context.router.push({
+			pathname: '/group/table/new'
+		})
 	},
 	handleEditFile: function (conf) {
-		this.props.onEditFile('tables', 'editFile', conf.folder_id, conf)
+		console.log(conf);
+		this.context.router.push({
+			pathname: '/group/table/edit/'+conf.folder_id +'/'+conf.id,
+		})
 	},
 	handleChangeChart: function () {
 		this.setState({

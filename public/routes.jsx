@@ -7,7 +7,7 @@ import Auth, {pathNeedLoggedIn} from './lib/auth';
 
 
 import Layout from './views/layout.jsx';
-import HomePage from './views/tables/schemaPage.jsx';
+import HomePage from './views/tables/index.jsx';
 import NewReportPage from './views/tables/new/new.jsx';
 import ReportPage from './views/tables/report/report.jsx';
 import analysisPage from './views/analysis/analysis.jsx';
