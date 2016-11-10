@@ -26,6 +26,9 @@ module.exports = React.createClass({
 					onModal={false}
 				/>
 				<NavigationTab selectIndex={1}/>
+				<div className="kepler-container">
+					暂无是数据
+				</div>
 			</div>
 		);
 	}

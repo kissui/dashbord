@@ -14,7 +14,7 @@ module.exports = React.createClass({
 	},
 	getInitialState: function () {
 		return {
-			isForbid: false
+			loading: false
 		}
 	},
 	componentDidMount: function () {
@@ -31,6 +31,10 @@ module.exports = React.createClass({
 						}
 					}
 				});
+		} else {
+			this.setState({
+				loading: true
+			})
 		}
 
 	},
@@ -171,44 +175,10 @@ module.exports = React.createClass({
 		if (onConf.fileId) {
 			onConf.name = 'update';
 			onConf.initFileConf = initialFileConf;
-			if (initialFileConf) {
-				content = (
-					<div>
-						<div className="file-body">
-							<HeadPage
-								onReceiveFileName={this.handleSetName}
-								onTypeConf={onConf}
-								onReceiveFolderId={this.handleFolderId}
-							/>
-							{/*<Folder onFolderId={this.handleFolderId}/>*/}
-							<CubeModule
-								onGetCubeConf={onConf}
-								onSaveCubeId={this.handleGetCubeId}
-								onChecked={this.handleCheckBox}
-							/>
-							<HandleTablePage
-								onChange={this.handleChangeTableConf}
-								onConf={onConf}
-								onReceiveDateRange={this.handleReceiveDateRange}
-							/>
-							<DragModdule
-								onDefaultConf={onConf}
-								onChangeConf={dragConf}
-								onIsFirst={dragStart}
-								onHandleDrag={this.handleSaveDragConf}
-							/>
-						</div>
-						<div className="file-footer text-center">
-							<button className="btn btn-primary"
-									onClick={this.handleCommit.bind(this, onConf)}>
-								保存
-							</button>
-						</div>
-					</div>
-				)
-			}
 		} else {
 			onConf.name = 'new';
+		}
+		if (initialFileConf || this.state.loading) {
 			content = (
 				<div>
 					<div className="file-body">

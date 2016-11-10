@@ -12,7 +12,6 @@ module.exports = React.createClass({
 		this.setState({
 			folderConf: folderConf
 		});
-		console.log(folderConf)
 		const {onTypeConf} = this.props;
 		this.props.onReceiveFolderId(onTypeConf.initFileConf ? onTypeConf.initFileConf.folder_id : folderConf[0].id);
 		this.props.onReceiveFileName(onTypeConf.initFileConf ? onTypeConf.initFileConf.title : '')
@@ -30,6 +29,8 @@ module.exports = React.createClass({
 		if (onTypeConf.initFileConf) {
 			folderId = onTypeConf.initFileConf.folder_id;
 			fileName = onTypeConf.initFileConf.title;
+		} else {
+			folderId = onTypeConf.folderId;
 		}
 		if (folderConf) {
 			options = folderConf.map((item, i)=> {

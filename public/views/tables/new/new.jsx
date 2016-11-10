@@ -21,7 +21,11 @@ module.exports = React.createClass({
 
 	},
 	render: function render() {
-		let params = this.props.params;
+		const {params} = this.props;
+		if(this.props.location.state){
+			params.folderId = this.props.location.state.folderId;
+		}
+		console.log('@init:',params);
 		return (
 			<div>
 				<SideMenu
