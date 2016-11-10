@@ -14,13 +14,27 @@ module.exports = React.createClass({
 	},
 	componentDidMount: function () {
 		const {onParams} = this.props;
+		if (onParams.fileId) {
+			http.get('/api/?c=table.tables&ac=index&id=' + onParams.fileId)
+				.then(data => data.data)
+				.then((data) => {
+					if (data.errcode === 10000) {
+						if (data.data && data.msg === 'success') {
+							this.setState({
+								initialFileConf: data.data
+							})
+						}
+					}
+				});
+		}
+
 	},
 	handleGetCubeId: function (cubeConf, tableConf) {
 		const {onParams} = this.props;
 		onParams.tableConf = tableConf;
 		let data_fields = [];
 		cubeConf.map((item, i)=> {
-			data_fields = item.fields.data_fields ? _.concat(data_fields, item.fields.data_fields):[];
+			data_fields = item.fields.data_fields ? _.concat(data_fields, item.fields.data_fields) : [];
 		});
 		if (data_fields && data_fields.length > 0) {
 			_.remove(data_fields, (item)=> {
@@ -136,6 +150,7 @@ module.exports = React.createClass({
 		let onConf = this.props.onParams;
 		if (onConf.fileId) {
 			onConf.name = 'update';
+			onConf.initFileConf = this.state.initialFileConf;
 		} else {
 			onConf.name = 'new';
 		}
@@ -145,7 +160,7 @@ module.exports = React.createClass({
 		return (
 			<div className="create-file">
 				<div className="file-body">
-					{/*<HeadPage onReceiveFileName={this.handleSetName}/>*/}
+					<HeadPage onReceiveFileName={this.handleSetName}/>
 					{/*<Folder onFolderId={this.handleFolderId}/>*/}
 					<CubeModule
 						onGetCubeConf={onConf}

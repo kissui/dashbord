@@ -32,24 +32,14 @@ module.exports = React.createClass({
 							dimension_fields: data.data[0].dimensions[0].dimension_fields,
 						})
 					});
-					let defaultCubeData = data.data
+					let defaultCubeData = data.data;
 					if (cubeConf.name == 'update') {
-						http.get('/api/?c=table.tables&ac=index&id=' + cubeConf.fileId)
-							.then(data => data.data)
-							.then((data) => {
-								if (data.errcode === 10000) {
-									if (data.data && data.msg === 'success') {
-										console.log('@update:', data.data);
-										this.setState({
-											cubeData: defaultCubeData,
-											tempCubeConf: data.data.cube_conf,
-											initCubeConf: [tempCubeConf]
-										});
-										this.props.onSaveCubeId(data.data.cube_conf, data.data.table_conf)
-									}
-
-								}
-							});
+						this.setState({
+							cubeData: defaultCubeData,
+							tempCubeConf: cubeConf.initFileConf.cube_conf,
+							initCubeConf: [tempCubeConf]
+						});
+						this.props.onSaveCubeId(cubeConf.initFileConf.cube_conf, cubeConf.initFileConf.table_conf)
 					} else {
 						this.setState({
 							cubeData: data.data,
