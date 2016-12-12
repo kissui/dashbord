@@ -59,8 +59,11 @@ module.exports = React.createClass({
             'folder_id': state.folderId,
             'title': value,
             'cube_conf': state.cubeConf,
-            'data_cycle_type': state.dateCycleType,
             'table_conf': {
+                'date_conf':{
+                    data_cycle_type: state.dateCycleType,
+                    default_date_range: '7',
+                },
                 'fields': {
                     'dimension_fields': dimension_fields,
                     'data_fields': data_fields
