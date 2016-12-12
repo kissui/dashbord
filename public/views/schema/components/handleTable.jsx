@@ -60,7 +60,7 @@ module.exports = React.createClass({
         this.props.onChange(conf);
     },
     handleSelectValue: function (value) {
-        console.log('@selectBox: ',value);
+        this.props.onReceiveCycle(value);
     },
     render: function () {
         let defaultConf = this.state.conf;

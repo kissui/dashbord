@@ -59,6 +59,7 @@ module.exports = React.createClass({
             'folder_id': state.folderId,
             'title': value,
             'cube_conf': state.cubeConf,
+            'data_cycle_type': state.dateCycleType,
             'table_conf': {
                 'fields': {
                     'dimension_fields': dimension_fields,
@@ -116,7 +117,12 @@ module.exports = React.createClass({
         });
 
     },
-
+    handleReceiveCycle: function (value) {
+        this.setState({
+            dateCycleType: value
+        });
+        console.log('@selectBox: ',value);
+    },
     handleCancel: function () {
         this.props.onCancel();
     },
@@ -146,6 +152,7 @@ module.exports = React.createClass({
                     />}
                     <HandleTablePage
                         onChange={this.handleChangeTableConf}
+                        onReceiveCycle={this.handleReceiveCycle}
                         onConf={this.props.onConf}
                     />
                     <Drag
