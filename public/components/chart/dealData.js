@@ -16,6 +16,7 @@ module.exports = function (option, _this) {
         dimension = option.dimension;
         KPI = option.KPI;
     }
+    fields=_.concat([{title:'日期11'}],fields);
     this.combineSum = function (combineKPI, combineDimension) {
         let selectK = [];
         combineKPI.map((item, i) => {
