@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import http from '../../lib/http';
+import http from '../../../lib/http';
 /**
  * @todo 左侧菜单,default width 200px
  * @description 为了方便处理dropdown_wrap

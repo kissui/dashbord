@@ -1,6 +1,6 @@
 'use strict';
 import React from 'react';
-import EditFinderModal from '../../components/finderModal';
+import EditFinderModal from '../../../components/finderModal';
 import SidebarMenu from './sidebarmenu';
 
 module.exports = React.createClass({

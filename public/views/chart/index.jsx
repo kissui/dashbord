@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import SideMenu from '../sidebar/sidebar';
+import SideMenu from '../layout/sidebar/sidebar';
 import NavigationTab from '../tab/tab';
 module.exports = React.createClass({
     getInitialState: function () {
