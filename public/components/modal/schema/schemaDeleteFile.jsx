@@ -29,14 +29,14 @@ module.exports = React.createClass({
             })
     },
     render: function () {
-        console.log(this.state.fileData);
+        const {fileData} = this.state;
         return (
             <div className="finder-modal">
                 <Header title="删除工作表" onClick={this.closeModal}/>
                 <div className="modal-body">
                     <form className="form-inline">
                         <label>工作表名称:</label>
-                        <span>{this.state.fileData['title']}</span>
+                        <span>【{fileData.title}】</span>
                     </form>
                 </div>
                 <div className="modal-footer">

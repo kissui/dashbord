@@ -6,7 +6,7 @@ import http from '../../../lib/http';
 module.exports = React.createClass({
     getInitialState: function () {
         return {
-            finderDetail: this.props.currentFinderDetail
+            folderDetail: this.props.currentFinderDetail
         }
     },
     closeModal: function () {
@@ -14,11 +14,9 @@ module.exports = React.createClass({
     },
     deleteFinder: function () {
         let data = this.state.finderDetail;
-        console.log(data,'@delete_id')
         http.get('/api/?c=table.folder&ac=del&id=' + data.id)
             .then(data => data.data)
             .then((data) => {
-                console.log(data, '@delete');
                 if (data.errcode === 10000) {
                     this.props.menuChange();
 
@@ -30,13 +28,18 @@ module.exports = React.createClass({
             })
     },
     render: function () {
+        const {folderDetail} = this.state;
+        let index = _.findIndex(folderDetail.lists,item=>{
+            return item.id == folderDetail.folderId
+        });
+        let title = folderDetail.lists[index].title;
         return (
             <div className="finder-modal">
                 <Header title="提示" onClick={this.closeModal}/>
                 <div className="modal-body">
                     <form className="form-inline">
                         <label>文件夹名称:</label>
-                        <span>{this.state.finderDetail.title}</span>
+                        <span>【{title}】</span>
                     </form>
                     {this.state.errMsg ?
                         <div className="msg-warning">{this.state.errMsg}</div> : null}

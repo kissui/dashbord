@@ -63,29 +63,24 @@ module.exports = React.createClass({
     render: function () {
         let content,
             modalTypeData = this.state.modalType;
-        if (modalTypeData && modalTypeData.tabType === 'schema') {
-            if (modalTypeData.optionType === 'plus') {
+        if (modalTypeData) {
+            if (modalTypeData.option === 'addFolder') {
                 content = <SchemaModal
                     onClick={this.closeModal}
                     menuChange={this.menuChange}/>
-            } else if (modalTypeData.optionType === 'delete') {
+            } else if (modalTypeData.type === 'del') {
                 content = <SchemaDeleteModal
                     onClick={this.closeModal}
                     menuChange={this.menuChange}
                     currentFinderDetail={this.state.modalType}
                 />
-            } else if (modalTypeData.optionType === 'rename') {
+            } else if (modalTypeData.type === 'rename') {
                 content = <SchemaModal
                     onClick={this.closeModal}
                     menuChange={this.menuChange}
                     currentFinderDetail={this.state.modalType}
                 />
-            } else if (modalTypeData.optionType === 'plusFile') {
-                content = <SchemaAddFile
-                    onClick={this.closeModal}
-                    menuChange = {this.menuChange}
-                />
-            } else if (modalTypeData.optionType === 'deleteFile') {
+            } else if (modalTypeData.type === 'delFile') {
                 content = <SchemaDeleteFile
                     onClick={this.closeModal}
                     menuChange = {this.menuChange}

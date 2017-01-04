@@ -2,82 +2,34 @@
 
 var React = require('react');
 import SideMenu from '../layout/sidebar/sidebar';
-import NavigationTab from '../layout/head';
+import HeaderPage from '../layout/head';
 import SchemaPage from './content';
 
 module.exports = React.createClass({
 	contextTypes: {
 		router: React.PropTypes.object.isRequired
 	},
-	getInitialState: function () {
-		return {
-			'dropDownWrapState': null
-		}
-	},
-	handleGlobalState: function (e) {
-		this.setState({
-			'dropDownWrapState': null
-		})
-	},
-	componentDidMount: function () {
-		let sessionStorages = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'));
-		if (sessionStorages) {
-			this.context.router.push({
-				pathname: '/index/schema/'+sessionStorages.id,
-				query: {
-					'folder': sessionStorages.folder_id,
-					'file': sessionStorages.id
-				}
-			});
-			this.setState({
-				'fileId': sessionStorages.id,
-				'sidebarState': {
-					fileID: sessionStorages.id,
-					folderID: sessionStorages.folder_id
-				}
-			});
-		} else if (!sessionStorages && this.props.history.query){
-			let query = this.props.history.query;
-			this.setState({
-				'fileId': query.file,
-				'sidebarState': {
-					fileID: query.file,
-					folderID: query.folder
-				}
-			});
-		}
-	},
-	/**
-	 * @TODO change file content
-	 * @param index
-	 * @param tabName
-	 * @param optionType
-	 * @param finderId
-	 * @param fileId
-	 */
-	onChangeFile: function (index, tabName, optionType, finderId, fileId) {
-
-		let fileData = {
-			'index': index,
-			'tabName': tabName,
-			'optionType': optionType,
-			'finderId': finderId,
-			'fileId': fileId
-		};
-		this.setState({
-			"fileData": fileData,
-			'fileId': fileId,
-			'sidebarState': {
-				fileID: fileId,
-				folderID: finderId
-			},
-			'createFileState': false
-		});
+	componentWillMount: function () {
+		const {routeParams} = this.props;
 		this.context.router.push({
-			pathname: '/index/schema/'+fileId,
-			query: {
-				'folder': finderId,
-				'file': fileId
+			pathname: '/index/report/schema/' + routeParams.folderId + '/' + routeParams.fileId
+		});
+		this.setState({
+			'fileId': routeParams.fileId,
+			'folderConf': {
+				fileId: routeParams.fileId,
+				folderId: routeParams.folderId
+			}
+		});
+	},
+	receiveFolderConf: function (conf) {
+		this.context.router.push({
+			pathname: '/index/report/schema/' + conf.folderId + '/' + conf.fileId
+		});
+		this.setState({
+			'folderConf': {
+				fileId: conf.fileId,
+				folderId: conf.folderId
 			}
 		});
 	},
@@ -106,45 +58,43 @@ module.exports = React.createClass({
 	 * @param folderId
 	 */
 	onState: function (id, folderId) {
-		this.setState({
-			'fileId': id,
-			'folderId': folderId,
-			'createFileState': false,
-			'sidebarState': {
-				fileID: id,
-				folderID: folderId
-			}
-		});
-		this.context.router.push({
-			pathname: '/index/schema/'+id,
-			query: {
-				'folder': folderId,
-				'file': id
-			}
-		});
+		// this.setState({
+		// 	'fileId': id,
+		// 	'folderId': folderId,
+		// 	'createFileState': false,
+		// 	'sidebarState': {
+		// 		fileID: id,
+		// 		folderID: folderId
+		// 	}
+		// });
+		// this.context.router.push({
+		// 	pathname: '/index/schema/' + id,
+		// 	query: {
+		// 		'folder': folderId,
+		// 		'file': id
+		// 	}
+		// });
 	},
 	render: function render() {
+		const{folderConf} = this.state;
 		return (
 			<div>
 				<SideMenu
-					selectIndex={1}
-					defaultFile={this.state.sidebarState}
-					state={this.state.dropDownWrapState}
-					onChangeFile={this.onChangeFile}
-					onGlobalClick={this.onGlobalClick}
+					onTabIndex={1}
+					onFolderConf={folderConf}
 					onModal={false}
+					onReceiveFolderConf={this.receiveFolderConf}
 				/>
-				<NavigationTab selectIndex={1}/>
+				<HeaderPage selectIndex={1}/>
 				<div className="kepler-container">
-					<SchemaPage
+					{/*<SchemaPage
 						currentPage={this.state.fileData}
 						fileId={this.state.fileId}
 						onFileOption={this.state.onFileOption}
 						createFileState={this.state.createFileState}
 						onState={this.onState}
 						onAddFile={this.onGlobalClick}
-						onEditFile={this.onGlobalClick}
-					/>
+						onEditFile={this.onGlobalClick}/>*/}
 				</div>
 			</div>
 		);

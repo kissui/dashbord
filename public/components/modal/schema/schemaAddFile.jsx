@@ -26,9 +26,6 @@ module.exports = React.createClass({
                                ref="finderName"
                                placeholder="文件名称"/>
                     </form>
-                    {/*{!this.state.initialInputState && this.state.changeState ?*/}
-                        {/*<div className="msg-warning">文件夹名称不能为空</div> : null}*/}
-                    {/*{this.state.errMsg ? <div className="msg-warning">{this.state.errMsg}</div> : null}*/}
                 </div>
                 <div className="modal-footer">
                     <button className="btn btn-primary"
