@@ -9,13 +9,16 @@ import CreateFilePage from './createFile';
 
 module.exports = React.createClass({
     getInitialState: function () {
+        const {onFileDetail} = this.props;
         return {
             contentDefault: null,
+            fileDetail: onFileDetail,
         }
     },
     componentDidMount: function () {
         let fileId = location.pathname.match(/\d./g) ? location.pathname.match(/\d./g)[0] : null;
-        this.initialFileData(fileId)
+        const {fileDetail} = this.state;
+        this.initialFileData(fileDetail.fileId)
     },
     componentWillReceiveProps: function (nextProps) {
         this.setState({
@@ -23,10 +26,11 @@ module.exports = React.createClass({
             fileId: nextProps.fileId,
             onFileOption: nextProps.onFileOption,
             createFileState: nextProps.createFileState,
-            'onShowChart': false
+            'onShowChart': false,
+            fileDetail: nextProps.onFileDetail
         });
         if (nextProps.fileId) {
-            this.initialFileData(nextProps.fileId)
+            this.initialFileData(nextProps.onFileDetail.fileId)
         }
 
     },
@@ -81,20 +85,20 @@ module.exports = React.createClass({
         })
     },
     render: function () {
-        let fileData = this.state.fileData,
-            content;
-        if (fileData && this.state.flag) {
+        const {fileData,flag,fileDetail,onShowChart} = this.state;
+        let content;
+        if (fileData && flag) {
             content = (
                 <div>
-
                     <ViewHeader
                         viewHeader={fileData}
+                        onFolderConf={fileDetail}
                         onAddFile={this.handleAddFile}
                         onEditFile={this.handleEditFile}
                         onChangeChart={this.handleChangeChart}
                     />
-                    <ViewBody viewBody={this.state.fileData}
-                              onChart={this.state.onShowChart}
+                    <ViewBody viewBody={fileData}
+                              onChart={onShowChart}
                     />
                 </div>
 

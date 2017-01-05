@@ -6,6 +6,7 @@ import Auth, {pathNeedLoggedIn} from './lib/auth';
 
 import Layout from './views/layout.jsx';
 import HomePage from './views/schema/box.jsx';
+import ReportNewPage from './views/schema/new/box.jsx';
 // import LoginPage from './views/login.jsx';
 import LogoutPage from './views/logout.jsx';
 import ChartPage from './views/chart/index';
@@ -79,6 +80,8 @@ export default (
 			<IndexRoute component={HomePage}/>
 			<Route path='/index/report/schema/' component={HomePage}/>
 			<Route path='/index/report/schema/:folderId/:fileId' component={HomePage}/>
+			<Route path='/index/report/new' component={ReportNewPage}/>
+			<Route path='/index/report/edit/:folderId/:fileId' component={ReportNewPage}/>
 			<Route path='/index/chart' component={ChartPage}/>
 			<Route path='/index/source' component={SourcePage}/>
 			<Route path='/index/401' component={UnauthorizedPage}/>

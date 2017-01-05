@@ -4,18 +4,19 @@ import React from 'react';
 import Router, {Link, History} from 'react-router';
 module.exports = React.createClass({
 	getInitialState: function () {
+		const {onFolderConf,selectIndex,onSidebar} = this.props;
 		return {
-			'onSidebar': this.props.onSidebar,
-			'tabIndex': this.props.selectIndex
+			'onSidebar': onSidebar,
+			'tabIndex': selectIndex,
+			'folderConf': onFolderConf
 		}
 	},
 	componentWillReceiveProps: function (nextProps) {
 		this.setState({
 			tabIndex: nextProps.selectIndex,
-			onSidebar: nextProps.onSidebar
+			onSidebar: nextProps.onSidebar,
+			'folderConf': nextProps.onFolderConf
 		})
-	},
-	componentWillMount: function () {
 	},
 	render () {
 		return (

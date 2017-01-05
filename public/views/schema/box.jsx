@@ -10,7 +10,9 @@ module.exports = React.createClass({
 		router: React.PropTypes.object.isRequired
 	},
 	componentWillMount: function () {
+
 		const {routeParams} = this.props;
+		console.log(routeParams, 'console.log(routeParams)');
 		this.context.router.push({
 			pathname: '/index/report/schema/' + routeParams.folderId + '/' + routeParams.fileId
 		});
@@ -85,16 +87,17 @@ module.exports = React.createClass({
 					onModal={false}
 					onReceiveFolderConf={this.receiveFolderConf}
 				/>
-				<HeaderPage selectIndex={1}/>
+				<HeaderPage selectIndex={1} onFolderConf={folderConf}/>
 				<div className="kepler-container">
-					{/*<SchemaPage
+					<SchemaPage
 						currentPage={this.state.fileData}
+						onFileDetail={folderConf}
 						fileId={this.state.fileId}
 						onFileOption={this.state.onFileOption}
 						createFileState={this.state.createFileState}
 						onState={this.onState}
 						onAddFile={this.onGlobalClick}
-						onEditFile={this.onGlobalClick}/>*/}
+						onEditFile={this.onGlobalClick}/>
 				</div>
 			</div>
 		);

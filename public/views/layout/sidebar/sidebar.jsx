@@ -5,6 +5,9 @@ import EditFinderModal from '../../../components/finderModal';
 import SidebarMenu from './sidebarmenu';
 
 module.exports = React.createClass({
+	contextTypes: {
+		router: React.PropTypes.object.isRequired
+	},
 	getInitialState: function () {
 		const {onFolderConf, onTabIndex, onModal} = this.props;
 		return {
@@ -13,7 +16,7 @@ module.exports = React.createClass({
 			'isShow': onModal,
 		}
 	},
-	componentWillMount: function () {
+	componentDidMount: function () {
 		this.handleGetFolderTree()
 	},
 	handleGetFolderTree: function () {
@@ -24,7 +27,7 @@ module.exports = React.createClass({
 					this.setState({
 						folderLists: data.data
 					});
-					sessionStorage.setItem('SIDEBAR_LIST',JSON.stringify(data.data))
+					sessionStorage.setItem('SIDEBAR_LIST', JSON.stringify(data.data))
 				} else {
 					// 当前用户默认或者文件全部删除处理
 				}
@@ -47,18 +50,19 @@ module.exports = React.createClass({
 		})
 	},
 	receiveFolderOption: function (conf) {
-		console.log(conf)
-		this.setState({
-			'isShow': true,
-			'modalType': conf
-		});
-		// add or addFile create report
-		// else if (modalTypeData.type === 'add' || modalTypeData.option=="addFile") {
-		// 	content = <SchemaAddFile
-		// 		onClick={this.closeModal}
-		// 		menuChange = {this.menuChange}
-		// 	/>
-		// }
+		if (conf.type === 'add' || conf.option == "addFile") {
+			this.context.router.push({
+				pathname: '/index/report/new',
+				query: {
+					folderId: conf.folderId ? conf.folderId : '0'
+				}
+			});
+		} else {
+			this.setState({
+				'isShow': true,
+				'modalType': conf
+			});
+		}
 	},
 	/** receive folder conf **/
 	receiveFolderConf: function (conf) {
@@ -66,7 +70,7 @@ module.exports = React.createClass({
 	},
 	/** receive folder conf end **/
 	render: function () {
-		const {folderLists,folderConf,tabIndex} = this.state;
+		const {folderLists, folderConf, tabIndex} = this.state;
 		return (
 			<div className="kepler-sidebar">
 				<div className="sidebar-box">
