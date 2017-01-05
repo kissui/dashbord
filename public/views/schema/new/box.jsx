@@ -3,25 +3,31 @@
 var React = require('react');
 import SideMenu from '../../layout/sidebar/sidebar';
 import HeaderPage from '../../layout/head';
-import NewReportPage from '../new/content';
-
+import NewReportPage from '../new/createFile';
+import _ from 'lodash';
 module.exports = React.createClass({
 	contextTypes: {
 		router: React.PropTypes.object.isRequired
 	},
 	componentWillMount: function () {
-		const {routeParams} = this.props;
-		// this.context.router.push({
-		// 	pathname: '/index/report/new/' + routeParams.folderId + '/' + routeParams.fileId
-		// });
-		if(routeParams) {
+		const {routeParams,location} = this.props;
+		console.log(routeParams,location)
+		if(routeParams && !_.isEmpty(routeParams)) {
 			this.setState({
 				'fileId': routeParams.fileId,
 				'folderConf': {
 					fileId: routeParams.fileId,
-					folderId: routeParams.folderId
+					folderId: routeParams.folderId,
+					fileOpType:'edit'
 				}
 			});
+		} else if(location.query){
+			this.setState({
+				folderConf:{
+					folderId: location.query.folderId,
+					fileOpType:'new'
+				}
+			})
 		}
 
 	},

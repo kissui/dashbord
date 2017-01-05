@@ -18,9 +18,8 @@ module.exports = React.createClass({
     },
     componentWillReceiveProps: function (nextProps) {
         let defaultDataFields;
-
-        if (this.props.onDefaultConf.conf && this.props.onDefaultConf.name == 'editFile') {
-            defaultDataFields = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).table_conf.fields.data_fields;
+        if (nextProps.onFileDetail && nextProps.onFileDetail.fileOpType == 'edit') {
+            defaultDataFields = nextProps.onFileParams.table_conf.fields.data_fields;
         }
         if (nextProps.onChangeConf) {
             let isFirst = !this.props.onIsFirst || this.state.dragStart;
@@ -34,7 +33,6 @@ module.exports = React.createClass({
         const {x, y} = this.state.deltaPosition;
         let box = $('.drag-box');
         let currentEle = box.eq(i);
-        console.log('@dragRange:',x,y);
         currentEle.css({transform: "translate(" + x + 'px,' + y + "px)"});
         let duration = Math.sqrt(Math.pow(currentEle.width(), 2) + Math.pow(currentEle.height(), 2));
         let disArr = [];
@@ -97,19 +95,6 @@ module.exports = React.createClass({
         }
 
         if (changeIndex != null && i != changeIndex) {
-            // console.log(11111)
-            // let forkData = dataFields[i];
-            // let selectData = dataFields[changeIndex != 'undefined' ? changeIndex : i];
-            //
-            // dataFields.map((item, c)=> {
-            //     if (c === i) {
-            //         dataFields[c] = selectData
-            //     }
-            //     if (c === this.state.changeIndex) {
-            //         dataFields[c] = forkData;
-            //     }
-            // });
-
             let injectField = _.remove(dataFields, (item, ind)=> {
                 return ind === i;
             });

@@ -20,7 +20,7 @@ module.exports = React.createClass({
                         <label>
                             <Checked onSingleChecked={this.handleCheckBox}
                                      index={i}
-                                     onIsCheck={this.props.onOperatePage === 'editFile' ?
+                                     onIsCheck={this.props.onOperatePage === 'edit' ?
                                          (this.props.onChange ? true : (defaultDimensionData ? defaultDimensionData[i].selected : true)) : true}/>
                             <span>{item.title}</span>
                         </label>
