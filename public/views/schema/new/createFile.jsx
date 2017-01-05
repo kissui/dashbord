@@ -109,6 +109,7 @@ module.exports = React.createClass({
 		});
 		tempFields.data_fields = dataFields;
 		// 处理drag事件的数据
+		console.log(tempFields,'Te')
 		if (value === true) {
 			this.setState({
 				dragConf: _.concat(this.state.dragConf, tempCube[cubeIndex].fields.data_fields[index])

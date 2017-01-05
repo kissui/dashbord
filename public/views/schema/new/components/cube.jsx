@@ -58,6 +58,7 @@ module.exports = React.createClass({
 			})
 	},
 	handleCheckBox: function (value, i, cubeIndex) {
+		console.log(value, i, cubeIndex);
 		this.props.onChecked(value, i, cubeIndex)
 	},
 	handleChangeCube: function (conf, index) {
