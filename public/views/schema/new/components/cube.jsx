@@ -58,26 +58,28 @@ module.exports = React.createClass({
 			})
 	},
 	handleCheckBox: function (value, i, cubeIndex) {
-		console.log(value, i, cubeIndex);
 		this.props.onChecked(value, i, cubeIndex)
 	},
 	handleChangeCube: function (conf, index) {
-		let initCubeDefaultData = this.state.tempCubeConf;
-		let CUBE = new cube(this.state.cubeData);
+		const {tempCubeConf,cubeData} = this.state;
+		let initCubeDefaultData = tempCubeConf;
+		let CUBE = new cube(cubeData);
 		this.setState({
 			tempCubeConf: CUBE.selectedData(initCubeDefaultData, conf, index),
 			isChange: true,
 		});
+		console.log(initCubeDefaultData, conf, index,CUBE.selectedData(initCubeDefaultData, conf, index),'@changeConf');
 		this.props.onSaveCubeId(CUBE.selectedData(initCubeDefaultData, conf, index))
 	},
 	handleChangeDimension: function (conf, index) {
-		let initCubeDefaultData = this.state.tempCubeConf;
-		let CUBE = new cube(this.state.cubeData);
+		const {tempCubeConf,cubeData} = this.state;
+		let CUBE = new cube(cubeData);
 		this.setState({
-			tempCubeConf: CUBE.selectedData(initCubeDefaultData, conf, index),
+			tempCubeConf: CUBE.selectedData(tempCubeConf, conf, index),
 			isChange: true,
 		});
-		this.props.onSaveCubeId(CUBE.selectedData(initCubeDefaultData, conf, index))
+		console.log(tempCubeConf, conf, index,CUBE.selectedData(tempCubeConf, conf, index),'@changeDimensionConf');
+		this.props.onSaveCubeId(CUBE.selectedData(tempCubeConf, conf, index))
 	},
 	handleAddCube: function () {
 		this.setState({

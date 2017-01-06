@@ -41,7 +41,7 @@ module.exports = React.createClass({
         return (
             <div className="row view-cube">
                 <form ref="form">
-                    <div className="col-md-6">
+                    <div className="col-md-9">
                         <div className="table-responsive">
                             <table className="table">
                                 <tbody>
@@ -53,7 +53,7 @@ module.exports = React.createClass({
                         </div>
                     </div>
                 </form>
-                <div className="col-md-6">
+                <div className="col-md-3">
                     <div className="table-responsive">
                         <table className="table">
                             <tbody>
