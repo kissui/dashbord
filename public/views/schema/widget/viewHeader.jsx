@@ -25,7 +25,6 @@ module.exports = React.createClass({
 				folderId: folderConf.folderId
 			}
 		});
-		// this.props.onAddFile()
 	},
 	handleChangeChart: function () {
 		this.props.onChangeChart()
@@ -35,7 +34,6 @@ module.exports = React.createClass({
 		this.context.router.push({
 			pathname: '/index/report/edit/' + folderConf.folderId + '/' + folderConf.fileId,
 		});
-		// this.props.onEditFile(this.props.viewHeader)
 	},
 	render: function () {
 		return (

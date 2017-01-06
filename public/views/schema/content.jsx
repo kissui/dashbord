@@ -5,7 +5,6 @@ import {Link, History, Router} from 'react-router';
 import ViewHeader from './widget/viewHeader';
 import ViewBody from './widget/viewBody';
 import Loading from '../../components/loading/loading';
-import CreateFilePage from './createFile';
 
 module.exports = React.createClass({
     getInitialState: function () {
@@ -16,7 +15,6 @@ module.exports = React.createClass({
         }
     },
     componentDidMount: function () {
-        let fileId = location.pathname.match(/\d./g) ? location.pathname.match(/\d./g)[0] : null;
         const {fileDetail} = this.state;
         this.initialFileData(fileDetail.fileId)
     },
@@ -29,7 +27,7 @@ module.exports = React.createClass({
             'onShowChart': false,
             fileDetail: nextProps.onFileDetail
         });
-        if (nextProps.fileId) {
+        if (nextProps.onFileDetail.fileId) {
             this.initialFileData(nextProps.onFileDetail.fileId)
         }
 
@@ -38,9 +36,9 @@ module.exports = React.createClass({
         this.setState({
             flag: false
         });
-        let id = fileId ? fileId : 1;
         var _this = this;
-        http.get('/api/?c=table.tables&ac=index&id=' + id)
+        if(!fileId) return;
+        http.get('/api/?c=table.tables&ac=index&id=' + fileId)
             .then(data => data.data)
             .then((data) => {
                 if (data.errcode === 10000) {
@@ -69,12 +67,6 @@ module.exports = React.createClass({
     onState: function (id, folderId) {
         this.props.onState(id, folderId)
     },
-    handleAddFile: function () {
-        this.props.onAddFile('schema', 'globalFile')
-    },
-    handleEditFile: function (conf) {
-        this.props.onEditFile('schema', 'editFile', conf.folder_id, conf)
-    },
     handleHideCreateFilePage: function () {
         let fileId = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).id;
         this.initialFileData(fileId);
@@ -93,15 +85,12 @@ module.exports = React.createClass({
                     <ViewHeader
                         viewHeader={fileData}
                         onFolderConf={fileDetail}
-                        onAddFile={this.handleAddFile}
-                        onEditFile={this.handleEditFile}
                         onChangeChart={this.handleChangeChart}
                     />
                     <ViewBody viewBody={fileData}
                               onChart={onShowChart}
                     />
                 </div>
-
             )
 
         } else if (fileData === null) {
@@ -121,12 +110,7 @@ module.exports = React.createClass({
         }
         return (
             <div className="content">
-                {this.state.createFileState ?
-                    <CreateFilePage
-                        onState={this.onState}
-                        onConf={this.state.onFileOption}
-                        onCancel={this.handleHideCreateFilePage}
-                    /> : content}
+                {content}
             </div>
         )
     }
