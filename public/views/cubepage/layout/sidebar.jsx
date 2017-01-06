@@ -13,7 +13,6 @@ export default class CubePageSidebar extends React.Component {
 		http.get('/api/?c=cube.cubes&ac=index')
 			.then(data=>data.data)
 			.then(data=> {
-				console.log(data.data)
 				this.setState({
 					cubeList: data.data
 				})
@@ -22,7 +21,6 @@ export default class CubePageSidebar extends React.Component {
 
 	render() {
 		const {cubeList} = this.state;
-		console.log(cubeList, '@cubeList')
 		return (
 			<div className="kepler-sidebar">
 				<div className="sidebar-box">

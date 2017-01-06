@@ -4,25 +4,44 @@ var React = require('react');
 import SideMenu from '../layout/sidebar/sidebar';
 import HeaderPage from '../layout/head';
 import SchemaPage from './content';
-
+import _ from 'lodash';
 module.exports = React.createClass({
 	contextTypes: {
 		router: React.PropTypes.object.isRequired
 	},
-	componentWillMount: function () {
-
+	getInitialState: function () {
+		return {
+			folderConf: {
+				fileId: null,
+				folderId: null
+			}
+		}
+	},
+	componentDidMount: function () {
 		const {routeParams} = this.props;
-		console.log(routeParams, 'console.log(routeParams)');
-		this.context.router.push({
-			pathname: '/index/report/schema/' + routeParams.folderId + '/' + routeParams.fileId
-		});
+		if (routeParams && !_.isEmpty(routeParams)) {
+			this.setState({
+				'fileId': routeParams.fileId,
+				'folderConf': {
+					fileId: routeParams.fileId,
+					folderId: routeParams.folderId
+				}
+			});
+		}
+
+	},
+	handleResetPathParams: function (conf) {
 		this.setState({
-			'fileId': routeParams.fileId,
+			'fileId': conf.fileId,
 			'folderConf': {
-				fileId: routeParams.fileId,
-				folderId: routeParams.folderId
+				fileId: conf.fileId,
+				folderId: conf.folderId
 			}
 		});
+		this.context.router.push({
+			pathname: '/index/report/schema/' + conf.folderId + '/' + conf.fileId
+		});
+
 	},
 	receiveFolderConf: function (conf) {
 		this.context.router.push({
@@ -78,7 +97,7 @@ module.exports = React.createClass({
 		// });
 	},
 	render: function render() {
-		const{folderConf} = this.state;
+		const {folderConf} = this.state;
 		return (
 			<div>
 				<SideMenu
@@ -86,6 +105,7 @@ module.exports = React.createClass({
 					onFolderConf={folderConf}
 					onModal={false}
 					onReceiveFolderConf={this.receiveFolderConf}
+					onReceicePathParams={this.handleResetPathParams}
 				/>
 				<HeaderPage selectIndex={1} onFolderConf={folderConf}/>
 				<div className="kepler-container">

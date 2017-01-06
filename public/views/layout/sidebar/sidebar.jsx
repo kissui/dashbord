@@ -20,6 +20,7 @@ module.exports = React.createClass({
 		this.handleGetFolderTree()
 	},
 	handleGetFolderTree: function () {
+		const {folderConf} = this.state;
 		http.get('/api/?c=table.folder&ac=tree')
 			.then(data => (data.data))
 			.then((data) => {
@@ -27,6 +28,13 @@ module.exports = React.createClass({
 					this.setState({
 						folderLists: data.data
 					});
+					if (folderConf && _.isEmpty(folderConf.fileId)) {
+						this.props.onReceicePathParams({
+							folderId: data.data[0].id,
+							fileId: data.data[0].tables[0].id
+
+						});
+					}
 					sessionStorage.setItem('SIDEBAR_LIST', JSON.stringify(data.data))
 				} else {
 					// 当前用户默认或者文件全部删除处理

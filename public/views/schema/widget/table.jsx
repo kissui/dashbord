@@ -57,7 +57,6 @@ module.exports = React.createClass({
         if (tableConf['mean']) {
             newData = newData.concat([dealData.mean]);
         }
-        console.log('@table',newTitle,newData);
         return (
             <div>
                 {/*<DataPage onReceiveData={this.handleReceiveDateRange} isShowRange={false}/>*/}
