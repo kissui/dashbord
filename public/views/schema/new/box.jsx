@@ -9,9 +9,17 @@ module.exports = React.createClass({
 	contextTypes: {
 		router: React.PropTypes.object.isRequired
 	},
-	componentWillMount: function () {
+	getInitialState: function () {
+		return {
+			folderConf: {
+				fileId: null,
+				folderId: null
+			}
+		}
+	},
+	componentDidMount: function () {
 		const {routeParams,location} = this.props;
-		console.log(routeParams,location)
+		console.log(routeParams,location,'@new')
 		if(routeParams && !_.isEmpty(routeParams)) {
 			this.setState({
 				'fileId': routeParams.fileId,

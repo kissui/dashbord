@@ -16,11 +16,17 @@ module.exports = React.createClass({
 			'isShow': onModal,
 		}
 	},
-	componentDidMount: function () {
-		this.handleGetFolderTree()
-	},
-	handleGetFolderTree: function () {
-		const {folderConf} = this.state;
+	// componentDidMount: function () {
+	// 	this.handleGetFolderTree()
+	// },
+	handleGetFolderTree: function (param) {
+		let folderConf;
+		if (param) {
+			folderConf = param;
+		} else {
+			folderConf = this.state.folderConf;
+		}
+
 		http.get('/api/?c=table.folder&ac=tree')
 			.then(data => (data.data))
 			.then((data) => {
@@ -28,7 +34,8 @@ module.exports = React.createClass({
 					this.setState({
 						folderLists: data.data
 					});
-					if (folderConf && _.isEmpty(folderConf.fileId)) {
+					console.log(folderConf, '@folderConf')
+					if (folderConf && _.isEmpty(folderConf.fileId) && _.isEmpty(folderConf.folderId)) {
 						this.props.onReceicePathParams({
 							folderId: data.data[0].id,
 							fileId: data.data[0].tables[0].id
@@ -48,7 +55,8 @@ module.exports = React.createClass({
 		this.setState({
 			'isShow': false,
 			'folderConf': nextProps.onFolderConf,
-		})
+		});
+		this.handleGetFolderTree(nextProps.onFolderConf);
 	},
 	menuChange: function () {
 		this.handleGetFolderTree();

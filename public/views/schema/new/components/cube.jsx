@@ -21,7 +21,7 @@ module.exports = React.createClass({
 			// console.log('@cubeConf',nextProps.onGetCubeConf)
 		}
 	},
-	getCubeData: function (fileDetail,cubeConf) {
+	getCubeData: function (fileDetail, cubeConf) {
 		http.get('/api/?c=cube.cubes&ac=index')
 			.then(data=>data.data)
 			.then((data)=> {
@@ -61,27 +61,40 @@ module.exports = React.createClass({
 		this.props.onChecked(value, i, cubeIndex)
 	},
 	handleChangeCube: function (conf, index) {
-		const {tempCubeConf,cubeData} = this.state;
+		const {tempCubeConf, cubeData, fileDetail, changeDragList} = this.state;
 		let initCubeDefaultData = tempCubeConf;
 		let CUBE = new cube(cubeData);
+		let cubeList = CUBE.selectedData(initCubeDefaultData, conf, index);
 		this.setState({
-			tempCubeConf: CUBE.selectedData(initCubeDefaultData, conf, index),
+			tempCubeConf: cubeList,
 			isChange: true,
 		});
-		this.props.onSaveCubeId(CUBE.selectedData(initCubeDefaultData, conf, index))
+		if (fileDetail.fileOpType == 'edit' && changeDragList) {
+			this.props.onSaveCubeId(cubeList,'change')
+		} else {
+			this.props.onSaveCubeId(cubeList)
+		}
+
 	},
 	handleChangeDimension: function (conf, index) {
-		const {tempCubeConf,cubeData} = this.state;
+		const {tempCubeConf, cubeData, fileDetail, changeDragList} = this.state;
 		let CUBE = new cube(cubeData);
+		let cubeList = CUBE.selectedData(tempCubeConf, conf, index);
 		this.setState({
-			tempCubeConf: CUBE.selectedData(tempCubeConf, conf, index),
+			tempCubeConf: cubeList,
 			isChange: true,
 		});
-		this.props.onSaveCubeId(CUBE.selectedData(tempCubeConf, conf, index))
+		if(fileDetail.fileOpType ==='edit' && changeDragList) {
+			this.props.onSaveCubeId(cubeList,'change')
+		} else {
+			this.props.onSaveCubeId(cubeList)
+		}
+
 	},
 	handleAddCube: function () {
 		this.setState({
-			tempCubeConf: _.concat(this.state.tempCubeConf, this.state.initCubeConf)
+			tempCubeConf: _.concat(this.state.tempCubeConf, this.state.initCubeConf),
+			changeDragList: true
 		});
 	},
 	handleDeleteCube: function (index) {
@@ -91,12 +104,13 @@ module.exports = React.createClass({
 			return key == index
 		});
 		this.setState({
-			tempCubeConf: temp
+			tempCubeConf: temp,
+			changeDragList: false
 		});
 		this.props.onSaveCubeId(temp)
 	},
 	render: function () {
-		const {fileDetail,tempCubeConf,cubeData,isChange} = this.state;
+		const {fileDetail, tempCubeConf, cubeData, isChange} = this.state;
 		let content;
 		if (tempCubeConf) {
 			content = tempCubeConf.map((item, key) => {

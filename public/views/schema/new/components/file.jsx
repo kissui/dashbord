@@ -63,7 +63,7 @@ module.exports = React.createClass({
 				<div className="col-md-4">
 					<label className="control-label">根目录</label>
 					<select ref="folder"
-							value={fileDetail.folderId}
+							defaultValue={fileDetail.folderId}
 							className="form-control" onChange={this.handleChangeFolder}>
 						{options}
 					</select>

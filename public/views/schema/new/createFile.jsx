@@ -7,6 +7,9 @@ import HeadPage from "./components/file";
 import HandleTablePage from './components/handleTable';
 import Drag from './components/drag';
 module.exports = React.createClass({
+	contextTypes: {
+		router: React.PropTypes.object.isRequired
+	},
 	getInitialState: function () {
 		return {
 			isForbid: false,
@@ -24,7 +27,7 @@ module.exports = React.createClass({
 			fileCubeConf: JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'))
 		});
 	},
-	handleGetCubeId: function (cubeConf) {
+	handleGetCubeId: function (cubeConf, editChangeState) {
 		const {fileCubeConf, fileDetail} = this.state;
 		let data_fields = [];
 		cubeConf.map((item, i)=> {
@@ -37,15 +40,16 @@ module.exports = React.createClass({
 			});
 		}
 		let defaultDataFields;
-		if(fileDetail.fileOpType ==='edit') {
+		if (fileDetail.fileOpType === 'edit') {
 			if (fileCubeConf.table_conf && _.has(fileCubeConf.table_conf, 'fields')) {
 				defaultDataFields = fileCubeConf.table_conf.fields.data_fields;
 			}
 		}
-		console.log(fileDetail,defaultDataFields,data_fields)
+		console.log(fileDetail, defaultDataFields, data_fields)
+
 		this.setState({
 			cubeConf: cubeConf,
-			dragConf: defaultDataFields ? defaultDataFields : data_fields
+			dragConf: editChangeState ? data_fields : defaultDataFields ? defaultDataFields : data_fields
 		});
 
 	},
@@ -95,6 +99,9 @@ module.exports = React.createClass({
 			.then(data=>data.data)
 			.then((data)=> {
 				if (data.errcode === 10000) {
+					this.context.router.push({
+						pathname: '/index/report/schema/' + state.fileDetail.folderId + '/' + data.data.id
+					});
 					// this.props.onState(data.data.id, state.folderId)
 				}
 			})

@@ -17,13 +17,12 @@ module.exports = React.createClass({
         };
     },
     componentWillReceiveProps: function (nextProps) {
-        console.log(nextProps, '@dragNextProps');
         let defaultDataFields;
         if (nextProps.onFileDetail && nextProps.onFileDetail.fileOpType == 'edit') {
             defaultDataFields = nextProps.onFileParams.table_conf.fields.data_fields;
         }
         if (nextProps.onChangeConf) {
-            let isFirst = !this.props.onIsFirst || this.state.dragStart;
+            let isFirst = !nextProps.onIsFirst || this.state.dragStart;
             this.setState({
                 'data_fields': !isFirst ? defaultDataFields : nextProps.onChangeConf
             })

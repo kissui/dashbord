@@ -10,6 +10,12 @@ module.exports = React.createClass({
 		router: React.PropTypes.object.isRequired
 	},
 	getInitialState: function () {
+		// const {routeParams} = this.props;
+		// let fileId = null, folderId = null;
+		// if (routeParams && !_.isEmpty(routeParams)) {
+		// 	fileId = routeParams.fileId;
+		// 	folderId = routeParams.folderId;
+		// }
 		return {
 			folderConf: {
 				fileId: null,
