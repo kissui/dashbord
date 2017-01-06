@@ -13,7 +13,7 @@ import ChartPage from './views/chart/index';
 import UnauthorizedPage from './views/401.jsx';
 import errorPage from './views/error/error.jsx';
 import SourcePage from './views/source/source';
-
+import CubePage from './views/cubepage/default'
 // onEnter(nextState, replaceState, callback?)
 //index
 // Called when a route is about to be entered. It provides the next
@@ -78,10 +78,11 @@ export default (
 	<Router>
 		<Route path='/index' component={Layout}>
 			<IndexRoute component={HomePage}/>
-			<Route path='/index/report/schema/' component={HomePage}/>
+			<Route path='/index/report/schema' component={HomePage}/>
 			<Route path='/index/report/schema/:folderId/:fileId' component={HomePage}/>
 			<Route path='/index/report/new' component={ReportNewPage}/>
 			<Route path='/index/report/edit/:folderId/:fileId' component={ReportNewPage}/>
+			<Route path='/index/report/cube' component={CubePage}/>
 			<Route path='/index/chart' component={ChartPage}/>
 			<Route path='/index/source' component={SourcePage}/>
 			<Route path='/index/401' component={UnauthorizedPage}/>

@@ -192,7 +192,7 @@ var SidebarMenuItem = React.createClass({
 							</i>
 							{item.title}
 						</a>
-						<span className="fa fa-plus-square finder-edit"
+						<span className="fa fa-ellipsis-v finder-edit"
 							  onClick={me.handleSettingFinder.bind(null, i)}>
                         </span>
 						{me.state.dropDownWrapState === ('schema_' + i) ?
@@ -303,7 +303,7 @@ class SidebarMenuSuperItem extends React.Component {
 									</i>
 									{item.title}
 								</a>
-								<i className="fa fa-edit icon"
+								<i className="fa fa-ellipsis-v icon"
 								   onClick={me.handleSettingFile.bind(me, i, me.props.id)}>
 								</i>
 								{me.state.dropDownWrapState === ('schema_' + me.props.id + '_' + i) ?

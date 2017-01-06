@@ -33,13 +33,13 @@ module.exports = React.createClass({
 									仪表盘
 								</Link></li>
 							<li className={this.state.tabIndex === 1 && 'current'} value="1">
-								<Link to='/index/schema'>
+								<Link to='/index/report/schema'>
 									工作表
 								</Link>
 							</li>
 							<li className={this.state.tabIndex === 2 && 'current'} value="2">
-								<Link to='/index/source'>
-									数据源
+								<Link to='/index/report/cube'>
+									CUBE
 								</Link>
 							</li>
 						</ul>

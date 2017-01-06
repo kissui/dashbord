@@ -1,0 +1,41 @@
+.c-menu {
+    padding: 20px;
+    .menuItem {
+        .span {
+            height: 36px;
+            line-height: 36px;
+            font-size: 14px;
+            color: rgb(173, 178, 196);
+            cursor: pointer;
+            display: inline-block;
+            width: 200px;
+            border-bottom: 1px solid #DDDDDD;
+            i {
+                margin-right: 13px;
+                color: rgb(173, 178, 196);
+            }
+        }
+        .active{
+            color: #FFFFFF;
+            i {
+                margin-right: 13px;
+                color: #FFFFFF;
+            }
+        }
+        .subItem {
+            padding: 8px;
+            li {
+                color: rgb(173, 178, 196);
+                height: 30px;
+                line-height: 30px;
+                cursor: pointer;
+                font-size: 12px;
+                i {
+                    margin-right: 13px;
+                    color: rgb(173, 178, 196);
+                }
+            }
+        ;
+        }
+    }
+}
