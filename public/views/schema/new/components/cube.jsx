@@ -68,7 +68,6 @@ module.exports = React.createClass({
 			tempCubeConf: CUBE.selectedData(initCubeDefaultData, conf, index),
 			isChange: true,
 		});
-		console.log(initCubeDefaultData, conf, index,CUBE.selectedData(initCubeDefaultData, conf, index),'@changeConf');
 		this.props.onSaveCubeId(CUBE.selectedData(initCubeDefaultData, conf, index))
 	},
 	handleChangeDimension: function (conf, index) {
@@ -78,7 +77,6 @@ module.exports = React.createClass({
 			tempCubeConf: CUBE.selectedData(tempCubeConf, conf, index),
 			isChange: true,
 		});
-		console.log(tempCubeConf, conf, index,CUBE.selectedData(tempCubeConf, conf, index),'@changeDimensionConf');
 		this.props.onSaveCubeId(CUBE.selectedData(tempCubeConf, conf, index))
 	},
 	handleAddCube: function () {

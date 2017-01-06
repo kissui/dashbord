@@ -17,6 +17,7 @@ module.exports = React.createClass({
         };
     },
     componentWillReceiveProps: function (nextProps) {
+        console.log(nextProps, '@dragNextProps');
         let defaultDataFields;
         if (nextProps.onFileDetail && nextProps.onFileDetail.fileOpType == 'edit') {
             defaultDataFields = nextProps.onFileParams.table_conf.fields.data_fields;
@@ -125,8 +126,8 @@ module.exports = React.createClass({
     render: function () {
         let data = this.state.data_fields;
         let content = null;
-        if (this.state.data_fields && this.state.data_fields.length > 0) {
-            content = this.state.data_fields.map((item, i)=> {
+        if (data && data.length > 0) {
+            content = data.map((item, i)=> {
                 return (
                     <Draggable bounds="parent" onDrag={this.handleDrag.bind(this, i)}
                                onStart={this.onStart.bind(this, i)}

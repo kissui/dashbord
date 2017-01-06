@@ -25,11 +25,11 @@ module.exports = React.createClass({
 		});
 	},
 	handleGetCubeId: function (cubeConf) {
-		console.log(cubeConf, '@cubeConf');
-		const {fileCubeConf} = this.state;
+		const {fileCubeConf, fileDetail} = this.state;
 		let data_fields = [];
 		cubeConf.map((item, i)=> {
-			data_fields = _.concat(data_fields, item.fields.data_fields);
+			if (item.fields.data_fields)
+				data_fields = _.concat(data_fields, item.fields.data_fields);
 		});
 		if (data_fields && data_fields.length > 0) {
 			_.remove(data_fields, (item)=> {
@@ -37,10 +37,12 @@ module.exports = React.createClass({
 			});
 		}
 		let defaultDataFields;
-		if (fileCubeConf.table_conf && _.has(fileCubeConf.table_conf, 'fields')) {
-			defaultDataFields = fileCubeConf.table_conf.fields.data_fields;
+		if(fileDetail.fileOpType ==='edit') {
+			if (fileCubeConf.table_conf && _.has(fileCubeConf.table_conf, 'fields')) {
+				defaultDataFields = fileCubeConf.table_conf.fields.data_fields;
+			}
 		}
-		console.log(defaultDataFields, data_fields, '@data_fields');
+		console.log(fileDetail,defaultDataFields,data_fields)
 		this.setState({
 			cubeConf: cubeConf,
 			dragConf: defaultDataFields ? defaultDataFields : data_fields
@@ -82,8 +84,8 @@ module.exports = React.createClass({
 				'mean': _.isObject(state.tableOptionConf) ? state.tableOptionConf.mean : false
 			}
 		};
-		if (conf && conf.name === 'editFile') {
-			path = '/api/?c=table.tables&ac=update&id=' + conf.conf.id;
+		if (state.fileDetail.fileOpType === 'edit') {
+			path = '/api/?c=table.tables&ac=update&id=' + state.fileDetail.fileId;
 			data.title = this.state.fileName ? this.state.fileName : conf.conf.title;
 		} else {
 			path = '/api/?c=table.tables&ac=add';
@@ -93,7 +95,7 @@ module.exports = React.createClass({
 			.then(data=>data.data)
 			.then((data)=> {
 				if (data.errcode === 10000) {
-					this.props.onState(data.data.id, state.folderId)
+					// this.props.onState(data.data.id, state.folderId)
 				}
 			})
 	},
@@ -109,7 +111,6 @@ module.exports = React.createClass({
 		});
 		tempFields.data_fields = dataFields;
 		// 处理drag事件的数据
-		console.log(tempFields,'Te')
 		if (value === true) {
 			this.setState({
 				dragConf: _.concat(this.state.dragConf, tempCube[cubeIndex].fields.data_fields[index])
@@ -177,12 +178,12 @@ module.exports = React.createClass({
 					{/*onReceiveCycle={this.handleReceiveCycle}*/}
 					{/*onConf={this.props.onConf}*/}
 					{/*/>*/}
-					{fileDetail &&<Drag
-					onFileDetail={fileDetail}
-					onFileParams={fileCubeConf}
-					onChangeConf={this.state.dragConf}
-					onIsFirst={this.state.dragStart}
-					onHandleDrag={this.handleSaveDragConf}
+					{fileDetail && <Drag
+						onFileDetail={fileDetail}
+						onFileParams={fileCubeConf}
+						onChangeConf={this.state.dragConf}
+						onIsFirst={this.state.dragStart}
+						onHandleDrag={this.handleSaveDragConf}
 					/>}
 				</div>
 				<div className="file-footer text-center">
