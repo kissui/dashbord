@@ -15,7 +15,8 @@ module.exports = React.createClass({
     },
     handleDeleteFile: function () {
         let data = this.state.fileData;
-        http.get('/api/?c=table.tables&ac=del&id=' + data.id)
+        console.log(data,'@data' )
+        http.get('/api/?c=table.tables&ac=del&id=' + data.fileId)
             .then(data => data.data)
             .then((data) => {
                 if (data.errcode === 10000) {

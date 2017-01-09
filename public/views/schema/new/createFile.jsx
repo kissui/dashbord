@@ -71,6 +71,7 @@ module.exports = React.createClass({
 		}
 
 		let dimension_fields = state.cubeConf[0].fields.dimension_fields;
+		console.log(state.folderId, '@state.folderId');
 		let data = {
 			'folder_id': state.folderId,
 			'title': value,
@@ -88,6 +89,7 @@ module.exports = React.createClass({
 				'mean': _.isObject(state.tableOptionConf) ? state.tableOptionConf.mean : false
 			}
 		};
+		// return;
 		if (state.fileDetail.fileOpType === 'edit') {
 			path = '/api/?c=table.tables&ac=update&id=' + state.fileDetail.fileId;
 			data.title = this.state.fileName ? this.state.fileName : conf.conf.title;
@@ -156,9 +158,14 @@ module.exports = React.createClass({
 	},
 	/** receive report head conf**/
 	handleReceiveHeadConf: function (conf) {
+		const {fileDetail} = this.state;
 		this.setState({
 			fileName: conf.fileName,
-			folderId: conf.folderId
+			folderId: conf.folderId,
+			fileDetail: {
+				fileOpType: fileDetail.fileOpType,
+				folderId: conf.folderId
+			}
 		})
 	},
 	/** end **/

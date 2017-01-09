@@ -29,6 +29,11 @@ module.exports = React.createClass({
 		});
 		// this.props.onFolderId(this.props.onHeadConf.folderId)
 	},
+	componentWillReceiveProps: function (nextProps) {
+		this.setState({
+			folderId: nextProps.onFileDetail.folderId
+		})
+	},
 	handleSetName: function () {
 		const {folderId, fileName} = this.state;
 		this.props.onReceiveHeadConf({
@@ -38,13 +43,11 @@ module.exports = React.createClass({
 		// this.props.onSetName(this.refs.fileName.value)
 	},
 	handleChangeFolder: function () {
-		// this.props.onFolderId(this.refs.folder.value);
 		const {folderId, fileName} = this.state;
 		this.props.onReceiveHeadConf({
 			folderId: this.refs.folder.value,
 			fileName: fileName
 		});
-		console.log(this.refs.folder.value);
 	},
 
 	render: function () {

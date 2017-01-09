@@ -16,10 +16,23 @@ module.exports = React.createClass({
 			'isShow': onModal,
 		}
 	},
-	// componentDidMount: function () {
-	// 	this.handleGetFolderTree()
-	// },
+	componentDidMount: function () {
+		const {folderConf} = this.state;
+		console.log('Did',folderConf);
+
+		this.handleGetFolderTree(folderConf)
+	},
+	componentWillReceiveProps: function (nextProps) {
+		console.log('props',nextProps.onFolderConf);
+
+		this.setState({
+			'isShow': false,
+			'folderConf': nextProps.onFolderConf,
+		});
+		this.handleGetFolderTree(nextProps.onFolderConf);
+	},
 	handleGetFolderTree: function (param) {
+
 		let folderConf;
 		if (param) {
 			folderConf = param;
@@ -34,12 +47,10 @@ module.exports = React.createClass({
 					this.setState({
 						folderLists: data.data
 					});
-					console.log(folderConf, '@folderConf')
 					if (folderConf && _.isEmpty(folderConf.fileId) && _.isEmpty(folderConf.folderId)) {
 						this.props.onReceicePathParams({
 							folderId: data.data[0].id,
 							fileId: data.data[0].tables[0].id
-
 						});
 					}
 					sessionStorage.setItem('SIDEBAR_LIST', JSON.stringify(data.data))
@@ -51,13 +62,7 @@ module.exports = React.createClass({
 				console.log(data);
 			})
 	},
-	componentWillReceiveProps: function (nextProps) {
-		this.setState({
-			'isShow': false,
-			'folderConf': nextProps.onFolderConf,
-		});
-		this.handleGetFolderTree(nextProps.onFolderConf);
-	},
+
 	menuChange: function () {
 		this.handleGetFolderTree();
 		this.setState({
