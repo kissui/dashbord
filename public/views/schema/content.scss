@@ -1,13 +1,17 @@
 .view-header {
-    height: 64px;
+    margin: 0 20px;
     h2 {
-        padding: 0 20px;
         font-size: 22px;
         font-weight: 400;
         color: rgba(0, 0, 0, .6);
         line-height: 64px;
     }
-    
+    .header-line{
+        display: inline-block;
+        padding-bottom: 25px;
+    }
+    margin-bottom: 30px;
+    border-bottom: 2px solid;
 }
 
 .header-tab {
@@ -113,6 +117,13 @@
                 right: 10px;
             }
         }
+    }
+    .body-table-title{
+        height: 60px;
+        line-height: 60px;
+        font-size: 28px;
+        border-top: 2px solid;
+        margin-top: 35px;
     }
     .body-tab-nav {
         height: 40px;

@@ -59,6 +59,7 @@ module.exports = React.createClass({
         }
         return (
             <div>
+                <div className="body-table-title">详细数据</div>
                 {/*<DataPage onReceiveData={this.handleReceiveDateRange} isShowRange={false}/>*/}
                 <div className="body-tab-nav">
                     <ul className="nav">
