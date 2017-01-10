@@ -11,27 +11,21 @@ module.exports = React.createClass({
 		router: React.PropTypes.object.isRequired
 	},
 	getInitialState: function () {
+		const {onFileDetail} = this.props;
 		return {
 			isForbid: false,
-			fileDetail: this.props.onFileDetail,
+			fileDetail: onFileDetail,
+			fileCubeConf: JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')),
+			folderList: onFileDetail.folderList
 		}
 	},
 	componentWillReceiveProps: function (nextProps) {
-		console.log(nextProps.onFileDetail, '@nextProps.onFileDetail');
 		this.setState({
 			fileDetail: nextProps.onFileDetail
 		})
 	},
-	componentDidMount: function () {
-		console.log(this.state.fileDetail,'@this.state.fileDetail')
-		this.setState({
-			folderList: JSON.parse(sessionStorage.getItem('SIDEBAR_LIST')),
-			fileCubeConf: JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'))
-		});
-	},
 	handleGetCubeId: function (cubeConf, editChangeState) {
 		const {fileCubeConf, fileDetail} = this.state;
-		console.log(this.state.fileDetail, '@handle')
 		let data_fields = [];
 		cubeConf.map((item, i)=> {
 			if (item.fields.data_fields)
@@ -48,8 +42,6 @@ module.exports = React.createClass({
 				defaultDataFields = fileCubeConf.table_conf.fields.data_fields;
 			}
 		}
-		console.log(fileDetail, defaultDataFields, data_fields)
-
 		this.setState({
 			cubeConf: cubeConf,
 			dragConf: editChangeState ? data_fields : defaultDataFields ? defaultDataFields : data_fields
@@ -74,7 +66,6 @@ module.exports = React.createClass({
 		}
 
 		let dimension_fields = state.cubeConf[0].fields.dimension_fields;
-		console.log(state, state.folderId, '@state.folderId');
 		let data = {
 			'folder_id': state.folderId,
 			'title': value,
@@ -144,7 +135,6 @@ module.exports = React.createClass({
 		this.setState({
 			dateCycleType: value
 		});
-		console.log('@selectBox: ', value);
 	},
 	handleCancel: function () {
 		this.props.onCancel();
@@ -168,7 +158,8 @@ module.exports = React.createClass({
 			fileDetail: {
 				fileOpType: fileDetail.fileOpType,
 				folderId: conf.folderId,
-				fileId: fileDetail.fileId
+				fileId: fileDetail.fileId,
+
 			}
 		})
 	},

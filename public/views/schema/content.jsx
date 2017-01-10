@@ -20,10 +20,8 @@ module.exports = React.createClass({
     },
     componentWillReceiveProps: function (nextProps) {
         this.setState({
-            contentDefault: nextProps.currentPage,
             fileId: nextProps.fileId,
             onFileOption: nextProps.onFileOption,
-            createFileState: nextProps.createFileState,
             'onShowChart': false,
             fileDetail: nextProps.onFileDetail
         });
@@ -44,7 +42,6 @@ module.exports = React.createClass({
                     if (data.data && data.msg === 'success') {
                         _this.setState({
                             fileData: data.data,
-                            createFileState: false,
                             flag: true
                         });
                         sessionStorage.setItem('SCHEMA_FILE_DETAIL', JSON.stringify(data.data));

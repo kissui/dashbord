@@ -5,59 +5,76 @@ import SideMenu from '../layout/sidebar/sidebar';
 import HeaderPage from '../layout/head';
 import SchemaPage from './content';
 import _ from 'lodash';
+import Init from '../../lib/init';
 module.exports = React.createClass({
 	contextTypes: {
 		router: React.PropTypes.object.isRequired
 	},
 	getInitialState: function () {
-		// const {routeParams} = this.props;
-		// let fileId = null, folderId = null;
-		// if (routeParams && !_.isEmpty(routeParams)) {
-		// 	fileId = routeParams.fileId;
-		// 	folderId = routeParams.folderId;
-		// }
 		return {
-			folderConf: {
-				fileId: null,
-				folderId: null
-			}
+			folderConf: null
 		}
 	},
 	componentDidMount: function () {
 		const {routeParams} = this.props;
-		if (routeParams && !_.isEmpty(routeParams)) {
-			this.setState({
-				'fileId': routeParams.fileId,
+		let _this = this;
+		Init.getFolderList(res=> {
+			console.log(res, '@InitFn');
+			let fileId = res[0].tables[0].id;
+			let folderId = res[0].id;
+			let folderList = res;
+			if (routeParams && !_.isEmpty(routeParams)) {
+				fileId = routeParams.fileId;
+				folderId = routeParams.folderId;
+			}
+			_this.setState({
 				'folderConf': {
-					fileId: routeParams.fileId,
-					folderId: routeParams.folderId
+					fileId: fileId,
+					folderId: folderId,
+					folderList: folderList
+				}
+			});
+		});
+	},
+	handleReloadFolderList: function (conf) {
+		console.log(conf, '@confList');
+		const {folderConf} = this.state;
+		if(conf ==='folderOption') {
+			Init.getFolderList(res=>{
+				this.setState({
+					'folderConf': {
+						fileId: res[0].tables[0].id,
+						folderId: res[0].id,
+						folderList: folderConf.folderList
+					}
+				});
+			})
+		} else {
+			this.setState({
+				'folderConf': {
+					fileId: conf.fileId,
+					folderId: conf.folderId,
+					folderList: folderConf.folderList
 				}
 			});
 		}
 
-	},
-	handleResetPathParams: function (conf) {
-		this.setState({
-			'fileId': conf.fileId,
-			'folderConf': {
-				fileId: conf.fileId,
-				folderId: conf.folderId
-			}
-		});
 		this.context.router.push({
 			pathname: '/index/report/schema/' + conf.folderId + '/' + conf.fileId
 		});
 
 	},
 	receiveFolderConf: function (conf) {
-		this.context.router.push({
-			pathname: '/index/report/schema/' + conf.folderId + '/' + conf.fileId
-		});
+		const {folderConf} = this.state;
 		this.setState({
 			'folderConf': {
 				fileId: conf.fileId,
-				folderId: conf.folderId
+				folderId: conf.folderId,
+				folderList: folderConf.folderList
 			}
+		});
+		this.context.router.push({
+			pathname: '/index/report/schema/' + conf.folderId + '/' + conf.fileId
 		});
 	},
 	/**
@@ -79,51 +96,27 @@ module.exports = React.createClass({
 			'fileId': null
 		})
 	},
-	/**
-	 * 创建table,修改tab的状态更新
-	 * @param id
-	 * @param folderId
-	 */
-	onState: function (id, folderId) {
-		// this.setState({
-		// 	'fileId': id,
-		// 	'folderId': folderId,
-		// 	'createFileState': false,
-		// 	'sidebarState': {
-		// 		fileID: id,
-		// 		folderID: folderId
-		// 	}
-		// });
-		// this.context.router.push({
-		// 	pathname: '/index/schema/' + id,
-		// 	query: {
-		// 		'folder': folderId,
-		// 		'file': id
-		// 	}
-		// });
-	},
 	render: function render() {
 		const {folderConf} = this.state;
+		console.log(folderConf);
 		return (
 			<div>
-				<SideMenu
+				{folderConf && <SideMenu
 					onTabIndex={1}
 					onFolderConf={folderConf}
 					onModal={false}
 					onReceiveFolderConf={this.receiveFolderConf}
-					onReceicePathParams={this.handleResetPathParams}
-				/>
+					onReloadFolderList={this.handleReloadFolderList}
+				/>}
 				<HeaderPage selectIndex={1} onFolderConf={folderConf}/>
 				<div className="kepler-container">
-					<SchemaPage
-						currentPage={this.state.fileData}
+					{folderConf && <SchemaPage
 						onFileDetail={folderConf}
 						fileId={this.state.fileId}
 						onFileOption={this.state.onFileOption}
 						createFileState={this.state.createFileState}
-						onState={this.onState}
 						onAddFile={this.onGlobalClick}
-						onEditFile={this.onGlobalClick}/>
+						onEditFile={this.onGlobalClick}/>}
 				</div>
 			</div>
 		);

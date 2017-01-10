@@ -16,56 +16,16 @@ module.exports = React.createClass({
 			'isShow': onModal,
 		}
 	},
-	componentDidMount: function () {
-		const {folderConf} = this.state;
-		console.log('Did', folderConf);
-		this.handleGetFolderTree(folderConf)
-	},
 	componentWillReceiveProps: function (nextProps) {
-		console.log('props', nextProps.onFolderConf);
-
 		this.setState({
 			'isShow': false,
 			'folderConf': nextProps.onFolderConf,
 		});
-		this.handleGetFolderTree(nextProps.onFolderConf);
-	},
-	handleGetFolderTree: function (param) {
-
-		let folderConf, _this = this;
-		if (param) {
-			folderConf = param;
-		} else {
-			folderConf = this.state.folderConf;
-		}
-		if (folderConf && _.isEmpty(folderConf.fileId) && _.isEmpty(folderConf.folderId)) {
-			http.get('/api/?c=table.folder&ac=tree')
-				.then(data => (data.data))
-				.then((data) => {
-					if (data.errcode === 10000 && data.data) {
-						_this.setState({
-							folderLists: data.data
-						});
-						_this.props.onReceicePathParams({
-							folderId: data.data[0].id,
-							fileId: data.data[0].tables[0].id
-						});
-						sessionStorage.setItem('SIDEBAR_LIST', JSON.stringify(data.data))
-					} else {
-						// 当前用户默认或者文件全部删除处理
-					}
-				})
-				.catch(data => {
-					console.log(data);
-				})
-		}
-
 	},
 
 	menuChange: function () {
-		this.handleGetFolderTree();
+		this.props.onReloadFolderList('folderOption');
 		this.setState({
-			menuChangeState: 'true',
 			'isShow': false
 		})
 	},
@@ -90,7 +50,7 @@ module.exports = React.createClass({
 	},
 	/** receive folder conf end **/
 	render: function () {
-		const {folderLists, folderConf, tabIndex} = this.state;
+		const {folderConf, tabIndex} = this.state;
 		return (
 			<div className="kepler-sidebar">
 				<div className="sidebar-box">
@@ -114,7 +74,7 @@ module.exports = React.createClass({
 					<SidebarMenu
 						onFolderConf={folderConf}
 						onTabIndex={tabIndex}
-						onFolderLists={folderLists}
+						onFolderLists={folderConf.folderList}
 						onReceiveFolderConf={this.receiveFolderConf}
 						onReceiveFolderOption={this.receiveFolderOption}
 					/>
