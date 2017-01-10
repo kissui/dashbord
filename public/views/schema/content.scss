@@ -31,10 +31,8 @@
 }
 .view-body{
     width: 100%;
-    border-top: 2px solid;
     margin:0 20px;
     .view-chart{
-        margin: 30px 0 0 0;
         background: #FFF;
         box-shadow: 0 2px 4px 0 rgba(0,0,0,.1),0 16px 24px 0 rgba(81,129,228,.1);
         .chart-set{
@@ -166,5 +164,18 @@
 /** 新版图表视图的画布样式表 **/
 
 .view-chart{
-    margin: 30px 20px;
+    //margin: 30px 20px;
+    .view-chart-title{
+        font-size: 24px;
+    }
+    .chart-kpi-List{
+        display: inline-block;
+        li{
+            border: 1px solid;
+            padding: 8px 10px;
+            margin: 0 4px;
+            display: inline-block;
+            border-radius: 4px;
+        }
+    }
 }

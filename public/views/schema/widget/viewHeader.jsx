@@ -7,23 +7,17 @@ module.exports = React.createClass({
 		router: React.PropTypes.object.isRequired
 	},
 	getInitialState: function () {
-		const {onFolderConf, viewHeader} = this.props;
-		let defaultRange = 3600 * 24 * 7 * 1000;
-		let endRange = +new Date();
-		let startRange = endRange - defaultRange;
-		let format = 'YYYY-MM-DD';
+		const {onFolderConf, viewHeader, onDateRange} = this.props;
 		return {
-			dateRange: {
-				dateStart: moment(new Date(startRange)).format(format).toString(),
-				dateEnd: moment(new Date()).format(format).toString()
-			},
+			dateRange: onDateRange,
 			'header': viewHeader,
 			folderConf: onFolderConf
 		}
 	},
 	componentWillReceiveProps(nextProps) {
 		this.setState({
-			'folderConf': nextProps.onFolderConf
+			'folderConf': nextProps.onFolderConf,
+			'dateRange': nextProps.onDateRange
 		})
 	},
 	handleAddFile: function () {
@@ -46,12 +40,17 @@ module.exports = React.createClass({
 	},
 	handleReceiveDateRange: function (start, end) {
 		const format = 'YYYY-MM-DD';
+		let dateRange = {
+			start: start.format(format).toString(),
+			end: end.format(format).toString()
+		};
 		this.setState({
-			preDefined: {
-				start: start.format(format).toString(),
-				end: end.format(format).toString()
-			}
+			preDefined: dateRange
 		});
+		this.props.onReloadTablesByDate({
+			'dateStart': dateRange.start,
+			'dateEnd': dateRange.end
+		})
 	},
 	render: function () {
 		const {dateRange} = this.state;

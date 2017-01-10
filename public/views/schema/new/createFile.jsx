@@ -66,11 +66,13 @@ module.exports = React.createClass({
 		}
 
 		let dimension_fields = state.cubeConf[0].fields.dimension_fields;
+		let dimensionFieldsLen = dimension_fields.length;
 		let data = {
 			'folder_id': state.folderId,
 			'title': value,
 			'cube_conf': state.cubeConf,
 			'table_conf': {
+				'channel': dimensionFieldsLen,
 				'date_conf': {
 					data_cycle_type: state.dateCycleType,
 					default_date_range: '7',

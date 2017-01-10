@@ -12,6 +12,34 @@ Number.prototype.flover = function (c, d, t) {
 	return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
 export default {
+	dealTitle(conf){
+		let kpiList = conf.fields.data_fields,
+			kpiListArr = [];
+		kpiList.map((item, i)=> {
+			console.log(item)
+			if (item[i].selected) {
+				kpiListArr.unshift(item[i].title)
+			}
+		});
+	},
+	handleChartData (datas, fields, channel) {
+		let newDataAssign = [];
+		datas.map((item, key) => {
+			let objectAssign = {};
+			datas[key].map((d, i) => {
+				(function (i) {
+					objectAssign[fields[i].title + (i >= channel ? '-' + fields[i].val_conf : '')] = (/^\d+(\.\d+)?$/.test(d) && i > 0) ? parseFloat(d) : (d === '-' ? 0 : d);
+					objectAssign = Object.assign(objectAssign);
+				})(i);
+			});
+			newDataAssign.push(objectAssign);
+		});
+		return newDataAssign;
+	},
+	handleChartDataChannel (datas, fields, channel) {
+		let newDataAssign = [];
+		return newDataAssign;
+	},
 	dealChartData (names, fields) {
 		const chartData = [];
 		let surveyName = names;
@@ -22,83 +50,11 @@ export default {
 			});
 			chartData.unshift(obj)
 		});
-		console.log(chartData);
 		return chartData;
 	},
-	handleShowChart (id, data, indicators, dimensions, chartConf) {
+
+	handleShowSingleKChart (id, data, indicators, dimensions, doubleYLine) {
 		let chartDOM = document.getElementById(id);
-		if (chartDOM && chartDOM.length > 0)
-			chartDOM.innerHTML = null;
-		var chart = new G2.Chart({
-			id: id,
-			forceFit: true,
-			height: 200,
-			plotCfg: {
-				margin: [0, 0, 50, 0]
-			}
-		});
-		var Frame = G2.Frame;
-		var frame = new Frame(data);
-		var Stat = G2.Stat;
-		chart.axis('日期', {
-			formatter: function (dimValue) {
-				return dimValue;
-			}
-		});
-		chart.legend(false);
-		let colors = ['#45594e', '#8fbeac', '#5e9882', '#fbbe7b', '#fff6e5', '#e89ba5', '#f5de50', '#f6deda', '#fbbe7a'];
-		let stackColor = colors.slice(0, indicators.length);
-		if (_.isObject(chartConf) && chartConf.showType === 'line') {
-			let lineIndicators = dimensions.slice(1);
-			let lineDimensions = _.concat(dimensions.slice(0, 1), indicators);
-			frame = Frame.combinColumns(frame, lineIndicators, 'population', 'kpi', lineDimensions, 'di');
-			chart.source(frame);
-			chart.interval().position(lineDimensions.join('*')).color(colors.slice(0, 1));// 使用图形语法绘制柱状图
-			chart.line().position('日期*population').color('kpi', colors.slice(1)).size(2).shape('smooth');
-			chart.point().position('日期*population').color('kpi', colors.slice(1)); // 绘制点图
-			if (chartConf.percent) {
-				chart.on('tooltipchange', function (ev) {
-					var items = ev.items; // 获取tooltip要显示的内容
-					items.map((sitem, i)=> {
-						if (i > 0 && sitem.value != 0) {
-
-							sitem.value = sitem.value + '%';
-						}
-					})
-				});
-			}
-		} else {
-			frame = Frame.combinColumns(frame, indicators, 'population', 'kpi', dimensions, 'di');
-			chart.source(frame);
-			chart.interval(['dodge', 'stack']).position('日期*population').color('kpi', stackColor);// 使用图形语法绘制柱状图
-			if (dimensions.length > 0) {
-				let d = dimensions.slice(1).join('*');
-				let reverseColors = colors.reverse();
-				dimensions.map((item, i)=> {
-					if (i > 0 && i != 0) {
-						chart.line().position('日期*' + item).color(reverseColors[i]).size(2).shape('smooth');
-						chart.on('tooltipchange', function (ev) {
-							var items = ev.items; // 获取tooltip要显示的内容
-							items.map((sitem, i)=> {
-								if (sitem.name == item) {
-									sitem.value = sitem.value + '%';
-								}
-							})
-						});
-						chart.point().position('日期*' + item).color(reverseColors[i]); // 绘制点图
-					}
-				})
-
-			}
-		}
-
-		chart.render();
-	},
-	handleShowAnalysisChart (id, data, indicators, dimensions, doubleYLine) {
-		let chartDOM = document.getElementById(id);
-		let chartRange = document.getElementById('range');
-		if (chartRange && chartRange.innerHTML)
-			chartRange.innerHTML = null;
 		if (chartDOM && chartDOM.innerHTML)
 			chartDOM.innerHTML = null;
 		var chart = new G2.Chart({
@@ -125,9 +81,7 @@ export default {
 		});
 		let colors = ['#45594e', '#8fbeac', '#5e9882', '#fbbe7b', '#fff6e5', '#e89ba5', '#f5de50', '#f6deda', '#fbbe7a'];
 
-		chart.legend({
-			position: 'top', // 图例的显示位置，有 'top','left','right','bottom'四种位置，默认是'right'
-		});
+		chart.legend(false);
 		let dimensionsDodge = dimensions.slice(0, 1);
 		let stackColor = colors.slice(0, indicators.length);
 		if (doubleYLine === 'line') {
@@ -149,20 +103,21 @@ export default {
 			chart.point().position(dimensionsDodge + "*" + indicators.join('')).color(colors.slice(colors.length - 1)); // 绘制点图
 		} else {
 			frame = Frame.combinColumns(frame, indicators, 'population', 'kpi', dimensions, 'di');
+			console.log(frame)
 			chart.source(frame);
 			if (indicators && indicators.length > 0) {
-				chart.interval(['dodge', 'stack']).position(dimensionsDodge + '*population').color('kpi', stackColor);// 使用图形语法绘制柱状图
+				chart.interval(['dodge', 'stack']).position('日期' + '*population').color('kpi', stackColor);// 使用图形语法绘制柱状图
 			}
-			if (dimensions && dimensions.length > 1) {
-				let lineXPosition = dimensions.slice(0, 1);
-				let linePosition = dimensions.slice(1);
-				let reverseColors = colors.reverse();
-				linePosition.map((item, i)=> {
-					chart.line().position(lineXPosition + "*" + item).color(reverseColors[i]).size(2).shape('smooth');
-					chart.point().position(lineXPosition + "*" + item).color(reverseColors[i]); // 绘制点图
-				});
-
-			}
+			// if (dimensions && dimensions.length > 1) {
+			// 	let lineXPosition = dimensions.slice(0, 1);
+			// 	let linePosition = dimensions.slice(1);
+			// 	let reverseColors = colors.reverse();
+			// 	linePosition.map((item, i)=> {
+			// 		chart.line().position(lineXPosition + "*" + item).color(reverseColors[i]).size(2).shape('smooth');
+			// 		chart.point().position(lineXPosition + "*" + item).color(reverseColors[i]); // 绘制点图
+			// 	});
+			//
+			// }
 		}
 
 		chart.render();
