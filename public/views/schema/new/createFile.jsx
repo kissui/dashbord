@@ -17,11 +17,13 @@ module.exports = React.createClass({
 		}
 	},
 	componentWillReceiveProps: function (nextProps) {
+		console.log(nextProps.onFileDetail, '@nextProps.onFileDetail');
 		this.setState({
 			fileDetail: nextProps.onFileDetail
 		})
 	},
 	componentDidMount: function () {
+		console.log(this.state.fileDetail,'@this.state.fileDetail')
 		this.setState({
 			folderList: JSON.parse(sessionStorage.getItem('SIDEBAR_LIST')),
 			fileCubeConf: JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL'))
@@ -29,6 +31,7 @@ module.exports = React.createClass({
 	},
 	handleGetCubeId: function (cubeConf, editChangeState) {
 		const {fileCubeConf, fileDetail} = this.state;
+		console.log(this.state.fileDetail, '@handle')
 		let data_fields = [];
 		cubeConf.map((item, i)=> {
 			if (item.fields.data_fields)
@@ -71,7 +74,7 @@ module.exports = React.createClass({
 		}
 
 		let dimension_fields = state.cubeConf[0].fields.dimension_fields;
-		console.log(state.folderId, '@state.folderId');
+		console.log(state, state.folderId, '@state.folderId');
 		let data = {
 			'folder_id': state.folderId,
 			'title': value,
@@ -164,7 +167,8 @@ module.exports = React.createClass({
 			folderId: conf.folderId,
 			fileDetail: {
 				fileOpType: fileDetail.fileOpType,
-				folderId: conf.folderId
+				folderId: conf.folderId,
+				fileId: fileDetail.fileId
 			}
 		})
 	},

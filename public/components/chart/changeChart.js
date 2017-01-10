@@ -12,28 +12,7 @@ Number.prototype.flover = function (c, d, t) {
 	return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
 export default {
-	reg (item, type) {
-
-		let reg = /^(\d*\.)+\d+$/;
-		let percent = /^(\d*\,)+\d+%$/;
-		let china = /^[\u4e00-\u9fa5]/;
-		let regDate = /^(\d*\-)+\d+$/;
-		let contentReg = /^(\d*\,)+\d+(\.?)+\d+$/;
-		let letterStart = /^[a-zA-Z]+/;
-		if (typeof type != 'number' && type > 1) return china.test(item) ? item : reg.test(item) ? ((item * 100).toFixed(1) + '%') : (regDate.test(item) ? item : parseFloat(item));
-		return type === 0 ? item : contentReg.test(item) ? parseFloat(item.split(',').join('')) :
-			typeof item == 'string' ? ((china.test(item) || letterStart.test(item)) ? item : parseFloat(item)) : item + '';
-	},
-	filterKey (key, col, type) {
-		_.forEach(collection, (item)=> {
-			if (key === item && 'percent') {
-				return item
-			} else {
-				return item;
-			}
-		})
-	},
-	dealChartData (names, fields, real) {
+	dealChartData (names, fields) {
 		const chartData = [];
 		let surveyName = names;
 		fields.map((item, i)=> {

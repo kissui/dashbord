@@ -18,11 +18,11 @@ module.exports = React.createClass({
 	},
 	componentDidMount: function () {
 		const {folderConf} = this.state;
-		console.log('Did',folderConf);
+		console.log('Did', folderConf);
 		this.handleGetFolderTree(folderConf)
 	},
 	componentWillReceiveProps: function (nextProps) {
-		console.log('props',nextProps.onFolderConf);
+		console.log('props', nextProps.onFolderConf);
 
 		this.setState({
 			'isShow': false,
@@ -32,34 +32,34 @@ module.exports = React.createClass({
 	},
 	handleGetFolderTree: function (param) {
 
-		let folderConf;
+		let folderConf, _this = this;
 		if (param) {
 			folderConf = param;
 		} else {
 			folderConf = this.state.folderConf;
 		}
-
-		http.get('/api/?c=table.folder&ac=tree')
-			.then(data => (data.data))
-			.then((data) => {
-				if (data.errcode === 10000 && data.data) {
-					this.setState({
-						folderLists: data.data
-					});
-					if (folderConf && _.isEmpty(folderConf.fileId) && _.isEmpty(folderConf.folderId)) {
-						this.props.onReceicePathParams({
+		if (folderConf && _.isEmpty(folderConf.fileId) && _.isEmpty(folderConf.folderId)) {
+			http.get('/api/?c=table.folder&ac=tree')
+				.then(data => (data.data))
+				.then((data) => {
+					if (data.errcode === 10000 && data.data) {
+						_this.setState({
+							folderLists: data.data
+						});
+						_this.props.onReceicePathParams({
 							folderId: data.data[0].id,
 							fileId: data.data[0].tables[0].id
 						});
+						sessionStorage.setItem('SIDEBAR_LIST', JSON.stringify(data.data))
+					} else {
+						// 当前用户默认或者文件全部删除处理
 					}
-					sessionStorage.setItem('SIDEBAR_LIST', JSON.stringify(data.data))
-				} else {
-					// 当前用户默认或者文件全部删除处理
-				}
-			})
-			.catch(data => {
-				console.log(data);
-			})
+				})
+				.catch(data => {
+					console.log(data);
+				})
+		}
+
 	},
 
 	menuChange: function () {

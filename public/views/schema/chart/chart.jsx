@@ -1,6 +1,6 @@
 'use strict';
 import React from 'react';
-
+import chartCtr from '../../../components/chart/changeChart';
 export default class ChartContentPage extends React.Component{
 	constructor(context,props) {
 		super(context,props);

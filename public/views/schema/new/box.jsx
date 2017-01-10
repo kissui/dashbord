@@ -52,6 +52,7 @@ module.exports = React.createClass({
 	},
 	render: function render() {
 		const{folderConf} = this.state;
+		console.log(folderConf,'@render')
 		return (
 			<div>
 				<SideMenu
