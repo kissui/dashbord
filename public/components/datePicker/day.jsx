@@ -45,7 +45,6 @@ module.exports = React.createClass({
 		changeDefaultRanges['最近7天'] = defaultRanges['Last 7 Days'];
 		changeDefaultRanges['最近30天'] = defaultRanges['Last 30 Days'];
 		const {predefineds, isShowRange, defaultDateRange} = this.state;
-		console.log(predefineds, 'predefineds');
 		const {onFormat, dateInputStyle, singleStyle, containerStyle} = this.props;
 		const format = onFormat ? onFormat : 'YYYY-MM-DD';
 		return (
@@ -83,7 +82,6 @@ module.exports = React.createClass({
 							Calendar: {width: 200},
 							PredefinedRanges: {
 								marginLeft: 10,
-								marginTop: 10,
 								width: '100px'
 							}
 						}}

@@ -19,7 +19,6 @@ module.exports = React.createClass({
 	componentDidMount: function () {
 		const {folderConf} = this.state;
 		console.log('Did',folderConf);
-
 		this.handleGetFolderTree(folderConf)
 	},
 	componentWillReceiveProps: function (nextProps) {

@@ -5,7 +5,7 @@ import {Link, History, Router} from 'react-router';
 import ViewHeader from './widget/viewHeader';
 import ViewBody from './widget/viewBody';
 import Loading from '../../components/loading/loading';
-
+import ChartContentPage from './chart/chart';
 module.exports = React.createClass({
     getInitialState: function () {
         const {onFileDetail} = this.props;
@@ -30,7 +30,6 @@ module.exports = React.createClass({
         if (nextProps.onFileDetail.fileId) {
             this.initialFileData(nextProps.onFileDetail.fileId)
         }
-
     },
     initialFileData: function (fileId) {
         this.setState({
@@ -64,13 +63,6 @@ module.exports = React.createClass({
 
             })
     },
-    onState: function (id, folderId) {
-        this.props.onState(id, folderId)
-    },
-    handleHideCreateFilePage: function () {
-        let fileId = JSON.parse(sessionStorage.getItem('SCHEMA_FILE_DETAIL')).id;
-        this.initialFileData(fileId);
-    },
     handleChangeChart: function () {
         this.setState({
             'onShowChart': true
@@ -87,6 +79,7 @@ module.exports = React.createClass({
                         onFolderConf={fileDetail}
                         onChangeChart={this.handleChangeChart}
                     />
+                    <ChartContentPage onFileData={fileData}/>
                     <ViewBody viewBody={fileData}
                               onChart={onShowChart}
                     />

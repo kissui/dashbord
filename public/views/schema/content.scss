@@ -1,5 +1,5 @@
 .view-header {
-    margin: 0 20px;
+    margin: 0 30px;
     h2 {
         font-size: 22px;
         font-weight: 400;
@@ -10,8 +10,6 @@
         display: inline-block;
         padding-bottom: 25px;
     }
-    margin-bottom: 30px;
-    border-bottom: 2px solid;
 }
 
 .header-tab {
@@ -33,8 +31,10 @@
 }
 .view-body{
     width: 100%;
-    padding: 0 20px;
+    border-top: 2px solid;
+    margin:0 20px;
     .view-chart{
+        margin: 30px 0 0 0;
         background: #FFF;
         box-shadow: 0 2px 4px 0 rgba(0,0,0,.1),0 16px 24px 0 rgba(81,129,228,.1);
         .chart-set{
@@ -161,4 +161,10 @@
 .height-limit{
     max-height: 240px;
     overflow: auto;
+}
+
+/** 新版图表视图的画布样式表 **/
+
+.view-chart{
+    margin: 30px 20px;
 }

@@ -802,13 +802,20 @@ a {
     border-radius: 5px;
     width: 570px;
     padding: 7px;
-    margin-top: 8px;
+    margin-top: 0;
     position: absolute;
     z-index: 999;
     background: #fff;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1), 0 16px 24px 0 rgba(81, 129, 228, .1);
     -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1), 0 16px 24px 0 rgba(81, 129, 228, .1);
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1), 0 16px 24px 0 rgba(81, 129, 228, .1);
+    .date_set {
+        position: relative;
+        left: 390px;
+        button {
+            margin-left: 16px;
+        }
+    }
 }
 @mixin boxShadow(){
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);

@@ -8,6 +8,7 @@ import http from '../../../lib/http';
 import Utils from '../../../lib/utils';
 import ShowTableContent from './table';
 import ChartOptionPage from './chartOptionHeader';
+
 module.exports = React.createClass({
     getInitialState: function () {
         let viewBody = this.props.viewBody;
@@ -16,7 +17,7 @@ module.exports = React.createClass({
             'body': viewBody,
             'dimension_new': false,
             'kpi_new': false,
-            isShowOption: false,
+            'isShowOption': false,
             'changeChartType': _.has(viewBody.chart_conf, 'type') ? viewBody.chart_conf.type : 'interval',
             'initialGraphicState': graphicState,
             'initialCreateGraphicState': _.has(this.props.viewBody.chart_conf, 'type') ? true : false
