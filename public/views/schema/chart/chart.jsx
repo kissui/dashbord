@@ -7,8 +7,12 @@ export default class ChartContentPage extends React.Component{
 	}
 	render () {
 		console.log(this.props.onFileData,'@onFileData');
+		const {onFileData} = this.props;
 		return (
 			<div className="view-chart">
+				<div className="view-chart-title">
+					{/*{onFileData.title}*/}
+				</div>
 				<div className="chart-kpi-List">
 				</div>
 				<div id="chart-canvas"></div>

@@ -34,7 +34,7 @@ module.exports = React.createClass({
         let _this = this;
         let newData = this.props.onTbody;
         //初始化表格表头的内容部分高
-        let newTitle = _.concat([{title: '日期',selected: true}], tableConf.fields.dimension_fields, tableConf.fields.data_fields);
+        let newTitle = _.concat(tableConf.fields.dimension_fields, tableConf.fields.data_fields);
         // 单独指标项排序
         let dimensionLen = tableConf.fields.dimension_fields.length;
         const {sort} = this.state;

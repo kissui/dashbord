@@ -19,7 +19,6 @@ module.exports = React.createClass({
 		const {routeParams} = this.props;
 		let _this = this;
 		Init.getFolderList(res=> {
-			console.log(res, '@InitFn');
 			let fileId = res[0].tables[0].id;
 			let folderId = res[0].id;
 			let folderList = res;
@@ -37,7 +36,6 @@ module.exports = React.createClass({
 		});
 	},
 	handleReloadFolderList: function (conf) {
-		console.log(conf, '@confList');
 		const {folderConf} = this.state;
 		if(conf ==='folderOption') {
 			Init.getFolderList(res=>{
@@ -98,7 +96,6 @@ module.exports = React.createClass({
 	},
 	render: function render() {
 		const {folderConf} = this.state;
-		console.log(folderConf);
 		return (
 			<div>
 				{folderConf && <SideMenu
