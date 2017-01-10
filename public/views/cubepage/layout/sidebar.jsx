@@ -10,13 +10,13 @@ export default class CubePageSidebar extends React.Component {
 	}
 
 	componentDidMount() {
-		http.get('/api/?c=cube.cubes&ac=index')
-			.then(data=>data.data)
-			.then(data=> {
-				this.setState({
-					cubeList: data.data
-				})
-			})
+		// http.get('/api/?c=cube.cubes&ac=index')
+		// 	.then(data=>data.data)
+		// 	.then(data=> {
+		// 		this.setState({
+		// 			cubeList: data.data
+		// 		})
+		// 	})
 	}
 
 	render() {
@@ -37,29 +37,35 @@ export default class CubePageSidebar extends React.Component {
 						</div>
 					</div>
 					<div className="c-menu">
-						{cubeList && cubeList.map((item, i)=> {
-							return (
-								<div className="menuItem" key={i}>
-									<span className="span">
-										<i className="fa fa-th-list "></i>
-										{item.name}
-									</span>
-									{item.dimensions + "" != 1 && <ul className="subItem">
-										{item.dimensions.map((subItem, subIndex)=> {
-											return (
-												<li className="active" key={subIndex}>
-													<i className="fa fa-th"></i>
-													{subItem.title}
-												</li>
-											)
-										})}
-									</ul>}
-								</div>
-							)
-						})}
+						<div className="menuItem">
+							<span className="span">
+								<i className="fa fa-th-list "></i>
+								CUBE 列表
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>
 		)
 	}
 }
+// {cubeList && cubeList.map((item, i)=> {
+// 	return (
+// 		<div className="menuItem" key={i}>
+// 									<span className="span">
+// 										<i className="fa fa-th-list "></i>
+// 										{item.name}
+// 									</span>
+// 			{item.dimensions + "" != 1 && <ul className="subItem">
+// 				{item.dimensions.map((subItem, subIndex)=> {
+// 					return (
+// 						<li className="active" key={subIndex}>
+// 							<i className="fa fa-th"></i>
+// 							{subItem.title}
+// 						</li>
+// 					)
+// 				})}
+// 			</ul>}
+// 		</div>
+// 	)
+// })}

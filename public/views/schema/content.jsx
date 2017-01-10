@@ -97,7 +97,7 @@ module.exports = React.createClass({
 						onReloadTablesByDate={this.handleReloadTableByDate}
 						onChangeChart={this.handleChangeChart}
 					/>
-					{/*<ChartContentPage onFileData={fileData}/>*/}
+					<ChartContentPage onFileData={fileData}/>
 					<ViewBody viewBody={fileData}
 							  onChart={onShowChart}
 					/>

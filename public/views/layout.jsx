@@ -64,6 +64,7 @@ module.exports = React.createClass({
                 <title>kepler 数据平台</title>
                 <link rel="stylesheet" href="/bower/bootstrap/dist/css/bootstrap.min.css"/>
                 <link rel="stylesheet" href="/bower/font-awesome/css/font-awesome.min.css"/>
+                <link rel="stylesheet" href="/antd/antd.min.css"/>
                 <link rel='stylesheet' href='/styles.css'></link>
             </head>
             <body>

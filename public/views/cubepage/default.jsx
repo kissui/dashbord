@@ -3,8 +3,7 @@
 var React = require('react');
 import SideMenu from './layout/sidebar';
 import HeaderPage from '../layout/head';
-
-
+import CubeOpPage from './dealPage';
 module.exports = React.createClass({
 	contextTypes: {
 		router: React.PropTypes.object.isRequired
@@ -21,7 +20,7 @@ module.exports = React.createClass({
 				<SideMenu/>
 				<HeaderPage selectIndex={2}/>
 				<div className="kepler-container">
-					hello cube!
+					<CubeOpPage/>
 				</div>
 			</div>
 		);

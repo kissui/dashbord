@@ -10,14 +10,12 @@ export default class ChartContentPage extends React.Component {
 	componentDidMount() {
 		const {onFileData} = this.props;
 		let fields = onFileData.table_conf.fields;
-		fields = _.concat(fields.dimension_fields, fields.data_fields);
-		console.log(fields);
-		let data= chartCtr.handleChartDataChannel(onFileData.data,fields,onFileData.table_conf.channel);
+		// fields = _.concat(fields.dimension_fields, fields.data_fields);
+		let data = chartCtr.handleChartDataChannel(onFileData.data, fields, onFileData.table_conf.channel);
 		// chartCtr.handleShowSingleKChart('chart-canvas',data,['登录角色数-19.d1.f1'],['日期'])
 	}
 
 	render() {
-		console.log(this.props.onFileData, '@onFileData');
 		const {onFileData} = this.props;
 		let kpiList = onFileData.table_conf.fields.data_fields;
 		return (

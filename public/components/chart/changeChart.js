@@ -38,6 +38,18 @@ export default {
 	},
 	handleChartDataChannel (datas, fields, channel) {
 		let newDataAssign = [];
+		let newDataObj = {}
+		let $dataFieldsCount = fields.data_fields.length;
+		let $dimensionFieldsCount = fields.dimension_fields.length;
+		fields.data_fields.map((item,i)=>{
+			datas.map((dItem,di)=>{
+				let $tmpDataCell =  dItem.slice($dimensionFieldsCount)[i];
+				let $tmpDate = dItem[0];
+				let $tmpRowKey = dItem.slice(1,$dimensionFieldsCount).join(',');
+
+			})
+		});
+		console.log(newDataObj,'@new');
 		return newDataAssign;
 	},
 	dealChartData (names, fields) {
