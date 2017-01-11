@@ -1,37 +1,16 @@
 'use strict';
 import React from 'react';
 import http from '../../lib/http';
-import { Table, Icon } from 'antd';
-const dataSource = [{
-	key: '1',
-	name: '胡彦斌',
-	age: 32,
-	address: '西湖区湖底公园1号'
-}, {
-	key: '2',
-	name: '胡彦祖',
-	age: 42,
-	address: '西湖区湖底公园1号'
-}];
+import {Table, Input, Icon, Button, Popconfirm,Spin} from 'antd';
+const { Column, ColumnGroup } = Table;
+import _ from 'lodash';
 
-const columns = [{
-	title: '姓名',
-	dataIndex: 'name',
-	key: 'name',
-}, {
-	title: '年龄',
-	dataIndex: 'age',
-	key: 'age',
-}, {
-	title: '住址',
-	dataIndex: 'address',
-	key: 'address',
-}];
 export default class CubeOptionPage extends React.Component {
 	constructor(context, props) {
 		super(context, props);
 		this.state = {
-			cubeList: null
+			cubeList: null,
+			loading: false
 		}
 	}
 
@@ -42,48 +21,70 @@ export default class CubeOptionPage extends React.Component {
 				this.setState({
 					cubeList: data.data
 				})
+
 			})
 	}
+	onDelete(index,record){
+		// const deleteData = {
+		// 	id: record.id
+		// }
+		this.setState({
+			loading: true
+		})
+		const {cubeList} = this.state;
+		const evens = _.remove(cubeList,(item)=>{
+			console.log(item,'@removeItem');
+			return item.id == record.id;
+		})
+		console.log(evens,cubeList,'@events');
+		// http.post('/api/?c=cube.cubes&ac=del',deleteData)
+		// 	.then(data=>data.data)
+		// 	.then(data=>{
+		// 		console.log(data);
+				this.setState({
+					loading: false,
+					cubeList: cubeList
+				})
+		// 	})
 
+	}
 	render() {
-		console.log(this.state.cubeList);
+		const {cubeList,loading} = this.state;
 		return (
 			<div className="cube-op-body">
-				<Table dataSource={dataSource} columns={columns}/>
-				<table className="table table-bordered">
-					<thead>
-					<tr>
-						<th>#</th>
-						<th>First Name</th>
-						<th>Last Name</th>
-						<th>Username</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr>
-						<td rowspan="2">1</td>
-						<td>Mark</td>
-						<td>Otto</td>
-						<td>@mdo</td>
-					</tr>
-					<tr>
-						<td>Mark</td>
-						<td>Otto</td>
-						<td>@TwBootstrap</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td colspan="2">Larry the Bird</td>
-						<td>@twitter</td>
-					</tr>
-					</tbody>
-				</table>
+				{cubeList ? <Table bordered dataSource={cubeList} loading={loading}>
+					<Column
+					title= 'Id'
+					dataIndex= 'id'
+					key= '1'
+					/>
+					<Column
+					title= '名称'
+	 			   	dataIndex= 'name'
+	 			   	key= '2'
+	 			   	render={(text=><a href="#">{text}</a>)}
+					/>
+					<Column
+					title= '创建时间'
+				  	dataIndex= 'update_time'
+				  	key= '3'
+					/>
+					<Column
+					title= '描述'
+				  	dataIndex='description'
+				  	key= '4'
+					/>
+					<Column
+					title= '操作'
+					key= '5'
+					dataIndex= 'op'
+					render= {(text, record, index) => (
+						<Popconfirm title="你确定删除当前CUBE?" onConfirm={this.onDelete.bind(this,index,record)}>
+  	                		<a href="#">Delete</a>
+  	              		</Popconfirm>
+				  )}
+					/>
+				</Table>: <Spin/>}
 			</div>
 		)
 	}
