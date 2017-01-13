@@ -51,11 +51,14 @@ export default class CubeOptionPage extends React.Component {
         const {cubeList, loading} = this.state;
         return (
             <div className="cube-op-body">
+                <Button type='primary' icon='plus-circle-o'>
+                    <Link to={`/index/report/cube/new`}>创建新的CUBE</Link>
+                </Button>
                 {cubeList
                     ? <Table bordered dataSource={cubeList} loading={loading}>
                             <Column title='Id' dataIndex='id' key='1' rowKey='1'/>
                             <Column title='名称' dataIndex='name' key='2' rowKey='2' render={(text,record) =>(
-								< Link to = {`/index/report/cube/${record.id}`} > {
+								< Link to = {`/index/report/cube/edit/${record.id}`} > {
                                 text
                             } < /Link>)}/>
                             <Column title='创建时间' dataIndex='update_time' key='3' rowKey='3'/>

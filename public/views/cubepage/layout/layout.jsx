@@ -7,6 +7,7 @@ const {Header, Sider, Content} = Layout;
 export default class SiderDemo extends React.Component {
     constructor(context, props) {
         super(context, props);
+        this.context.router;
         this.state = {
             collapsed: false
         };
@@ -64,5 +65,5 @@ export default class SiderDemo extends React.Component {
     }
 }
 SiderDemo.contextTypes = {
-    router: React.PropTypes.func.isRequired
+    router: Object
 }
