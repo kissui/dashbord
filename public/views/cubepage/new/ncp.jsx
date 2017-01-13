@@ -80,10 +80,10 @@ export default class NewCubeContentPage extends React.Component {
         })
 
     }
-    handleDeleteDimension(index){
+    handleDeleteDimension(id){
         const{defaultCube} = this.state;
         _.remove(defaultCube.dimensions,(res,i)=>{
-            return index == i;
+            return res.id == id;
         })
         this.setState({
             defaultCube: defaultCube
@@ -135,7 +135,7 @@ export default class NewCubeContentPage extends React.Component {
                                         onChange = {
                                             this.handleChangeTitle('dimensionName', i)
                                         } />} extra={< Button type = "primary" onClick = {
-                                            this.handleDeleteDimension.bind(this, i)
+                                            this.handleDeleteDimension.bind(this, item.id)
                                         } > 删除 < /Button>}>
                                             <div className="dimension-list">
                                                 <div className="dimension">

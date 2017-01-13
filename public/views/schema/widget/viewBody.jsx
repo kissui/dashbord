@@ -210,7 +210,7 @@ module.exports = React.createClass({
                         <div
                             className={this.state.isShowOption ? "col-md-9 chart-box" : "col-md-12 chart-box"}>
                             <div id="c1"></div>
-                        </div >
+                        </div>
                         {(this.state.isShowOption) ? (
                             <div className="col-md-3">
                                 <div className="chart-dimension shim">
