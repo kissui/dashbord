@@ -1,26 +1,61 @@
-#components-layout-demo-custom-trigger .trigger {
-  font-size: 18px;
-  line-height: 64px;
-  padding: 0 16px;
-  cursor: pointer;
-  transition: color .3s;
+.edit-dimension-body {
+    margin: 20px 0;
+    .new-cube{
+        text-align: center;
+        i{
+            font-size: 40px;
+        }
+    }
+    .dimension-list {
+        h2 {
+            font-size: 14px;
+            height: 20px;
+        }
+
+        ul {
+            margin-top: 8px;
+            width: 200px;
+
+            li {
+                height: 20px;
+                line-height: 18px;
+                padding: 0 8px;
+                margin: 12px 0;
+                border-radius: 5px;
+            }
+        }
+
+        .dimension {
+            margin-bottom: 10px;
+            .item {
+                background: #f7f7f7;
+                color: rgba(0, 0, 0, 0.25);
+            }
+        }
+
+        .data {
+            .item {
+                background: #00A0E9;
+                color: #fff;
+            }
+        }
+        .new-item{
+            text-align: center;
+            cursor: pointer;
+        }
+    }
+}
+/* Increase grid spacing of 16px  */
+.ant-row {
+    margin-left: -8px;
+    margin-right: -8px;
+    margin-bottom: 8px
 }
 
-#components-layout-demo-custom-trigger .trigger:hover {
-  color: #108ee9;
+.ant-row > div {
+    padding: 0 8px;
 }
-
-#components-layout-demo-custom-trigger .logo {
-  height: 32px;
-  background: #333;
-  border-radius: 6px;
-  margin: 16px;
-}
-
-#components-layout-demo-custom-trigger .ant-layout-sider-collapsed .anticon {
-	font-size: 16px;
-}
-
-#components-layout-demo-custom-trigger .ant-layout-sider-collapsed .nav-text {
-	display: none;
+.ant-input,
+input {
+    width: 180px;
 }

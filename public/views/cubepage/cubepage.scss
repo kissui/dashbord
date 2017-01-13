@@ -1,28 +1,25 @@
 /** layout **/
 .trigger {
-  font-size: 18px;
-  line-height: 64px;
-  padding: 0 16px;
-  cursor: pointer;
-  transition: color .3s;
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: color 0.3s;
 }
 
 .trigger:hover {
-  color: #108ee9;
+    color: #108ee9;
 }
-
-
 
 .ant-layout-sider-collapsed .anticon {
-	font-size: 16px;
+    font-size: 16px;
 }
+
 .ant-layout-sider-collapsed .nav-text {
-	display: none;
+    display: none;
 }
-
-
 /** end **/
-.logo{
+.logo {
     height: 32px;
     background: #333;
     border-radius: 6px;
@@ -30,8 +27,10 @@
     background: url('/img/logo.png') no-repeat;
     border-radius: 5px;
 }
+
 .c-menu {
     padding: 20px;
+
     .menuItem {
         .span {
             height: 36px;
@@ -42,35 +41,41 @@
             display: inline-block;
             width: 200px;
             border-bottom: 1px solid #DDDDDD;
+
             i {
                 margin-right: 13px;
                 color: rgb(173, 178, 196);
             }
         }
-        .active{
+
+        .active {
             color: #FFFFFF;
+
             i {
                 margin-right: 13px;
                 color: #FFFFFF;
             }
         }
+
         .subItem {
             padding: 8px;
+
             li {
                 color: rgb(173, 178, 196);
                 height: 30px;
                 line-height: 30px;
                 cursor: pointer;
                 font-size: 12px;
+
                 i {
                     margin-right: 13px;
                     color: rgb(173, 178, 196);
                 }
-            }
-        ;
+            };
         }
     }
 }
-.cube-op-body{
+
+.cube-op-body {
     padding: 20px;
 }
