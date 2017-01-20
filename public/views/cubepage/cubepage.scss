@@ -27,7 +27,25 @@
     background: url('/img/logo.png') no-repeat;
     border-radius: 5px;
 }
-
+.power-line {
+    height: 32px;
+    margin: 0 16px 16px 16px;
+    border-bottom: 1px solid #fff;
+    line-height: 30px;
+    text-align: right;
+    a {
+        font-size: 14px;
+        color: #fff;
+        margin-left: 10px;
+    }
+}
+.ant-menu{
+    li {
+        span{
+            display: inline-block;
+        }
+    }
+}
 .c-menu {
     padding: 20px;
 

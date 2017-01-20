@@ -1,0 +1,36 @@
+.report-header{
+    width: 100%;
+    padding-bottom: 20px;
+    border-bottom: 2px solid;
+    .header-left{
+        width: 50%;
+        display: inline-block;
+    }
+    .header-right{
+        width: 50%;
+        display: inline-block;
+        text-align: right;
+        button{
+            margin-left: 20px;
+        }
+    }
+    .report-label{
+        height: 30px;
+        line-height: 30px;
+        width: 100%;
+        .label-l{
+            width: 80px;
+            display: inline-block;
+        }
+        .label-r{
+            width: 50%;
+            display: inline-block;
+        }
+    }
+}
+// TODO: antd date picker style
+.ant-calendar-picker{
+    .ant-input{
+        width: 240px;
+        }
+}

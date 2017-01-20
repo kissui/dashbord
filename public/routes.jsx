@@ -17,7 +17,8 @@ import SourcePage from './views/source/source';
 import CubePage from './views/cubepage/default';
 import CubeListPage from './views/cubepage/list/list';
 import CubeCreatedPage from './views/cubepage/new/new';
-
+/** new rport page**/
+import ReportPage from './views/report/index';
 // onEnter(nextState, replaceState, callback?)
 //index
 // Called when a route is about to be entered. It provides the next
@@ -90,6 +91,8 @@ export default (
 			<Route path='/index/report/cube/edit/:cubeId' component={CubeListPage}/>
 			<Route path='/index/report/cube/new' component={CubeCreatedPage}/>
 			<Route path='/index/chart' component={ChartPage}/>
+			<Route path='/index/report/test' component={ReportPage}/>
+			<Route path='/index/report/test/:folderId/:fileId' component={ReportPage}/>
 			<Route path='/index/source' component={SourcePage}/>
 			<Route path='/index/401' component={UnauthorizedPage}/>
 			<Route path='/index/error' component={errorPage}/>
