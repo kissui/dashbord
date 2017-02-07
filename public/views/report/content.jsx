@@ -8,9 +8,12 @@ import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 const {MonthPicker, RangePicker} = DatePicker;
 const dateFormat = 'YYYY-MM-DD';
-
+// TODO: Class table Module
+import TableContent from './layout/table';
+// TODO: Class chart Module
+import ChartContent from './layout/chart';
 // TODO: CLASS Content
-export default class ReportContent extends React.Component {
+export default class ReportContentDefault extends React.Component {
     constructor(context, props) {
         super(context, props);
         const {onFolderConf} = this.props;
@@ -20,7 +23,7 @@ export default class ReportContent extends React.Component {
             folderConf: onFolderConf,
             reportDetail: null,
             dateRange: {
-                startdate: moment(new Date(currentTime - yestoday * 6)).format(dateFormat).toString(),
+                startdate: moment(new Date(currentTime - yestoday * 60)).format(dateFormat).toString(),
                 enddate: moment(new Date(currentTime - yestoday)).format(dateFormat).toString()
             }
         }
@@ -37,16 +40,18 @@ export default class ReportContent extends React.Component {
             ((item, index) => {
                 columns.push({
                     title: item.title,
-                    dataIndex: item.title,
-                    key: item.title,
-                    sorter: (a, b) => a[item.title] - b[item.title]
+                    dataIndex: item.val_conf,
+                    selected: item.selected,
+                    key: item.val_conf,
+                    sorter: (a, b) => a[item.val_conf] - b[item.val_conf]
                 });
             })(item, i)
         })
+        console.log(thead,'@dealTable')
         data.map((item, i) => {
             const obj = {};
             item.map((superItem, k) => {
-                obj[thead[k]] = superItem
+                obj[thead[k]['val_conf']] = superItem
                     ? superItem
                     : '-'
             });
@@ -69,8 +74,7 @@ export default class ReportContent extends React.Component {
                 console.log(data.data);
                 let thead = _.concat(data.data.table_conf.fields.dimension_fields,data.data.table_conf.fields.data_fields);
                 console.log(thead,'@thead');
-                console.log(this.handleDealTable(thead,data.data.data));
-                this.setState({reportDetail: data.data})
+                this.setState({reportDetail: data.data,tableData: this.handleDealTable(thead,data.data.data)})
             }
         })
     }
@@ -87,7 +91,7 @@ export default class ReportContent extends React.Component {
         this.setState({dateRange: dateRange})
     }
     render() {
-        const {reportDetail, dateRange} = this.state;
+        const {reportDetail, tableData, dateRange} = this.state;
         return (
             <div>
                 {reportDetail
@@ -128,6 +132,8 @@ export default class ReportContent extends React.Component {
                                     </div>
                                 </div>
                             </div>
+                            <ChartContent/>
+                            <TableContent onData={tableData}/>
                         </div>
                     : <div className="report-empty">
                         空
